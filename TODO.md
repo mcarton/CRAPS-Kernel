@@ -3,6 +3,7 @@ Todo list
 - [x] organiser RDV avec le client
 - [ ] compte rendu de chaque réunion
     - [x] 15/01
+    - [x] 19/01
     - [ ] 22/01
     - [ ] 29/01
     - [ ] 05/02
@@ -17,7 +18,7 @@ Todo list
 - [ ] User Manual
 - [ ] Présentation final (surtout gestion de projet)
 - [ ] Rapport final
-
+- [ ] Récupérer softs auprès de Buisson
 
 Travail personnel :
 - Rapport individuel de gestion de projet
