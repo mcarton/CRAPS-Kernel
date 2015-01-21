@@ -1,3 +1,3 @@
 [submodule "compilator"]
-	path = compilator
+	path = compiler
 	url = https://github.com/arthaud/moc.git
