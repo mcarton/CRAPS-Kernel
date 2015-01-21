@@ -13,11 +13,11 @@ Development of the OS
 Improvement of the processor
  - support of the RAM chip on the FPGA to have more than 2 ko of memory.
  - support of the I/O we need for the permanent storage
- - support of a serial port or any other peripherial to communicate with the user
+ - support of a serial port or any other peripheral to communicate with the user
 
 Compiler
  - CRAPS assembly backend
- - make the source langage as much similar as C
+ - make the source language as much similar as C
 
 Report
  - write the user documentation
