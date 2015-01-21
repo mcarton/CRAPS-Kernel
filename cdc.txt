@@ -1,0 +1,22 @@
+Développement de l'OS
+ - tâche de test 1: communiquer avec l'utilisateur
+   - développement d'un mini-shell ?
+   - gestion des I/O côté logiciel
+ - tâche de test 2: faire clignoter des leds
+ - tâches systèmes ? (gestion des I/O etc...)
+ - scheduler & gestion des processus
+ - système de fichier extrêmement simplifié
+ - appels systèmes (malloc, etc...)
+ - I/O utilisateur
+
+Amélioration du processeur
+ - support de la RAM
+ - gestion des I/O
+ - gestion du port série ou d'un autre périphérique pour communiquer avec l'utilisateur
+
+Compilateur
+ - backend assembleur CRAPS
+ - simplification et support d'un langage le plus proche du C possible
+
+Rapports
+ - écriture de la doc
