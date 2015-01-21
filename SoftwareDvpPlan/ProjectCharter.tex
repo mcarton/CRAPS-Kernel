@@ -2,6 +2,7 @@
 
 \usepackage{fontspec}
 \usepackage{hyperref}
+\usepackage{siunitx}
 
 \title{Software Development Plan}
 \author{
@@ -94,4 +95,44 @@
       \item User Manual
       \item modified CRAPS
     \end{itemize}
+
+  \begin{appendix}
+    \section{Specifications}
+      \begin{itemize}
+        \item Improvement of the processor
+          \begin{itemize}
+            \item support of the RAM chip on the FPGA to have more than
+              \SI{2}{kB} of memory.
+            \item support of the I/O we need for the permanent storage
+            \item support of a serial port or any other peripheral to
+              communicate with the user
+          \end{itemize}
+        \item Compiler
+          \begin{itemize}
+            \item CRAPS assembly backend
+            \item make the source language as much similar as C
+          \end{itemize}
+          \item Development of the OS
+            \begin{itemize}
+              \item test task 1: make a led blink
+              \item test task 2: communicate with the user
+                \begin{itemize}
+                  \item development of a mini-shell ?
+                  \item management of the I/O from the software
+                \end{itemize}
+              \item scheduler and process management
+              \item system calls and API of the OS:
+                \begin{itemize}
+                  \item very simple file system
+                  \item user I/O (using the serial port or other means)
+                  \item system task to manage the I/O?
+                  \item functions like \verb+malloc+, etc.
+                \end{itemize}
+            \end{itemize}
+        \item Report
+          \begin{itemize}
+            \item write the user documentation
+          \end{itemize}
+      \end{itemize}
+  \end{appendix}
 \end{document}
