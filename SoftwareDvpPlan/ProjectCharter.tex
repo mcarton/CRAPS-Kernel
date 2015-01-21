@@ -1,8 +1,22 @@
 \documentclass{article}
 
 \usepackage{fontspec}
+\usepackage{hyperref}
+
+\title{Software Development Plan}
+\author{
+       Maxime Arthaud
+  \and Korantin Auguste
+  \and Martin Carton
+  \and Etienne Lebrun
+  \and Pierre-Louis Michel
+}
 
 \begin{document}
+  \maketitle
+  \tableofcontents
+  \newpage
+
   \section{Introduction}
     This project, suggested by Daniel Hagimont, is based on the CRAPS processor
     developed by Jean-Christophe Buisson and used in the first-year CPU
@@ -57,6 +71,8 @@
   \section{Meetings and reporting}
     See the "Meetings" folder.
 
+  \section{Management of actions}
+
   \section{Management of risks}
     \begin{itemize}
       \item A FPGA can be damaged by us, making any test impossible. | 0.5
@@ -67,6 +83,8 @@
         Put as much ram as we can in the FPGA, in VHDL (but we will have a lot
         less anyway)
     \end{itemize}
+
+  \section{Management of change requests}
 
   \section{Quality and Configuration management}
     Use of a version control system: a Git repository on Github.
