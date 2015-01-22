@@ -1,7 +1,11 @@
 \documentclass{article}
 
+\usepackage{afterpage}
 \usepackage{fontspec}
+\usepackage{geometry}
 \usepackage{hyperref}
+\usepackage{lscape}
+\usepackage{pgfgantt}
 \usepackage{siunitx}
 
 \title{Software Development Plan}
@@ -65,6 +69,8 @@
     \end{itemize}
 
   \section{Project Monitoring and Controls}
+    \afterpage{\input{gantt}}
+
     Gantt diagram, "hits" that we need to achieve.
 
     Controls: meetings?
