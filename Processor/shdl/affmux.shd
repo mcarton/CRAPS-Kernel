@@ -1,0 +1,8 @@
+module affmux(data[15..0], en[3..0], clk, rst : an[3..0], segs[6..0])
+  count2(rst, clk, 1 : cpt[1..0]);
+  decoder2to4(cpt[1..0] : sel[3..0]);
+
+  x[3..0] = sel[0]*data[3..0] + sel[1]*data[7..4] + sel[2]*data[11..8] + sel[3]*data[15..12];
+  dec7segs(x[3..0] : segs[6..0]);
+  an[3..0] = en[3..0]*sel[3..0];
+end module

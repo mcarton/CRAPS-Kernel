@@ -1,0 +1,4 @@
+module eq8(a[7..0], b[7..0], equal)
+  eq[7..0] = /a[7..0]*/b[7..0] + a[7..0]*b[7..0];
+  equal = eq[7]*eq[6]*eq[5]*eq[4]*eq[3]*eq[2]*eq[1]*eq[0];
+end module

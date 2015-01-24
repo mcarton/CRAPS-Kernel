@@ -1,0 +1,62 @@
+module ual(a[31..0], b[31..0], cmd[5..0] : s[31..0], setN, setZ, setVC, N, Z, V, C)
+  // decodage de la commande
+  decoder6to64(cmd[5..0]: oe[63..0]);
+
+  // add-sub
+  addsub32(a[31..0], b[31..0], cmd[2], saddsub[31..0], V, C);
+  s[31..0] = saddsub[31..0]:oe[16]; // addcc
+  s[31..0] = saddsub[31..0]:oe[0]; // add
+  s[31..0] = saddsub[31..0]:oe[20]; // subcc
+  s[31..0] = saddsub[31..0]:oe[4]; // sub
+
+  // umul
+  umult16x16(a[15..0], b[15..0]: smul[31..0]);
+  s[31..0] = smul[31..0]:oe[26];
+
+  // and
+  sand[31..0] = a[31..0] * b[31..0];
+  s[31..0] = sand[31..0]:oe[17]; // andcc
+  s[31..0] = sand[31..0]:oe[1]; // and
+
+  // or
+  sor[31..0] = a[31..0] + b[31..0];
+  s[31..0] = sor[31..0]:oe[18]; // orcc
+  s[31..0] = sor[31..0]:oe[2]; // or
+
+  // xor
+  sxor[31..0] = a[31..0]*/b[31..0]+/a[31..0]*b[31..0];
+  s[31..0] = sxor[31..0]:oe[19]; // xorcc
+  s[31..0] = sxor[31..0]:oe[3]; // xor
+
+  // signext25
+  s25[31..25] =a[24]*0b1111111;
+  s25[24..0] = a[24..0];
+  s[31..0] = s25[31..0] : oe[33];
+
+  // signext13
+  s13[12..0] = a[12..0];
+  s13[31..13] = a[12]*0b1111111111111111111;
+  s[31..0] = s13[31..0] : oe[32];
+
+  // decalages
+  barrelshifter32(cmd[0], b[4..0], a[31..0] : sshift[31..0]);
+  s[31..0] = sshift[31..0] : oe[13];
+  s[31..0] = sshift[31..0] : oe[14];
+
+  // sethi
+  s[31..8] = a[23..0] : oe[35];
+  s[7..0] = 0 : oe[35];
+
+  // nopb
+  s[31..0] = b[31..0] : oe[40];
+
+  // N
+  N = s[31];
+
+  // Z
+  eq32(s[31..0], 0 : Z);
+
+  setN = cmd[4]*/cmd[3];
+  setZ = cmd[4];
+  setVC = cmd[4]*/cmd[1]*/cmd[0];
+end module

@@ -1,0 +1,6 @@
+module reg4(rst, clk, cs, d[3..0], q[3..0])
+  q[3..0] := d[3..0];
+  q[3..0].clk = clk;
+  q[3..0].rst = rst;
+  q[3..0].ena = cs;
+end module

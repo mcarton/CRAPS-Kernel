@@ -1,0 +1,6 @@
+module ucmp16(a[15..0], b[15..0] : sup, eq)
+  ucmp8(a[15..8], b[15..8] : supH, eqH);
+  ucmp8(a[7..0], b[7..0] : supL, eqL);
+  sup = supH + eqH*supL;
+  eq = eqH*eqL;
+end module

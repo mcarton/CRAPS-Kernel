@@ -1,0 +1,38 @@
+module Nexys(mclk, btn[3..0], sw[7..0], ld[7..0], ssg[7..0], an[3..0], pdb[7..0], astb, dstb, pwr, pwait)
+  rst = btn[0];
+  irq = pwm_out + btn[3];
+  count24(rst, mclk, 1 : clock[23..0], ripple);
+  clk = clock[1]; // 25MHz
+  swClk = clock[19];
+  ssgClk = clock[15];
+  pwmClk = clock[7];
+
+  commUSB(mclk, pdb[7..0], astb, dstb, pwr, pwait, xpc2board[127..0], board2pc[127..0]);
+  pc2board[127..0] := xpc2board[127..0]; // INDISPENSABLE
+  pc2board[127..0].clk = clk;
+  pc2board[127..0].rst = rst;
+
+
+  mon_cmd[3..0] = pc2board[63..60];
+  mon_req = pc2board[59];
+  run = pc2board[55];
+  monitor[37..0] = pc2board[37..0];
+
+  board2pc[63] = mon_ack;
+  board2pc[62] = break;
+  board2pc[61] = rst;
+  board2pc[60] = N;
+  board2pc[59] = Z;
+  board2pc[58] = V;
+  board2pc[57] = C;
+  board2pc[31..0] = dbus[31..0];
+
+
+  sequencer(rst, clk, mon_req, mon_cmd[3..0], monitor[37..0], break, run, ir[31..0], N, Z, V, C, IT :
+            write, oe_num[1..0], areg[4..0], breg[4..0], dreg[4..0], cmd_ual[5..0], state[4..0], mon_ack);
+  
+  micromachine(rst, clk, areg[4..0], breg[4..0], dreg[4..0], cmd_ual[5..0], oe_num[1..0], write,
+               monitor[31..0], sw[7..0], swClk, ssgClk, pwmClk, irq :
+               dbus[31..0], N, Z, V, C, ir[31..0], break, IT,
+               ld[7..0], ssg[7..0], an[3..0], pwm_out);
+end module

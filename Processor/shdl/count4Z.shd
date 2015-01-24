@@ -1,0 +1,10 @@
+module count4Z(rst, clk, en, sclr : s[3..0], ripple)
+  s[3..0].clk = clk;
+  s[3..0].rst = rst;
+  s[3..0] := /ts[3..0]*s[3..0] + ts[3..0]*/s[3..0];
+  ts[0] = en*/sclr + sclr*s[0];
+  ts[1] = en*/sclr*s[0] + sclr*s[1];
+  ts[2] = en*/sclr*s[0]*s[1] + sclr*s[2];
+  ts[3] = en*/sclr*s[0]*s[1]*s[2] + sclr*s[3];
+  ripple = en*/sclr*s[0]*s[1]*s[2]*s[3];
+end module

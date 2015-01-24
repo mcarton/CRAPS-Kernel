@@ -1,0 +1,6 @@
+module decoder2to4(e[1..0] : s[3..0])
+  s[0] = /e[1]*/e[0];
+  s[1] = /e[1]*e[0];
+  s[2] = e[1]*/e[0];
+  s[3] = e[1]*e[0];
+end module

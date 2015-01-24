@@ -1,0 +1,6 @@
+module reg32(rst, clk, ena, d[31..0] : q[31..0])
+  q[31..0] := d[31..0];
+  q[31..0].clk = clk;
+  q[31..0].rst = rst;
+  q[31..0].ena = ena;
+end module

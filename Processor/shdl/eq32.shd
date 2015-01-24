@@ -1,0 +1,7 @@
+module eq32(a[31..0], b[31..0], equal)
+  eq8(a[7..0], b[7..0], eq0);
+  eq8(a[15..8], b[15..8], eq1);
+  eq8(a[23..16], b[23..16], eq2);
+  eq8(a[31..24], b[31..24], eq3);
+  equal = eq0*eq1*eq2*eq3;
+end module

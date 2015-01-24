@@ -1,0 +1,4 @@
+module eq4(a[3..0], b[3..0], equal)
+  eq[3..0] = a[3..0]*b[3..0] + /a[3..0]*/b[3..0];
+  equal = eq[3]*eq[2]*eq[1]*eq[0];
+end module

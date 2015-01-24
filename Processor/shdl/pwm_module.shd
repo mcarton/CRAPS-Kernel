@@ -1,0 +1,7 @@
+module pwm_module(rst, clk, pwmClk, en, selec, data[15..0] : pwm_out)
+  wrPwmP = en*/selec;
+  reg16(rst, clk, wrPwmP, data[15..0], pwmP[15..0]);
+  wrPwmN = en*selec;
+  reg16(rst, clk, wrPwmN, data[15..0], pwmN[15..0]);
+  pwm(rst, pwmClk, 1, pwmP[15..0], pwmN[15..0], pwm_out);
+end module
