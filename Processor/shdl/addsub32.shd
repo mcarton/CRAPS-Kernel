@@ -22,7 +22,6 @@ module adder32(a[31..0], b[31..0], cin : s[31..0], cout)
   adder4(a[31..28], b[31..28], c28 : s[31..28], cout);
 end module
 
-
 module addsub32(a[31..0], b[31..0], addsub: s[31..0], V, C)
   bb[31..0] = /addsub*b[31..0] + addsub*/b[31..0];
   adder32(a[31..0], bb[31..0], addsub : s[31..0], co);

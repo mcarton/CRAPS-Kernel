@@ -1,4 +1,4 @@
-module registres(rst,clk, areg[4..0],breg[4..0],dreg[4..0], dbus[31..0],
+module registres(rst, clk, areg[4..0], breg[4..0], dreg[4..0], dbus[31..0],
                  N_UAL, Z_UAL, V_UAL, C_UAL, setN, setZ, setVC, irq :
                  abus[31..0], bbus[31..0], ir[31..0], break, N, Z, V, C, IT)
   // decodeurs 5 vers 32
