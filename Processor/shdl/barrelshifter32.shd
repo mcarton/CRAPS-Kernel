@@ -1,0 +1,36 @@
+module barrelshifter32(r, nb[4..0], e[31..0] : s[31..0])
+  shift16(r, nb[4], e[31..0] : s16[31..0]);
+  shift8(r, nb[3], s16[31..0] : s8[31..0]);
+  shift4(r, nb[2], s8[31..0] : s4[31..0]);
+  shift2(r, nb[1], s4[31..0] : s2[31..0]);
+  shift1(r, nb[0], s2[31..0] : s[31..0]);
+end module
+
+module shift1(r, cs, e[31..0] : s[31..0])
+  s[31] = /cs*e[31] + cs*/r*e[30];
+  s[30..1] = /cs*e[30..1] + cs*/r*e[29..0] + cs*r*e[31..2];
+  s[0] = /cs*e[0] + cs*r*e[1];
+end module
+
+module shift2(r, cs, e[31..0] : s[31..0])
+  s[31..30] = /cs*e[31..30] + cs*/r*e[29..28];
+  s[29..2] = /cs*e[29..2] + cs*/r*e[27..0] + cs*r*e[31..4];
+  s[1..0] = /cs*e[1..0] + cs*r*e[3..2];
+end module
+
+module shift4(r, cs, e[31..0] : s[31..0])
+  s[31..28] = /cs*e[31..28] + cs*/r*e[27..24];
+  s[27..4] = /cs*e[27..4] + cs*/r*e[23..0] + cs*r*e[31..8];
+  s[3..0] = /cs*e[3..0] + cs*r*e[7..4];
+end module
+
+module shift8(r, cs, e[31..0] : s[31..0])
+  s[31..24] = /cs*e[31..24] + cs*/r*e[23..16];
+  s[23..8] = /cs*e[23..8] + cs*/r*e[15..0] + cs*r*e[31..16];
+  s[7..0] = /cs*e[7..0] + cs*r*e[15..8];
+end module
+
+module shift16(r, cs, e[31..0] : s[31..0])
+  s[31..16] = /cs*e[31..16] + cs*/r*e[15..0];
+  s[15..0] = /cs*e[15..0] + cs*r*e[31..16];
+end module

@@ -1,0 +1,4 @@
+module count8Z(rst, clk, en, sclr : s[7..0], ripple)
+  count4Z(rst, clk, en, sclr : s[3..0], rip1);
+  count4Z(rst, clk, rip1, sclr : s[7..4], ripple);
+end module	

@@ -1,0 +1,6 @@
+module reg16(rst, clk, cs, d[15..0], q[15..0])
+  q[15..0] := d[15..0];
+  q[15..0].clk = clk;
+  q[15..0].rst = rst;
+  q[15..0].ena = cs;
+end module

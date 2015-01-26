@@ -1,0 +1,9 @@
+module decoder4to16(e[3..0] : s[15..0])
+  decoder2to4(e[3..2] : high[3..0]);
+  decoder2to4(e[1..0] : low[3..0]);
+
+  s[15..12] = low[3..0]*high[3];
+  s[11..8] = low[3..0]*high[2];
+  s[7..4] = low[3..0]*high[1];
+  s[3..0] = low[3..0]*high[0];
+end module

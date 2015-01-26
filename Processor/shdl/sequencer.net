@@ -1,0 +1,556 @@
+module: sequencer
+reset: rst
+clock: clk
+inputs: mon_req, mon_cmd[3..0], monitor[37..0], break, run, ir[31..0], N, Z, V, C, IT
+outputs: write, oe_num[1..0], areg[4..0], breg[4..0], dreg[4..0], cmd_ual[5..0]
+added_outputs: state[4..0], mon_ack
+
+++	eq4(mon_cmd[3..0], 0b0000, memReadCmd);
+++	eq4(mon_cmd[3..0], 0b0001, regReadCmd);
+++	eq4(mon_cmd[3..0], 0b0010, memWriteCmd);
+++	eq4(mon_cmd[3..0], 0b0011, regWriteCmd);
+++	eq4(mon_cmd[3..0], 0b0100, stepCmd);
+++	wdreg[4..0] := monitor[36..32];
+++	wdreg[4..0].clk = clk;
+++	wdreg[4..0].rst = rst;
+++	wdreg[4..0].ena = wdregWr;
+++	wdregWr = is_fetch*mon_req*regWriteCmd;
+++	mon_ack =
+++		is_memW1St +
+++		is_memR1St*mon_req +
+++		is_regR1St*mon_req +
+++		is_regW1St*mon_req;
+
+///////////////////////////     MONITEUR: MEMOIRE       ////////////////////////////////
+
+  // moniteur: écriture en mémoire
+
+  fetch -> memW1St
+    when
+      mon_req*memWriteCmd
+    outputs
+      oe_num[1..0] = 0b11,
+      areg[4..0] = 0,
+      breg[4..0] = 0,
+      dreg[4..0] = 21,
+      cmd_ual[5..0] = 0b000000,
+      write = 0;
+
+  memW1St -> memW1St
+    when
+      mon_req
+    outputs
+      oe_num[1..0] = 0b00,
+      areg[4..0] = 0,
+      breg[4..0] = 0,
+      dreg[4..0] = 0,
+      cmd_ual[5..0] = 0b000000,
+      write = 0;
+
+  memW1St -> memW2St
+    when
+      /mon_req
+    outputs
+      oe_num[1..0] = 0b11,
+      areg[4..0] = 0,
+      breg[4..0] = 0,
+      dreg[4..0] = 22,
+      cmd_ual[5..0] = 0b000000,
+      write = 0;
+
+  memW2St -> fetch
+    when
+      1
+    outputs
+      oe_num[1..0] = 0b01,
+      areg[4..0] = 21,
+      breg[4..0] = 22,
+      dreg[4..0] = 0,
+      cmd_ual[5..0] = 0b101000,
+      write = 1;
+
+  // moniteur: lecture en mémoire
+
+  fetch -> memR1St
+    when
+      mon_req*memReadCmd
+    outputs
+      oe_num[1..0] = 0b11,
+      areg[4..0] = 0,
+      breg[4..0] = 0,
+      dreg[4..0] = 21,
+      cmd_ual[5..0] = 0b000000,
+      write = 0;
+
+  memR1St -> memR1St
+    when
+      mon_req
+    outputs
+      oe_num[1..0] = 0b10,
+      areg[4..0] = 21,
+      breg[4..0] = 0,
+      dreg[4..0] = 0,
+      cmd_ual[5..0] = 0b000000,
+      write = 0;
+
+  memR1St -> fetch
+    when
+      /mon_req
+    outputs
+      oe_num[1..0] = 0b00,
+      areg[4..0] = 0,
+      breg[4..0] = 0,
+      dreg[4..0] = 0,
+      cmd_ual[5..0] = 0b000000,
+      write = 0;
+
+///////////////////////////     MONITEUR: REGISTRES       ////////////////////////////////
+
+  // moniteur: lecture d'un registre
+
+  fetch -> regR1St
+    when
+      mon_req*regReadCmd
+    outputs
+      oe_num[1..0] = 0b01,
+      areg[4..0] = 0,
+      breg[4..0] = monitor[4..0],
+      dreg[4..0] = 0,
+      cmd_ual[5..0] = 0b101000,
+      write = 0;
+
+  regR1St -> regR1St
+    when
+      mon_req
+    outputs
+      oe_num[1..0] = 0b01,
+      areg[4..0] = 0,
+      breg[4..0] = monitor[4..0],
+      dreg[4..0] = 0,
+      cmd_ual[5..0] = 0b101000,
+      write = 0;
+
+  regR1St -> fetch
+    when
+      /mon_req
+    outputs
+      oe_num[1..0] = 0b00,
+      areg[4..0] = 0,
+      breg[4..0] = 0,
+      dreg[4..0] = 0,
+      cmd_ual[5..0] = 0b000000,
+      write = 0;
+
+  // moniteur: écriture d'un registre
+
+  fetch -> regW1St
+    when
+      mon_req*regWriteCmd
+    outputs
+      oe_num[1..0] = 0b00,
+      areg[4..0] = 0,
+      breg[4..0] = 0,
+      dreg[4..0] = 0,
+      cmd_ual[5..0] = 0b000000,
+      write = 0;
+
+  regW1St -> regW1St
+    when
+      mon_req
+    outputs
+      oe_num[1..0] = 0b00,
+      areg[4..0] = 0,
+      breg[4..0] = 0,
+      dreg[4..0] = 0,
+      cmd_ual[5..0] = 0b000000,
+      write = 0;
+
+  regW1St -> fetch
+    when
+      /mon_req
+    outputs
+      oe_num[1..0] = 0b11,
+      areg[4..0] = 0,
+      breg[4..0] = 0,
+      dreg[4..0] = wdreg[4..0],
+      cmd_ual[5..0] = 0b000000,
+      write = 0;
+
+///////////////////////////     RUN / STEP / BREAK       ////////////////////////////////
+
+  fetch -> fetch
+    when
+      /mon_req*/IT*/run + /mon_req*/IT*break
+    outputs
+      oe_num[1..0] = 0b00,
+      areg[4..0] = 0,
+      breg[4..0] = 0,
+      dreg[4..0] = 0,
+      cmd_ual[5..0] = 0b000000,
+      write = 0;
+
+  fetch -> step
+    when
+      mon_req*stepCmd
+    outputs
+      oe_num[1..0] = 0b00,
+      areg[4..0] = 0,
+      breg[4..0] = 0,
+      dreg[4..0] = 0,
+      cmd_ual[5..0] = 0b000000,
+      write = 0;
+
+  step -> step
+    when
+      mon_req
+    outputs
+      oe_num[1..0] = 0b00,
+      areg[4..0] = 0,
+      breg[4..0] = 0,
+      dreg[4..0] = 0,
+      cmd_ual[5..0] = 0b000000,
+      write = 0;
+
+  step -> decode
+    when
+      /mon_req
+    outputs
+      oe_num[1..0] = 0b10,
+      areg[4..0] = 30,
+      breg[4..0] = 0,
+      dreg[4..0] = 31,
+      cmd_ual[5..0] = 0b000000,
+      write = 0;
+
+//////////////////     FETCH       /////////////////////
+
+  fetch -> decode
+    when
+      run*/mon_req*/break*/IT
+    outputs
+      oe_num[1..0] = 0b10,
+      areg[4..0] = 30,
+      breg[4..0] = 0,
+      dreg[4..0] = 31,
+      cmd_ual[5..0] = 0b000000,
+      write = 0;
+
+//////////////////     INSTRUCTIONS DE CALCUL AVEC 2EME OPERANDE REGISTRE       /////////////////////
+
+  // calcul avec 2ème opérande registre -> on effectue l'opération op
+  decode -> pcplus1
+    when
+      ir[31]*/ir[30]*/ir[13]
+    outputs
+      oe_num[1..0] = 0b01,
+      areg[4..0] = ir[18..14],
+      breg[4..0] = ir[4..0],
+      dreg[4..0] = ir[29..25],
+      cmd_ual[5..0] = ir[24..19], // op
+      write = 0;
+
+  // ajoute 1 à pc
+  pcplus1 -> fetch
+    when
+      1
+    outputs
+      oe_num[1..0] = 0b01,
+      areg[4..0] = 30,
+      breg[4..0] = 20,
+      dreg[4..0] = 30,
+      cmd_ual[5..0] = 0b000000, // add
+      write = 0;
+
+//////////////////     INSTRUCTIONS DE CALCUL AVEC 2EME OPERANDE IMMEDIAT       /////////////////////
+
+  // calcul avec 2ème opérande immédiat -> tmp1 <- signext13(ir)
+  decode -> calc_imm
+    when
+      ir[31]*/ir[30]*ir[13]
+    outputs
+      oe_num[1..0] = 0b01,
+      areg[4..0] = 31,
+      breg[4..0] = 0,
+      dreg[4..0] = 21,
+      cmd_ual[5..0] = 0b100000, // signext13
+      write = 0;
+
+  // suite calcul immédiat: on effectue l'opération op3 entre rs1 et tmp1
+  calc_imm -> pcplus1
+    when
+      1
+    outputs
+      oe_num[1..0] = 0b01,
+      areg[4..0] = ir[18..14],
+      breg[4..0] = 21,
+      dreg[4..0] = ir[29..25],
+      cmd_ual[5..0] = ir[24..19], // op
+      write = 0;
+
+/////////////      LD/ST AVEC 2EME OPERANDE REGISTRE: EXTRACTION DE L'ADRESSE      //////////////
+
+  // tmp1 <- %rs1 + %rs2
+  decode -> addr
+    when
+      ir[31]*ir[30]*/ir[13]
+    outputs
+      oe_num[1..0] = 0b01,
+      areg[4..0] = ir[18..14],
+      breg[4..0] = ir[4..0],
+      dreg[4..0] = 21,
+      cmd_ual[5..0] = 0b000000, // add
+      write = 0;
+
+/////////////      LD/ST AVEC 2EME OPERANDE IMMEDIAT: EXTRACTION DE L'ADRESSE      //////////////
+
+  // tmp1 <- constante extraite de %ir
+  decode -> addr_imm
+    when
+      ir[31]*ir[30]*ir[13]
+    outputs
+      oe_num[1..0] = 0b01,
+      areg[4..0] = 31,
+      breg[4..0] = 0,
+      dreg[4..0] = 21,
+      cmd_ual[5..0] = 0b100000, // signext13
+      write = 0;
+
+  // tmp1 <- %rs1 + tmp1
+  addr_imm -> addr
+    when
+      1
+    outputs
+      oe_num[1..0] = 0b01,
+      areg[4..0] = ir[18..14],
+      breg[4..0] = 21,
+      dreg[4..0] = 21,
+      cmd_ual[5..0] = 0b000000, // add
+      write = 0;
+
+/////////////                 LD                   //////////////
+
+  // lecture en mémoire à l'adresse %r32
+  addr -> pcplus1
+    when
+      /ir[21]
+    outputs
+      oe_num[1..0] = 0b10, // mémoire prend le controle du bus D
+      areg[4..0] = 21,     // tmp1 sur bus d'adresses
+      breg[4..0] = 0,
+      dreg[4..0] =  ir[29..25],    // écriture dans rd
+      cmd_ual[5..0] = 0b000000, // opération neutre
+      write = 0;
+
+/////////////                 ST                   //////////////
+
+  // écriture de %rd à l'adresse tmp1
+  addr -> pcplus1
+    when
+      ir[21]
+    outputs
+      oe_num[1..0] = 0b01,
+      areg[4..0] = 21, // tmp1 sur le bus d'adresse
+      breg[4..0] = ir[29..25], // %rd sur le bus D par nopb
+      dreg[4..0] = 0,
+      cmd_ual[5..0] = 0b101000, // nopb
+      write = 1;
+
+///////////////////////////     INSTRUCTIONS DE BRANCHEMENT       ////////////////////////////////
+
+++	eq4(ir[28..25], 0b1000, ba);
+++	eq4(ir[28..25], 0b0001, be);
+++	eq4(ir[28..25], 0b1001, bne);
+++	eq4(ir[28..25], 0b0101, bcs);
+++	eq4(ir[28..25], 0b1101, bcc);
+++	eq4(ir[28..25], 0b0110, bneg);
+++	eq4(ir[28..25], 0b1110, bpos);
+++	eq4(ir[28..25], 0b1111, bvc);
+++	eq4(ir[28..25], 0b0111, bvs);
+++	eq4(ir[28..25], 0b1010, bg);
+++	eq4(ir[28..25], 0b1011, bge);
+++	eq4(ir[28..25], 0b0011, bl);
+++	eq4(ir[28..25], 0b0010, ble);
+++	eq4(ir[28..25], 0b1100, bgu);
+++	eq4(ir[28..25], 0b0100, bleu);
+
+++	brok = ba + be*Z + bne*/Z + bcs*C + bcc*/C + bneg*N + bpos*/N + bvc*/V + bvs*V +
+++		bg*/Z*N*V + bg*/Z*/N*/V +
+++		bge*N*V + bge*/N*/V +
+++		bl*N*/V + bl*/N*V +
+++		ble*Z + ble*N*/V + ble*/N*V +
+++		bgu*/Z*/C +
+++		bleu*Z + bleu*C;
+
+  // pas branchement: pc += 1
+  decode -> fetch
+    when
+      /ir[31]*/ir[30]*ir[29]*/brok
+    outputs
+      oe_num[1..0] = 0b01,
+      areg[4..0] = 30,
+      breg[4..0] = 20,
+      dreg[4..0] = 30,
+      cmd_ual[5..0] = 0b000000, // add
+      write = 0;
+
+  // branchement: tmp1 <- signext25(pc) (déplacement en nombre d'instructions)
+  decode -> branch
+    when
+      /ir[31]*/ir[30]*ir[29]*brok
+    outputs
+      oe_num[1..0] = 0b01,
+      areg[4..0] = 31,
+      breg[4..0] = 0,
+      dreg[4..0] = 21,
+      cmd_ual[5..0] = 0b100001,
+      write = 0;
+
+  // pc += tmp1
+  branch -> fetch
+    when
+      1
+    outputs
+      oe_num[1..0] = 0b01,
+      areg[4..0] = 30,
+      breg[4..0] = 21,
+      dreg[4..0] = 30,
+      cmd_ual[5..0] = 0b000000, // add
+      write = 0;
+
+///////////////////////////     SETHI       ////////////////////////////////
+
+  // sethi: rd <- sethi(ir)
+  decode -> pcplus1
+    when
+      /ir[31]*/ir[30]*/ir[29]
+    outputs
+      oe_num[1..0] = 0b01,
+      areg[4..0] = 31,
+      breg[4..0] = 0,
+      dreg[4..0] = ir[28..24],
+      cmd_ual[5..0] = 0b100011, // sethi
+      write = 0;
+
+///////////////////////////     GESTION DES INTERRUPTIONS       ////////////////////////////////
+
+  // prise en compte de l'IT: IT <- 0
+  fetch -> it1
+    when
+      run*/mon_req*/break*IT
+    outputs
+      oe_num[1..0] = 0b01,
+      areg[4..0] = 25,
+      breg[4..0] = 20,
+      dreg[4..0] = 25,
+      cmd_ual[5..0] = 0b000011, // xor avec 0b0001 -> inversion = mise à 0
+      write = 0;
+
+  // sp -= 1
+  it1 -> it2
+    when
+      1
+    outputs
+      oe_num[1..0] = 0b01,
+      areg[4..0] = 29,
+      breg[4..0] = 20,
+      dreg[4..0] = 29,
+      cmd_ual[5..0] = 0b000100, // sub
+      write = 0;
+
+  // (sp) <- pc
+  it2 -> it3
+    when
+      1
+    outputs
+      oe_num[1..0] = 0b01,
+      areg[4..0] = 29,
+      breg[4..0] = 30,
+      dreg[4..0] = 0,
+      cmd_ual[5..0] = 0b101000, // nopb
+      write = 1;
+
+  // sp -= 1
+  it3 -> it4
+    when
+      1
+    outputs
+      oe_num[1..0] = 0b01,
+      areg[4..0] = 29,
+      breg[4..0] = 20,
+      dreg[4..0] = 29,
+      cmd_ual[5..0] = 0b000100, // sub
+      write = 0;
+
+  // (sp) <- psr
+  it4 -> it5
+    when
+      1
+    outputs
+      oe_num[1..0] = 0b01,
+      areg[4..0] = 29,
+      breg[4..0] = 25,
+      dreg[4..0] = 0,
+      cmd_ual[5..0] = 0b101000, // nopb
+      write = 1;
+
+  // pc <- 1
+  it5 -> fetch
+    when
+      1
+    outputs
+      oe_num[1..0] = 0b01,
+      areg[4..0] = 0,
+      breg[4..0] = 20,
+      dreg[4..0] = 30,
+      cmd_ual[5..0] = 0b101000, // nopb
+      write = 0;
+
+///////////////////////////     RETI       ////////////////////////////////
+
+  // psr <- (sp)
+  decode -> reti1
+    when
+      /ir[31]*ir[30]
+    outputs
+      oe_num[1..0] = 0b10,
+      areg[4..0] = 29,
+      breg[4..0] = 0,
+      dreg[4..0] = 25,
+      cmd_ual[5..0] = 0b000000,
+      write = 0;
+
+  // sp += 1
+  reti1 -> reti2
+    when
+      1
+    outputs
+      oe_num[1..0] = 0b01,
+      areg[4..0] = 29,
+      breg[4..0] = 20,
+      dreg[4..0] = 29,
+      cmd_ual[5..0] = 0b000000,
+      write = 0;
+
+  // pc <- (sp)
+  reti2 -> reti3
+    when
+      1
+    outputs
+      oe_num[1..0] = 0b10,
+      areg[4..0] = 29,
+      breg[4..0] = 0,
+      dreg[4..0] = 30,
+      cmd_ual[5..0] = 0b000000,
+      write = 0;
+
+  // sp += 1
+  reti3 -> fetch
+    when
+      1
+    outputs
+      oe_num[1..0] = 0b01,
+      areg[4..0] = 29,
+      breg[4..0] = 20,
+      dreg[4..0] = 29,
+      cmd_ual[5..0] = 0b000000,
+      write = 0;

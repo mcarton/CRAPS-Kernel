@@ -1,0 +1,150 @@
+module registres(rst, clk, areg[4..0], breg[4..0], dreg[4..0], dbus[31..0],
+                 N_UAL, Z_UAL, V_UAL, C_UAL, setN, setZ, setVC, irq :
+                 abus[31..0], bbus[31..0], ir[31..0], break, N, Z, V, C, IT)
+  // decodeurs 5 vers 32
+  decoder5to32(areg[4..0]: asel[31..0]);
+  decoder5to32(breg[4..0]: bsel[31..0]);
+  decoder5to32(dreg[4..0]: dsel[31..0]);
+
+  ////////////////////////       registres banalisés       ///////////////////////
+
+  // %r1
+  reg32(rst, clk, dsel[1], dbus[31..0], r1[31..0]);
+  abus[31..0] = r1[31..0]:asel[1];
+  bbus[31..0] = r1[31..0]:bsel[1];
+  // %r2
+  reg32(rst, clk, dsel[2], dbus[31..0], r2[31..0]);
+  abus[31..0] = r2[31..0]:asel[2];
+  bbus[31..0] = r2[31..0]:bsel[2];
+  // %r3
+  reg32(rst, clk, dsel[3], dbus[31..0], r3[31..0]);
+  abus[31..0] = r3[31..0]:asel[3];
+  bbus[31..0] = r3[31..0]:bsel[3];
+  // %r4
+  reg32(rst, clk, dsel[4], dbus[31..0], r4[31..0]);
+  abus[31..0] = r4[31..0]:asel[4];
+  bbus[31..0] = r4[31..0]:bsel[4];
+  // %r5
+  reg32(rst, clk, dsel[5], dbus[31..0], r5[31..0]);
+  abus[31..0] = r5[31..0]:asel[5];
+  bbus[31..0] = r5[31..0]:bsel[5];
+  // %r6
+  reg32(rst, clk, dsel[6], dbus[31..0], r6[31..0]);
+  abus[31..0] = r6[31..0]:asel[6];
+  bbus[31..0] = r6[31..0]:bsel[6];
+  // %r7
+  reg32(rst, clk, dsel[7], dbus[31..0], r7[31..0]);
+  abus[31..0] = r7[31..0]:asel[7];
+  bbus[31..0] = r7[31..0]:bsel[7];
+  // %r8
+  reg32(rst, clk, dsel[8], dbus[31..0], r8[31..0]);
+  abus[31..0] = r8[31..0]:asel[8];
+  bbus[31..0] = r8[31..0]:bsel[8];
+  // %r9
+  reg32(rst, clk, dsel[9], dbus[31..0], r9[31..0]);
+  abus[31..0] = r9[31..0]:asel[9];
+  bbus[31..0] = r9[31..0]:bsel[9];
+
+
+  ////////////////////////     registres à valeurs constantes     ///////////////////////
+
+  // %r0 = 0
+  abus[31..0] = 0:asel[0];
+  bbus[31..0] = 0:bsel[0];
+  // %r20 = 1
+  abus[31..0] = 1:asel[20];
+  bbus[31..0] = 1:bsel[20];
+
+
+  ////////////////////////       registres système       ///////////////////////
+
+  // tmp1 = %r21
+  reg32(rst, clk, dsel[21], dbus[31..0], tmp1[31..0]);
+  abus[31..0] = tmp1[31..0]:asel[21];
+  bbus[31..0] = tmp1[31..0]:bsel[21];
+
+  // tmp2 = %r22
+  reg32(rst, clk, dsel[22], dbus[31..0], tmp2[31..0]);
+  abus[31..0] = tmp2[31..0]:asel[22];
+  bbus[31..0] = tmp2[31..0]:bsel[22];
+
+  // psr = %r25 = registre d'état (bits: IT(0), N(7), Z(6), V(5), C(4))
+
+  IT := DIT;
+  IT.clk = clk;
+  IT.rst = rst;
+  // on met IT à 1 en écrivant 1 dans %r25[0], ou en mettant irq à 1 lorsque IT=0
+  // on met IT à 0 en écrivant 0 dans %r25[0]
+  frontMontant(rst, clk, irq : irq1); // irq1: impulsion d'une période après la montée de irq
+  // irq1,dsel[25]: 00=IT, 01=dbus[0], 1X=1
+  // DIT = /irq1*/dsel[25]*IT + /irq1*dsel[25]*dbus[0] + irq1;
+  DIT = /dsel[25]*/IT*irq1 + /dsel[25]*IT + dsel[25]*dbus[0];
+  abus[0] = IT:asel[25];
+  bbus[0] = IT:bsel[25];
+
+  N := DN;
+  N.clk = clk;
+  N.rst = rst;
+  // setN,dsel[25]: 00=N, 01=dbus[7], 1X=N_UAL
+  DN = /setN*/dsel[25]*N + setN*N_UAL + dsel[25]*dbus[7];
+  //DN = /setN*/dsel[25]*N + /setN*dsel[25]*dbus[7] + setN*N_UAL;
+  abus[7] = N:asel[25];
+  bbus[7] = N:bsel[25];
+
+  Z := DZ;
+  Z.clk = clk;
+  Z.rst = rst;
+  DZ = setZ*Z_UAL + dsel[25]*dbus[6] + /setZ*/dsel[25]*Z;
+  //DZ = /setZ*/dsel[25]*Z + /setZ*dsel[25]*dbus[6] + setZ*Z_UAL;
+  abus[6] = Z:asel[25];
+  bbus[6] = Z:bsel[25];
+
+  V := DV;
+  V.clk = clk;
+  V.rst = rst;
+  DV = setVC*V_UAL + dsel[25]*dbus[5] + /setVC*/dsel[25]*V;
+  //DV = /setVC*/dsel[25]*V + /setVC*dsel[25]*dbus[5] + setVC*V_UAL;
+  abus[5] = V:asel[25];
+  bbus[5] = V:bsel[25];
+
+  C := DC;
+  C.clk = clk;
+  C.rst = rst;
+  DC = setVC*C_UAL + dsel[25]*dbus[4] + /setVC*/dsel[25]*C;
+  //DC = /setVC*/dsel[25]*C + /setVC*dsel[25]*dbus[4] + setVC*C_UAL;
+  abus[4] = C:asel[25];
+  bbus[4] = C:bsel[25];
+
+
+  // brk = %r26
+  reg32(rst, clk, dsel[26], dbus[31..0], brk[31..0]);
+  abus[31..0] = brk[31..0]:asel[26];
+  bbus[31..0] = brk[31..0]:bsel[26];
+  // break si brk=pc
+  eq32(brk[31..0], pc[31..0], break);
+
+  // fp = %r27
+  reg32(rst, clk, dsel[27], dbus[31..0], fp[31..0]);
+  abus[31..0] = fp[31..0]:asel[27];
+  bbus[31..0] = fp[31..0]:bsel[27];
+
+  // @ret = %r28
+  reg32(rst, clk, dsel[28], dbus[31..0], aret[31..0]);
+  abus[31..0] = aret[31..0]:asel[28];
+  bbus[31..0] = aret[31..0]:bsel[28];
+
+  // sp = %r29
+  reg32(rst, clk, dsel[29], dbus[31..0], sp[31..0]);
+  abus[31..0] = sp[31..0]:asel[29];
+  bbus[31..0] = sp[31..0]:bsel[29];
+
+  // pc = %r30
+  reg32(rst, clk, dsel[30], dbus[31..0], pc[31..0]);
+  abus[31..0] = pc[31..0]:asel[30];
+  bbus[31..0] = pc[31..0]:bsel[30];
+
+  // ir = %r31
+  reg32(rst, clk, dsel[31], dbus[31..0], ir[31..0]);
+  abus[31..0] = ir[31..0]:asel[31];
+  bbus[31..0] = ir[31..0]:bsel[31];
+end module

@@ -1,0 +1,11 @@
+module pwm(rst, clk, en, p[15..0], n[15..0], m)
+  count16Z(rst, clk, en, eqP : cnt[15..0], ripple);
+  ucmp16(cnt[15..0], p[15..0] : supP, eqP);
+  ucmp16(cnt[15..0], n[15..0] : supN, eqN);
+  
+  dm = supN;
+  m := dm;
+  m.clk = clk;
+  m.rst = rst;
+  m.ena = en;
+end module

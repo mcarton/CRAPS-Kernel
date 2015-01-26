@@ -1,0 +1,7 @@
+module ucmp4(a[3..0], b[3..0] : sup, equal)
+  sup = a[3]*/b[3] + eq[3]*sup2;
+  sup2 = a[2]*/b[2] + eq[2]*sup1;
+  sup1 = a[1]*/b[1] + eq[1]*a[0]*/b[0];
+  eq[3..0] = a[3..0]*b[3..0] + /a[3..0]*/b[3..0];
+  equal = eq[0]*eq[1]*eq[2]*eq[3];
+end module

@@ -1,0 +1,12 @@
+module segs7(rst, clk, ssgClk, en, selec, data[15..0] : anodes[3..0], ssegs[7..0])
+  wrSsgData = en*/selec;
+  reg16(rst, clk, wrSsgData, data[15..0], ssgData[15..0]);
+
+  wrSsgCtrl = en*selec;
+  reg4(rst, clk, wrSsgCtrl, data[3..0], enSsg[3..0]);
+
+  affmux(ssgData[15..0], enSsg[3..0], ssgClk, rst : nan[3..0], nssg[6..0]);
+  anodes[3..0] = /nan[3..0];
+  ssegs[6..0] = /nssg[6..0];
+  ssegs[7] = 1; // point décimal
+end module

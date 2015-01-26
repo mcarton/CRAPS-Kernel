@@ -1,0 +1,11 @@
+module frontMontant(rst, clk, e : strobe)
+  strobe = x*y;
+
+  x := e;
+  x.clk = clk;
+  x.rst = rst;
+
+  y := /x;
+  y.clk = clk;
+  y.rst = rst;
+end module

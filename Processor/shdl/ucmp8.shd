@@ -1,0 +1,6 @@
+module ucmp8(a[7..0], b[7..0] : sup, eq)
+  ucmp4(a[7..4], b[7..4] : supH, eqH);
+  ucmp4(a[3..0], b[3..0] : supL, eqL);
+  sup = supH + eqH*supL;
+  eq = eqH*eqL;
+end module
