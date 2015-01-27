@@ -1,0 +1,6 @@
+module encodeurpriorite8(e[7..0]: num[2..0], act)
+  num[2] = e[7] + e[6] + e[5] + e[4];
+  num[1] = e[7] + e[6] + /e[5]*/e[4]*e[3] + /e[5]*/e[4]*e[2];
+  num[0] = e[7] + /e[6]*e[5] + /e[6]*/e[4]*e[3] + /e[6]*/e[4]*/e[2]*e[1];
+  act = e[7] + e[6] + e[5] + e[4] + e[3] + e[2] + e[1] + e[0];
+end module

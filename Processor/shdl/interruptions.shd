@@ -1,0 +1,32 @@
+module interruptions(rst, clk, pwm_out, button[2..0], rst_int_id[3..0]: int_id[3..0], int_act)
+  // pwm_out : signal pwm
+  // button[2..0] : bouton de 1 à 4
+  // rst_int_id : ID de l'interruption à reset (dans le cas où on commence à la traiter dans le sequencer)
+  // int_id : ID de l'interruption de plus haut niveau de priorité en attente
+  // int_act : interruption active (en attente)
+
+  decoder4to16(rst_int_id[3..0], rst_int[15..0]);
+
+  // interruption pwm
+  frontMontant(rst, clk, pwm_out : int[1]);
+
+  // interruption button[0]
+  frontMontant(rst, clk, button[0] : int[2]);
+
+  // interruption button[1]
+  frontMontant(rst, clk, button[1] : int[3]);
+
+  // interruption button[2]
+  frontMontant(rst, clk, button[2] : int[4]);
+
+  // les interruptions non mappées sont mises à 0
+  int[0] = 0;
+  int[7..5] = 0;
+
+  int_mem[7..0] := /rst_int[7..0]*int_mem[7..0] + int[7..0]*/int_mem[7..0];
+  int_mem[7..0].rst = rst;
+  int_mem[7..0].clk = clk;
+
+  encodeurpriorite8(int_mem[7..0]: int_id[2..0], int_act);
+  int_id[3] = 0;
+end module
