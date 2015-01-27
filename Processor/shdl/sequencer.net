@@ -211,7 +211,7 @@ added_outputs: state[4..0], mon_ack
       cmd_ual[5..0] = 0b000000,
       write = 0;
 
-  step -> decode
+  step -> waitRamStep
     when
       /mon_req
     outputs
@@ -222,9 +222,21 @@ added_outputs: state[4..0], mon_ack
       cmd_ual[5..0] = 0b000000,
       write = 0;
 
+  waitRamStep -> decode
+    when
+      1
+    outputs
+      oe_num[1..0] = 0b10,
+      areg[4..0] = 30,
+      breg[4..0] = 0,
+      dreg[4..0] = 31,
+      cmd_ual[5..0] = 0b000000,
+      write = 0;
+
+
 //////////////////     FETCH       /////////////////////
 
-  fetch -> decode
+  fetch -> waitRamFetch
     when
       run*/mon_req*/break*/IT
     outputs
@@ -234,6 +246,18 @@ added_outputs: state[4..0], mon_ack
       dreg[4..0] = 31,
       cmd_ual[5..0] = 0b000000,
       write = 0;
+
+  waitRamFetch -> decode
+    when
+      1
+    outputs
+      oe_num[1..0] = 0b10,
+      areg[4..0] = 30,
+      breg[4..0] = 0,
+      dreg[4..0] = 31,
+      cmd_ual[5..0] = 0b000000,
+      write = 0;
+
 
 //////////////////     INSTRUCTIONS DE CALCUL AVEC 2EME OPERANDE REGISTRE       /////////////////////
 
@@ -330,7 +354,7 @@ added_outputs: state[4..0], mon_ack
 /////////////                 LD                   //////////////
 
   // lecture en mémoire à l'adresse %r32
-  addr -> pcplus1
+  addr -> waitRamAddr
     when
       /ir[21]
     outputs
@@ -340,6 +364,18 @@ added_outputs: state[4..0], mon_ack
       dreg[4..0] =  ir[29..25],    // écriture dans rd
       cmd_ual[5..0] = 0b000000, // opération neutre
       write = 0;
+
+ waitRamAddr -> pcplus1
+    when
+      1
+    outputs
+      oe_num[1..0] = 0b10, // mémoire prend le controle du bus D
+      areg[4..0] = 21,     // tmp1 sur bus d'adresses
+      breg[4..0] = 0,
+      dreg[4..0] =  ir[29..25],    // écriture dans rd
+      cmd_ual[5..0] = 0b000000, // opération neutre
+      write = 0;
+
 
 /////////////                 ST                   //////////////
 
@@ -508,7 +544,7 @@ added_outputs: state[4..0], mon_ack
 ///////////////////////////     RETI       ////////////////////////////////
 
   // psr <- (sp)
-  decode -> reti1
+  decode -> waitRamReti
     when
       /ir[31]*ir[30]
     outputs
@@ -518,6 +554,18 @@ added_outputs: state[4..0], mon_ack
       dreg[4..0] = 25,
       cmd_ual[5..0] = 0b000000,
       write = 0;
+
+waitRamReti -> reti1
+    when
+      1
+    outputs
+      oe_num[1..0] = 0b10,
+      areg[4..0] = 29,
+      breg[4..0] = 0,
+      dreg[4..0] = 25,
+      cmd_ual[5..0] = 0b000000,
+      write = 0;
+
 
   // sp += 1
   reti1 -> reti2
@@ -532,7 +580,18 @@ added_outputs: state[4..0], mon_ack
       write = 0;
 
   // pc <- (sp)
-  reti2 -> reti3
+  reti2 -> waitRamReti2
+    when
+      1
+    outputs
+      oe_num[1..0] = 0b10,
+      areg[4..0] = 29,
+      breg[4..0] = 0,
+      dreg[4..0] = 30,
+      cmd_ual[5..0] = 0b000000,
+      write = 0;
+
+  waitRamReti2 -> reti3
     when
       1
     outputs
