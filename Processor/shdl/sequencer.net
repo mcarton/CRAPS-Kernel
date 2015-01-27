@@ -555,7 +555,7 @@ added_outputs: state[4..0], mon_ack
       cmd_ual[5..0] = 0b000000,
       write = 0;
 
-waitRamReti -> reti1
+  waitRamReti -> reti1
     when
       1
     outputs
