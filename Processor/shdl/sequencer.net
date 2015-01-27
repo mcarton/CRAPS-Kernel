@@ -1,8 +1,8 @@
 module: sequencer
 reset: rst
 clock: clk
-inputs: mon_req, mon_cmd[3..0], monitor[37..0], break, run, ir[31..0], N, Z, V, C, IT
-outputs: write, oe_num[1..0], areg[4..0], breg[4..0], dreg[4..0], cmd_ual[5..0]
+inputs: mon_req, mon_cmd[3..0], monitor[37..0], break, run, ir[31..0], N, Z, V, C, curr_int[3..0], waiting_int[3..0]
+outputs: write, oe_num[1..0], areg[4..0], breg[4..0], dreg[4..0], cmd_ual[5..0], handle_int
 added_outputs: state[4..0], mon_ack
 
 ++	eq4(mon_cmd[3..0], 0b0000, memReadCmd);
@@ -20,6 +20,7 @@ added_outputs: state[4..0], mon_ack
 ++		is_memR1St*mon_req +
 ++		is_regR1St*mon_req +
 ++		is_regW1St*mon_req;
+++ ucmp4(waiting_int[3..0], curr_int[3..0], IT, IT_eq);
 
 ///////////////////////////     MONITEUR: MEMOIRE       ////////////////////////////////
 
@@ -34,6 +35,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 21,
       cmd_ual[5..0] = 0b000000,
+      handle_int = 0,
       write = 0;
 
   memW1St -> memW1St
@@ -45,6 +47,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 0,
       cmd_ual[5..0] = 0b000000,
+      handle_int = 0,
       write = 0;
 
   memW1St -> memW2St
@@ -56,6 +59,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 22,
       cmd_ual[5..0] = 0b000000,
+      handle_int = 0,
       write = 0;
 
   memW2St -> fetch
@@ -67,6 +71,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 22,
       dreg[4..0] = 0,
       cmd_ual[5..0] = 0b101000,
+      handle_int = 0,
       write = 1;
 
   // moniteur: lecture en mémoire
@@ -80,6 +85,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 21,
       cmd_ual[5..0] = 0b000000,
+      handle_int = 0,
       write = 0;
 
   memR1St -> memR1St
@@ -91,6 +97,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 0,
       cmd_ual[5..0] = 0b000000,
+      handle_int = 0,
       write = 0;
 
   memR1St -> fetch
@@ -102,6 +109,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 0,
       cmd_ual[5..0] = 0b000000,
+      handle_int = 0,
       write = 0;
 
 ///////////////////////////     MONITEUR: REGISTRES       ////////////////////////////////
@@ -117,6 +125,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = monitor[4..0],
       dreg[4..0] = 0,
       cmd_ual[5..0] = 0b101000,
+      handle_int = 0,
       write = 0;
 
   regR1St -> regR1St
@@ -128,6 +137,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = monitor[4..0],
       dreg[4..0] = 0,
       cmd_ual[5..0] = 0b101000,
+      handle_int = 0,
       write = 0;
 
   regR1St -> fetch
@@ -139,6 +149,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 0,
       cmd_ual[5..0] = 0b000000,
+      handle_int = 0,
       write = 0;
 
   // moniteur: écriture d'un registre
@@ -152,6 +163,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 0,
       cmd_ual[5..0] = 0b000000,
+      handle_int = 0,
       write = 0;
 
   regW1St -> regW1St
@@ -163,6 +175,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 0,
       cmd_ual[5..0] = 0b000000,
+      handle_int = 0,
       write = 0;
 
   regW1St -> fetch
@@ -174,6 +187,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = wdreg[4..0],
       cmd_ual[5..0] = 0b000000,
+      handle_int = 0,
       write = 0;
 
 ///////////////////////////     RUN / STEP / BREAK       ////////////////////////////////
@@ -187,6 +201,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 0,
       cmd_ual[5..0] = 0b000000,
+      handle_int = 0,
       write = 0;
 
   fetch -> step
@@ -198,6 +213,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 0,
       cmd_ual[5..0] = 0b000000,
+      handle_int = 0,
       write = 0;
 
   step -> step
@@ -209,6 +225,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 0,
       cmd_ual[5..0] = 0b000000,
+      handle_int = 0,
       write = 0;
 
   step -> waitRamStep
@@ -220,6 +237,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 31,
       cmd_ual[5..0] = 0b000000,
+      handle_int = 0,
       write = 0;
 
   waitRamStep -> decode
@@ -231,6 +249,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 31,
       cmd_ual[5..0] = 0b000000,
+      handle_int = 0,
       write = 0;
 
 
@@ -245,6 +264,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 31,
       cmd_ual[5..0] = 0b000000,
+      handle_int = 0,
       write = 0;
 
   waitRamFetch -> decode
@@ -256,6 +276,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 31,
       cmd_ual[5..0] = 0b000000,
+      handle_int = 0,
       write = 0;
 
 
@@ -271,6 +292,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = ir[4..0],
       dreg[4..0] = ir[29..25],
       cmd_ual[5..0] = ir[24..19], // op
+      handle_int = 0,
       write = 0;
 
   // ajoute 1 à pc
@@ -283,6 +305,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 20,
       dreg[4..0] = 30,
       cmd_ual[5..0] = 0b000000, // add
+      handle_int = 0,
       write = 0;
 
 //////////////////     INSTRUCTIONS DE CALCUL AVEC 2EME OPERANDE IMMEDIAT       /////////////////////
@@ -297,6 +320,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 21,
       cmd_ual[5..0] = 0b100000, // signext13
+      handle_int = 0,
       write = 0;
 
   // suite calcul immédiat: on effectue l'opération op3 entre rs1 et tmp1
@@ -309,6 +333,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 21,
       dreg[4..0] = ir[29..25],
       cmd_ual[5..0] = ir[24..19], // op
+      handle_int = 0,
       write = 0;
 
 /////////////      LD/ST AVEC 2EME OPERANDE REGISTRE: EXTRACTION DE L'ADRESSE      //////////////
@@ -323,6 +348,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = ir[4..0],
       dreg[4..0] = 21,
       cmd_ual[5..0] = 0b000000, // add
+      handle_int = 0,
       write = 0;
 
 /////////////      LD/ST AVEC 2EME OPERANDE IMMEDIAT: EXTRACTION DE L'ADRESSE      //////////////
@@ -337,6 +363,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 21,
       cmd_ual[5..0] = 0b100000, // signext13
+      handle_int = 0,
       write = 0;
 
   // tmp1 <- %rs1 + tmp1
@@ -349,6 +376,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 21,
       dreg[4..0] = 21,
       cmd_ual[5..0] = 0b000000, // add
+      handle_int = 0,
       write = 0;
 
 /////////////                 LD                   //////////////
@@ -363,6 +391,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] =  ir[29..25],    // écriture dans rd
       cmd_ual[5..0] = 0b000000, // opération neutre
+      handle_int = 0,
       write = 0;
 
  waitRamAddr -> pcplus1
@@ -374,6 +403,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] =  ir[29..25],    // écriture dans rd
       cmd_ual[5..0] = 0b000000, // opération neutre
+      handle_int = 0,
       write = 0;
 
 
@@ -389,6 +419,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = ir[29..25], // %rd sur le bus D par nopb
       dreg[4..0] = 0,
       cmd_ual[5..0] = 0b101000, // nopb
+      handle_int = 0,
       write = 1;
 
 ///////////////////////////     INSTRUCTIONS DE BRANCHEMENT       ////////////////////////////////
@@ -427,6 +458,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 20,
       dreg[4..0] = 30,
       cmd_ual[5..0] = 0b000000, // add
+      handle_int = 0,
       write = 0;
 
   // branchement: tmp1 <- signext25(pc) (déplacement en nombre d'instructions)
@@ -439,6 +471,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 21,
       cmd_ual[5..0] = 0b100001,
+      handle_int = 0,
       write = 0;
 
   // pc += tmp1
@@ -451,6 +484,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 21,
       dreg[4..0] = 30,
       cmd_ual[5..0] = 0b000000, // add
+      handle_int = 0,
       write = 0;
 
 ///////////////////////////     SETHI       ////////////////////////////////
@@ -465,36 +499,26 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = ir[28..24],
       cmd_ual[5..0] = 0b100011, // sethi
+      handle_int = 0,
       write = 0;
 
 ///////////////////////////     GESTION DES INTERRUPTIONS       ////////////////////////////////
 
-  // prise en compte de l'IT: IT <- 0
+  // prise en compte de l'IT: sp -= 1
   fetch -> it1
     when
       run*/mon_req*/break*IT
-    outputs
-      oe_num[1..0] = 0b01,
-      areg[4..0] = 25,
-      breg[4..0] = 20,
-      dreg[4..0] = 25,
-      cmd_ual[5..0] = 0b000011, // xor avec 0b0001 -> inversion = mise à 0
-      write = 0;
-
-  // sp -= 1
-  it1 -> it2
-    when
-      1
     outputs
       oe_num[1..0] = 0b01,
       areg[4..0] = 29,
       breg[4..0] = 20,
       dreg[4..0] = 29,
       cmd_ual[5..0] = 0b000100, // sub
+      handle_int = 0,
       write = 0;
 
   // (sp) <- pc
-  it2 -> it3
+  it1 -> it2
     when
       1
     outputs
@@ -503,10 +527,11 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 30,
       dreg[4..0] = 0,
       cmd_ual[5..0] = 0b101000, // nopb
+      handle_int = 0,
       write = 1;
 
   // sp -= 1
-  it3 -> it4
+  it2 -> it3
     when
       1
     outputs
@@ -515,10 +540,11 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 20,
       dreg[4..0] = 29,
       cmd_ual[5..0] = 0b000100, // sub
+      handle_int = 0,
       write = 0;
 
   // (sp) <- psr
-  it4 -> it5
+  it3 -> it4
     when
       1
     outputs
@@ -527,18 +553,58 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 25,
       dreg[4..0] = 0,
       cmd_ual[5..0] = 0b101000, // nopb
+      handle_int = 0,
       write = 1;
 
-  // pc <- 1
-  it5 -> fetch
+  // psr <- waiting_int (voir module registres et interruptions)
+  it4 -> it5
     when
       1
     outputs
       oe_num[1..0] = 0b01,
       areg[4..0] = 0,
-      breg[4..0] = 20,
+      breg[4..0] = 0,
+      dreg[4..0] = 0,
+      cmd_ual[5..0] = 0b000000,
+      handle_int = 1,
+      write = 0;
+
+  // tmp1 <- ID de l'interruption
+  it5 -> it6
+    when
+      1
+    outputs
+      oe_num[1..0] = 0b01,
+      areg[4..0] = 25,
+      breg[4..0] = 0,
+      dreg[4..0] = 21,
+      cmd_ual[5..0] = 0b100100, // and4
+      handle_int = 0,
+      write = 0;
+
+  // pc <- (tmp1)
+  it6 -> waitRamHandler
+    when
+      1
+    outputs
+      oe_num[1..0] = 0b10,
+      areg[4..0] = 21,
+      breg[4..0] = 0,
       dreg[4..0] = 30,
-      cmd_ual[5..0] = 0b101000, // nopb
+      cmd_ual[5..0] = 0b000000,
+      handle_int = 0,
+      write = 0;
+
+  waitRamHandler -> fetch
+    when
+      1
+    outputs
+      oe_num[1..0] = 0b10,
+      areg[4..0] = 21,
+      breg[4..0] = 0,
+      dreg[4..0] = 30,
+      cmd_ual[5..0] = 0b000000,
+      handle_int = 0,
       write = 0;
 
 ///////////////////////////     RETI       ////////////////////////////////
@@ -553,6 +619,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 25,
       cmd_ual[5..0] = 0b000000,
+      handle_int = 0,
       write = 0;
 
   waitRamReti -> reti1
@@ -564,6 +631,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 25,
       cmd_ual[5..0] = 0b000000,
+      handle_int = 0,
       write = 0;
 
 
@@ -577,6 +645,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 20,
       dreg[4..0] = 29,
       cmd_ual[5..0] = 0b000000,
+      handle_int = 0,
       write = 0;
 
   // pc <- (sp)
@@ -589,6 +658,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 30,
       cmd_ual[5..0] = 0b000000,
+      handle_int = 0,
       write = 0;
 
   waitRamReti2 -> reti3
@@ -600,6 +670,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 30,
       cmd_ual[5..0] = 0b000000,
+      handle_int = 0,
       write = 0;
 
   // sp += 1
@@ -612,4 +683,5 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 20,
       dreg[4..0] = 29,
       cmd_ual[5..0] = 0b000000,
+      handle_int = 0,
       write = 0;
