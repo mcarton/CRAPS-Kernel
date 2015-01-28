@@ -578,7 +578,7 @@ added_outputs: state[4..0], mon_ack
       areg[4..0] = 25,
       breg[4..0] = 0,
       dreg[4..0] = 21,
-      cmd_ual[5..0] = 0b100100, // and4
+      cmd_ual[5..0] = 0b100100, // and15
       handle_int = 0,
       write = 0;
 
