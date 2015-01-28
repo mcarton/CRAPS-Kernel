@@ -1,6 +1,6 @@
 all: ProjectCharter.pdf
 
-export TEXC = latexmk -latex=lualatex
+export TEXC = latexmk -lualatex
 
 .PHONY: FORCE
 
