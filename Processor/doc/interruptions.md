@@ -27,7 +27,7 @@ Note: button 0 is used for the reset.
 
 The identifier of the interruption act as a priority level.
 
-When an interruption is launched, the processor check if its priority level is
+When an interruption is launched, the processor checks if its priority level is
 strictly higher than the current interruption level (at the beginning, the
 interruption level is obviously 0). If not, the interruption is saved and will
 be launched again later. If so, the processor looks at the interruption table,
@@ -78,7 +78,7 @@ A priority encoder returns in `int_id` the ID of the interruption with the
 higher priority/ID.
 
 The `handle_int` bit, controlled by the sequencer, reset the *JK* latch
-corresponding to the higher interruption. It also set the register *psr*.
+corresponding to the higher interruption. It also sets the register *psr*.
 
 # Sequencer #
 
