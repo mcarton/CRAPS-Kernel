@@ -1,6 +1,6 @@
 module registres(rst, clk, areg[4..0], breg[4..0], dreg[4..0], dbus[31..0],
-                 N_UAL, Z_UAL, V_UAL, C_UAL, setN, setZ, setVC, irq :
-                 abus[31..0], bbus[31..0], ir[31..0], break, N, Z, V, C, IT)
+                 N_UAL, Z_UAL, V_UAL, C_UAL, setN, setZ, setVC, handle_int, waiting_int[3..0] :
+                 abus[31..0], bbus[31..0], ir[31..0], break, N, Z, V, C, IT[3..0])
   // decodeurs 5 vers 32
   decoder5to32(areg[4..0]: asel[31..0]);
   decoder5to32(breg[4..0]: bsel[31..0]);
@@ -68,19 +68,14 @@ module registres(rst, clk, areg[4..0], breg[4..0], dreg[4..0], dbus[31..0],
   abus[31..0] = tmp2[31..0]:asel[22];
   bbus[31..0] = tmp2[31..0]:bsel[22];
 
-  // psr = %r25 = registre d'état (bits: IT(0), N(7), Z(6), V(5), C(4))
+  // psr = %r25 = registre d'état (bits: IT(0..3), N(7), Z(6), V(5), C(4))
 
-  IT := DIT;
-  IT.clk = clk;
-  IT.rst = rst;
-  // on met IT à 1 en écrivant 1 dans %r25[0], ou en mettant irq à 1 lorsque IT=0
-  // on met IT à 0 en écrivant 0 dans %r25[0]
-  frontMontant(rst, clk, irq : irq1); // irq1: impulsion d'une période après la montée de irq
-  // irq1,dsel[25]: 00=IT, 01=dbus[0], 1X=1
-  // DIT = /irq1*/dsel[25]*IT + /irq1*dsel[25]*dbus[0] + irq1;
-  DIT = /dsel[25]*/IT*irq1 + /dsel[25]*IT + dsel[25]*dbus[0];
-  abus[0] = IT:asel[25];
-  bbus[0] = IT:bsel[25];
+  IT[3..0] := DIT[3..0];
+  IT[3..0].clk = clk;
+  IT[3..0].rst = rst;
+  DIT[3..0] = /dsel[25]*handle_int*waiting_int[3..0] + /dsel[25]*/handle_int*IT[3..0] + dsel[25]*/handle_int*dbus[3..0];
+  abus[3..0] = IT[3..0]:asel[25];
+  bbus[3..0] = IT[3..0]:bsel[25];
 
   N := DN;
   N.clk = clk;

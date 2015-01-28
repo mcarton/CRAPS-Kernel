@@ -1,6 +1,6 @@
-module micromachine(rst, clk, areg[4..0], breg[4..0], dreg[4..0], cmd_ual[5..0], oe_num[1..0], write,
-                    monitor[31..0], switch[7..0], swClk, ssgClk, pwmClk, irq :
-                    dbus[31..0], N, Z, V, C, ir[31..0], break, IT, leds[7..0], ssegs[7..0], anodes[3..0], pwm_out)
+module micromachine(rst, clk, areg[4..0], breg[4..0], dreg[4..0], cmd_ual[5..0], oe_num[1..0], write, handle_int,
+                    monitor[31..0], button[2..0], switch[7..0], swClk, ssgClk, pwmClk :
+                    dbus[31..0], N, Z, V, C, ir[31..0], break, curr_int[3..0], waiting_int[3..0], leds[7..0], ssegs[7..0], anodes[3..0], pwm_out)
   // Arbitrage bus
   decoder2to4(oe_num[1..0], oe[3..0]);
 
@@ -9,14 +9,17 @@ module micromachine(rst, clk, areg[4..0], breg[4..0], dreg[4..0], cmd_ual[5..0],
   dbus[31..0] = dbus_ual[31..0] : oe[1];
 
   // Registres
-  registres(rst, clk, areg[4..0],breg[4..0],dreg[4..0], dbus[31..0], dN, dZ, dV, dC, setN, setZ, setVC, irq : abus[31..0], bbus[31..0], ir[31..0], break, N, Z, V, C, IT);
+  registres(rst, clk, areg[4..0], breg[4..0], dreg[4..0], dbus[31..0], dN, dZ, dV, dC, setN, setZ, setVC, handle_int, waiting_int[3..0] : abus[31..0], bbus[31..0], ir[31..0], break, N, Z, V, C, curr_int[3..0]);
+
+  // Interruptions
+  interruptions(rst, clk, pwm_out, button[2..0], handle_int: waiting_int[3..0]);
 
   // Decodage des adresses
   decoder4to16(abus[31..28] : cs[15..0]);
 
-  // RAM 2K (512 mots de 32 bits)
+  // RAM 32K (8192 mots de 32 bits)
   wrRam = write*cs[0];
-  rams_asyn_read512x32(clk, wrRam, abus[8..0], dbus[31..0], dbus_ram[31..0]);
+  rams_read_through8192x32(clk, wrRam, abus[12..0], dbus[31..0], dbus_ram[31..0]) ;
   oe_ram = oe[2] * cs[0];
   dbus[31..0] = dbus_ram[31..0] : oe_ram;
 
