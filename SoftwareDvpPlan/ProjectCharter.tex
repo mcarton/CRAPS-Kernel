@@ -53,26 +53,33 @@
     of RAM that are built in, but that's clearly not enough.
 
     Another important
-    and time-consuming element will be to reuse the compiler we made last year
-    during a project, and adapt it to generate the CRAPS assembly. We will
+    and time-consuming element will be to adapt the compiler we made last year
+    during a project, to make it generate the CRAPS assembly. We will
     surely need to make other modifications to the compiler.
 
   \section{Method, Tools and Test Facilities}
+    \subsection{Method and Tools}
     A room and two FPGAs have been made available for us to work.
-
-    Tests are quite a though point, as our only facility of real test is to put
-    our code on the board and try it. That's why we want to proceed iteratively
-    and start with very basic things.
-
+    The operating system will be written in C, once we have a functional
+    compiler.
     At the end, we want to be able to run a few processes that will communicate
     with the user, and store data in permanent memory.
+
+     \subsection{Test Facilities}
+    Tests are quite a though point, as our only way to test is to put
+    our code on the board and try it. With the given software, it can not be
+    done automatically.
+    We will explore the feasibility to rewrite the monitor to be able to load
+    the assembly code with a command line, which would allow automatization, but
+    it could take too much time.
+    We will produce test code for the functionalities we choose to implement.
 
   \section{Software Team Organisation and Responsibilities}
     \begin{itemize}
       \item Korantin Auguste as \textit{developer}
-      \item Maxime Arthaud as \textit{developer}
+      \item Maxime Arthaud as \textit{tester}
       \item Martin Carton as \textit{project leader}
-      \item Étienne Lebrun as \textit{tester}
+      \item Étienne Lebrun as \textit{quality manager}
       \item Pierre-Louis Michel as \textit{tester}
     \end{itemize}
 
@@ -81,7 +88,7 @@
 
     Controls: meetings?
 
-    \afterpage{\input{gantt}}
+    %\afterpage{\input{gantt}}
 
   \section{Meetings and reporting}
     Two kinds of meetings are planned:
@@ -94,7 +101,7 @@
     Additionally we regularly meet to talk about the advancement of the project.
 
   \section{Management of actions}
-    A file with the actions (who did what and when has been created).
+    A file with the actions (listing who did what and when) has been created.
 
   \section{Management of risks}
     \begin{itemize}
@@ -106,12 +113,22 @@
     \end{itemize}
 
   \section{Management of change requests}
+    When a change request occurs from the client, we evaluate the additional
+    time it may take, in order to decide whether it can be incorporated to the
+    delivery and what would be the cost in terms of delay.
 
   \section{Quality and Configuration management}
     We have decided to use a version control system to record every document and
     all the source code produced. A Git repository has been created on
     Github\footnote{Github repository:
     \url{https://github.com/mcarton/CRAPS-Kernel}}.
+    It will contain:
+    \begin{itemize}
+      \item The source code of our project, for the processor as well as for the
+            operating system
+      \item The test code we produce according to the software test plan
+      \item The documentation, as described in the following section
+    \end{itemize}
 
   \section{Documentation}
     As the system will be modular and expected to be used by students, a
@@ -119,8 +136,18 @@
 
     \begin{itemize}
       \item User Manual
-      \item modified CRAPS
+      \item Modifications of the CRAPS processor
+      \item This present Software Development Plan
+      \item The specifications
+      \item The test plan and test reports
     \end{itemize}
+
+    \section{Deliveries}
+      The software will be delivered in several iterations, described in the
+      specifications. Each delivery will be accompanied by the corresponding
+      documentation.
+      Delivery dates:
+        TODO
 
   \newpage
   \begin{appendix}
