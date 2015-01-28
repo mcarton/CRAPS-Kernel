@@ -1,0 +1,48 @@
+\documentclass{article}
+
+\usepackage{afterpage}
+\usepackage{fontspec}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{lscape}
+\usepackage{pgfgantt}
+\usepackage{siunitx}
+\usepackage{titling}
+
+\title{CRAPS Kernel Specifications}
+\author{
+       Maxime Arthaud
+  \and Korantin Auguste
+  \and Martin Carton
+  \and Étienne Lebrun
+  \and Pierre-Louis Michel
+}
+
+\begin{document}
+  \include{titlepage}
+  \newpage
+
+  \section{Specifications}
+
+    \begin{enumerate}
+    \item Improvement of the processor
+        \begin{enumerate}
+        \item The processor should support at least 32 kB of RAM. The RAM should be accessed in a fast way, but the loss of a few (less than 10) cycles is acceptable.
+        \item The processor should support the I/O needed to read/write from/to permanent storage (SD card or persistent internal memory)
+        \item The processor should support a serial port that can be opened for communicating with another device (like a computer). It will use the RS232 port on the FPGA.
+        \end{enumerate}
+    \item Compiler
+        \begin{enumerate}
+        \item The compiler should support a langage similar as C89, allowing us to easily develop the operating system.
+        \item The compiler should generate valid CRAPS assembly.
+        \end{enumerate}
+    \item Development of the OS
+        \begin{enumerate}
+        \item The OS should have a scheduler. There are no real-time constraint (but it should switch regularly, at least 10 times per second). It should support at least 10 hard-coded tasks.
+        \item The OS should have a task making a led blink and showing that it is working and that the scheduler runs.
+        \item The OS should have another task communicating with the user, in the form of a VERY simple shell. At the end, this mini-shell will allow writing and reading to permanent storage.
+        \item The OS should have a few functions available to any program : at least a "malloc" to allocate dynamic memory, and an API to read/write to the serial port and to permanent storage.
+        \end{enumerate}
+    \end{enumerate}
+
+\end{document}
