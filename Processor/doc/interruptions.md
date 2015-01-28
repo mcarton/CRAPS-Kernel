@@ -54,3 +54,31 @@ If an interruption with a lower priority is received, the corresponding interrup
 after the current one.
 If an interruption with a higher priority is received, the handler will be launched directly, and we will
 come back to the current handler after.
+
+
+The interruption system in deep
+-------------------------------
+
+# Interruptions module #
+
+The processor has an `interruptions` component responsible for saving interruptions:
+`module interruptions(rst, clk, pwm_out, button[2..0], handle_int: int_id[3..0])`
+
+This module has a JK latch for each interruption. The J signal is a rising edge of the source of the
+interruption (pwm_out for int 1, button[0] for int 2, and so on…).
+
+A priority encoder returns in `int_id` the ID of the interruption with the higher priority/ID.
+
+The handle_int bit, controlled by the sequencer, reset the JK latch corresponding to the higher interruption.
+It also set the register psr.
+
+# Sequencer #
+
+At the beginning of each fetch state, the sequencer checks if the interruptions module has a waiting interruption
+with a higher level that the current level. If so, it starts the interruption handle procedure.
+
+Firstly, it pushes pc and psr (containing the actual flags) on the stack.
+After that, it sets the handle_int bit to 1, so that the interruptions module reset the JK latch of the interruption, and update the register psr.
+Finally, it reads the interruption table and sets pc to the position of the interruption handler.
+
+The reti command just pops psr and pc from the stack, so that the flags before the interruption are restored.
