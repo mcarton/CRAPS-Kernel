@@ -50,26 +50,30 @@
     goal is to have a very simple functional OS.  We will also have to improve
     the CPU to make it support our OS. Specifically we know we will have to
     support the RAM chips that are on the FPGA: currently, we have \SI{2}{kB}
-    of RAM that are built in, but that's clearly not enough. Another important
+    of RAM that are built in, but that's clearly not enough.
+
+    Another important
     and time-consuming element will be to reuse the compiler we made last year
     during a project, and adapt it to generate the CRAPS assembly. We will
     surely need to make other modifications to the compiler.
 
-  \section{Method, Tools and Test Means}
-    Tests are quite a though point, as our only mean of real test is to put our
-    code on the board and try it. That's why we want to proceed iteratively and
-    start with very basic things.
+  \section{Method, Tools and Test Facilities}
+    A room and two FPGAs have been made available for us to work.
+
+    Tests are quite a though point, as our only facility of real test is to put
+    our code on the board and try it. That's why we want to proceed iteratively
+    and start with very basic things.
 
     At the end, we want to be able to run a few processes that will communicate
-    to the user, and store data in permanent memory.
+    with the user, and store data in permanent memory.
 
   \section{Software Team Organisation and Responsibilities}
     \begin{itemize}
+      \item Korantin Auguste as \textit{developer}
+      \item Maxime Arthaud as \textit{developer}
       \item Martin Carton as \textit{project leader}
-      \item Korantin Auguste
-      \item Maxime Arthaud
-      \item Étienne Lebrun
-      \item Pierre-Louis Michel
+      \item Étienne Lebrun as \textit{tester}
+      \item Pierre-Louis Michel as \textit{tester}
     \end{itemize}
 
   \section{Project Monitoring and Controls}
@@ -80,16 +84,22 @@
     \afterpage{\input{gantt}}
 
   \section{Meetings and reporting}
-    A meeting with the client will be planned once a week. A meeting with the
-    industrial supervisor is also planned once a week.
+    Two kinds of meetings are planned:
+    \begin{itemize}
+        \item a meeting once a week with the client;
+        \item a meeting once a week with the industrial supervisor.
+    \end{itemize}
+    Minutes of these meetings are available is the repository.
+
+    Additionally we regularly meet to talk about the advancement of the project.
 
   \section{Management of actions}
-    A file with the actions (who did what and when as be created).
+    A file with the actions (who did what and when has been created).
 
   \section{Management of risks}
     \begin{itemize}
       \item A FPGA can be damaged, making any test impossible. This is likely to
-          happen but we have two FPGA and the possibility to have more in case
+          happen but we have two FPGAs and the possibility to have more in case
           of problem.
       \item We may not be able to integrate the RAM, leading to huge memory
           limitations that may make the project impossible
@@ -98,7 +108,10 @@
   \section{Management of change requests}
 
   \section{Quality and Configuration management}
-    Use of a version control system: a Git repository on Github.
+    We have decided to use a version control system to record every document and
+    all the source code produced. A Git repository has been created on
+    Github\footnote{Github repository:
+    \url{https://github.com/mcarton/CRAPS-Kernel}}.
 
   \section{Documentation}
     As the system will be modular and expected to be used by students, a
@@ -115,16 +128,20 @@
       \begin{itemize}
         \item Improvement of the processor
           \begin{itemize}
-            \item support of the RAM chip on the FPGA to have more than
-              \SI{2}{kB} of memory.
-            \item support of the I/O we need for the permanent storage
-            \item support of a serial port or any other peripheral to
-              communicate with the user
+            \item the FPGA shall have access to the RAM to have more than
+              \SI{2}{kB} of memory
+            \item the FPGA shall be able to use the \textit{RS-232} serial port
+              to communicate with the user
+            \item the FPGA shall have a permanent storage, such as flash memory
           \end{itemize}
         \item Compiler
           \begin{itemize}
-            \item CRAPS assembly backend
-            \item make the source language as much similar as C
+            \item the compiler shall have a CRAPS backend
+            \item the language shall be more similar to C
+              \begin{itemize}
+                \item operators shall have the same priority
+                \item users should be able to use arrays
+              \end{itemize}
           \end{itemize}
           \item Development of the OS
             \begin{itemize}
