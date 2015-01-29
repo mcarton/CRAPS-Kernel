@@ -1,0 +1,151 @@
+set	rst	1
+wait	1
+set	rst	0
+wait	1
+expect int_id[3]    0
+expect int_id[2]    0
+expect int_id[1]    0
+expect int_id[0]    0
+set pwm_out 1
+wait    1
+set	clk	1
+wait	1
+set	clk	0
+wait	1
+expect int_id[3]    0
+expect int_id[2]    0
+expect int_id[1]    0
+expect int_id[0]    0
+set pwm_out 0
+wait    1
+set	clk	1
+wait	1
+set	clk	0
+wait	1
+expect int_id[3]    0
+expect int_id[2]    0
+expect int_id[1]    0
+expect int_id[0]    1
+set handle_int  1
+wait    1
+set	clk	1
+wait	1
+set	clk	0
+wait	1
+expect int_id[3]    0
+expect int_id[2]    0
+expect int_id[1]    0
+expect int_id[0]    0
+set handle_int  0
+wait    1
+set button[0]   1
+wait    1
+set	clk	1
+wait	1
+set	clk	0
+wait	1
+expect int_id[3]    0
+expect int_id[2]    0
+expect int_id[1]    0
+expect int_id[0]    0
+wait    1
+set	clk	1
+wait	1
+set	clk	0
+wait	1
+expect int_id[3]    0
+expect int_id[2]    0
+expect int_id[1]    1
+expect int_id[0]    0
+set button[1]   1
+wait    1
+set	clk	1
+wait	1
+set	clk	0
+wait	1
+expect int_id[3]    0
+expect int_id[2]    0
+expect int_id[1]    1
+expect int_id[0]    0
+set button[1]   0
+wait    1
+set	clk	1
+wait	1
+set	clk	0
+wait	1
+expect int_id[3]    0
+expect int_id[2]    0
+expect int_id[1]    1
+expect int_id[0]    1
+set handle_int  1
+wait    1
+set	clk	1
+wait	1
+set	clk	0
+wait	1
+expect int_id[3]    0
+expect int_id[2]    0
+expect int_id[1]    1
+expect int_id[0]    0
+set handle_int  0
+wait    1
+set	clk	1
+wait	1
+set	clk	0
+wait	1
+expect int_id[3]    0
+expect int_id[2]    0
+expect int_id[1]    1
+expect int_id[0]    0
+set button[0]   0
+wait    1
+set button[2]   1
+wait    1
+set	clk	1
+wait	1
+set	clk	0
+wait	1
+expect int_id[3]    0
+expect int_id[2]    0
+expect int_id[1]    1
+expect int_id[0]    0
+set button[2]   0
+wait    1
+set	clk	1
+wait	1
+set	clk	0
+wait	1
+expect int_id[3]    0
+expect int_id[2]    1
+expect int_id[1]    0
+expect int_id[0]    0
+set handle_int  1
+wait    1
+set	clk	1
+wait	1
+set	clk	0
+wait	1
+expect int_id[3]    0
+expect int_id[2]    0
+expect int_id[1]    1
+expect int_id[0]    0
+set handle_int  0
+wait    1
+set	clk	1
+wait	1
+set	clk	0
+wait	1
+expect int_id[3]    0
+expect int_id[2]    0
+expect int_id[1]    1
+expect int_id[0]    0
+set handle_int  1
+wait    1
+set	clk	1
+wait	1
+set	clk	0
+wait	1
+expect int_id[3]    0
+expect int_id[2]    0
+expect int_id[1]    0
+expect int_id[0]    0
