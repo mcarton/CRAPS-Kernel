@@ -1,0 +1,575 @@
+set	rst	1
+wait	1
+set	rst	0
+wait	1
+// reset
+expect	leds[7]	0
+expect	leds[6]	0
+expect	leds[5]	0
+expect	leds[4]	0
+expect	leds[3]	0
+expect	leds[2]	0
+expect	leds[1]	0
+expect	leds[0]	0
+expect	break	1
+expect	ir[31]	0
+expect	ir[30]	0
+expect	ir[29]	0
+expect	ir[28]	0
+expect	ir[27]	0
+expect	ir[26]	0
+expect	ir[25]	0
+expect	ir[24]	0
+expect	ir[23]	0
+expect	ir[22]	0
+expect	ir[21]	0
+expect	ir[20]	0
+expect	ir[19]	0
+expect	ir[18]	0
+expect	ir[17]	0
+expect	ir[16]	0
+expect	ir[15]	0
+expect	ir[14]	0
+expect	ir[13]	0
+expect	ir[12]	0
+expect	ir[11]	0
+expect	ir[10]	0
+expect	ir[9]	0
+expect	ir[8]	0
+expect	ir[7]	0
+expect	ir[6]	0
+expect	ir[5]	0
+expect	ir[4]	0
+expect	ir[3]	0
+expect	ir[2]	0
+expect	ir[1]	0
+expect	ir[0]	0
+expect	c	0
+expect	v	0
+expect	z	0
+expect	n	0
+expect	dbus[31]	1
+expect	dbus[30]	1
+expect	dbus[29]	1
+expect	dbus[28]	1
+expect	dbus[27]	1
+expect	dbus[26]	1
+expect	dbus[25]	1
+expect	dbus[24]	1
+expect	dbus[23]	1
+expect	dbus[22]	1
+expect	dbus[21]	1
+expect	dbus[20]	1
+expect	dbus[19]	1
+expect	dbus[18]	1
+expect	dbus[17]	1
+expect	dbus[16]	1
+expect	dbus[15]	1
+expect	dbus[14]	1
+expect	dbus[13]	1
+expect	dbus[12]	1
+expect	dbus[11]	1
+expect	dbus[10]	1
+expect	dbus[9]	1
+expect	dbus[8]	1
+expect	dbus[7]	1
+expect	dbus[6]	1
+expect	dbus[5]	1
+expect	dbus[4]	1
+expect	dbus[3]	1
+expect	dbus[2]	1
+expect	dbus[1]	1
+expect	dbus[0]	1
+// monitor
+set	oe_num[1]	1
+wait	1
+set	oe_num[0]	1
+wait	1
+set	monitor[0]	1
+wait	1
+set	monitor[1]	1
+wait	1
+set	monitor[2]	1
+wait	1
+set	monitor[3]	1
+wait	1
+expect	leds[7]	0
+expect	leds[6]	0
+expect	leds[5]	0
+expect	leds[4]	0
+expect	leds[3]	0
+expect	leds[2]	0
+expect	leds[1]	0
+expect	leds[0]	0
+expect	break	1
+expect	ir[31]	0
+expect	ir[30]	0
+expect	ir[29]	0
+expect	ir[28]	0
+expect	ir[27]	0
+expect	ir[26]	0
+expect	ir[25]	0
+expect	ir[24]	0
+expect	ir[23]	0
+expect	ir[22]	0
+expect	ir[21]	0
+expect	ir[20]	0
+expect	ir[19]	0
+expect	ir[18]	0
+expect	ir[17]	0
+expect	ir[16]	0
+expect	ir[15]	0
+expect	ir[14]	0
+expect	ir[13]	0
+expect	ir[12]	0
+expect	ir[11]	0
+expect	ir[10]	0
+expect	ir[9]	0
+expect	ir[8]	0
+expect	ir[7]	0
+expect	ir[6]	0
+expect	ir[5]	0
+expect	ir[4]	0
+expect	ir[3]	0
+expect	ir[2]	0
+expect	ir[1]	0
+expect	ir[0]	0
+expect	c	0
+expect	v	0
+expect	z	0
+expect	n	0
+expect	dbus[31]	0
+expect	dbus[30]	0
+expect	dbus[29]	0
+expect	dbus[28]	0
+expect	dbus[27]	0
+expect	dbus[26]	0
+expect	dbus[25]	0
+expect	dbus[24]	0
+expect	dbus[23]	0
+expect	dbus[22]	0
+expect	dbus[21]	0
+expect	dbus[20]	0
+expect	dbus[19]	0
+expect	dbus[18]	0
+expect	dbus[17]	0
+expect	dbus[16]	0
+expect	dbus[15]	0
+expect	dbus[14]	0
+expect	dbus[13]	0
+expect	dbus[12]	0
+expect	dbus[11]	0
+expect	dbus[10]	0
+expect	dbus[9]	0
+expect	dbus[8]	0
+expect	dbus[7]	0
+expect	dbus[6]	0
+expect	dbus[5]	0
+expect	dbus[4]	0
+expect	dbus[3]	1
+expect	dbus[2]	1
+expect	dbus[1]	1
+expect	dbus[0]	1
+// ecriture dans un registre
+set	dreg[0]	1
+wait	1
+set	clk	1
+wait	1
+set	clk	0
+wait	1
+set	monitor[3]	0
+wait	1
+set	monitor[2]	0
+wait	1
+set	monitor[1]	0
+wait	1
+set	monitor[0]	0
+wait	1
+set	oe_num[1]	0
+wait	1
+set	areg[0]	1
+wait	1
+expect	leds[7]	0
+expect	leds[6]	0
+expect	leds[5]	0
+expect	leds[4]	0
+expect	leds[3]	0
+expect	leds[2]	0
+expect	leds[1]	0
+expect	leds[0]	0
+expect	break	1
+expect	ir[31]	0
+expect	ir[30]	0
+expect	ir[29]	0
+expect	ir[28]	0
+expect	ir[27]	0
+expect	ir[26]	0
+expect	ir[25]	0
+expect	ir[24]	0
+expect	ir[23]	0
+expect	ir[22]	0
+expect	ir[21]	0
+expect	ir[20]	0
+expect	ir[19]	0
+expect	ir[18]	0
+expect	ir[17]	0
+expect	ir[16]	0
+expect	ir[15]	0
+expect	ir[14]	0
+expect	ir[13]	0
+expect	ir[12]	0
+expect	ir[11]	0
+expect	ir[10]	0
+expect	ir[9]	0
+expect	ir[8]	0
+expect	ir[7]	0
+expect	ir[6]	0
+expect	ir[5]	0
+expect	ir[4]	0
+expect	ir[3]	0
+expect	ir[2]	0
+expect	ir[1]	0
+expect	ir[0]	0
+expect	c	0
+expect	v	0
+expect	z	0
+expect	n	0
+expect	dbus[31]	0
+expect	dbus[30]	0
+expect	dbus[29]	0
+expect	dbus[28]	0
+expect	dbus[27]	0
+expect	dbus[26]	0
+expect	dbus[25]	0
+expect	dbus[24]	0
+expect	dbus[23]	0
+expect	dbus[22]	0
+expect	dbus[21]	0
+expect	dbus[20]	0
+expect	dbus[19]	0
+expect	dbus[18]	0
+expect	dbus[17]	0
+expect	dbus[16]	0
+expect	dbus[15]	0
+expect	dbus[14]	0
+expect	dbus[13]	0
+expect	dbus[12]	0
+expect	dbus[11]	0
+expect	dbus[10]	0
+expect	dbus[9]	0
+expect	dbus[8]	0
+expect	dbus[7]	0
+expect	dbus[6]	0
+expect	dbus[5]	0
+expect	dbus[4]	0
+expect	dbus[3]	1
+expect	dbus[2]	1
+expect	dbus[1]	1
+expect	dbus[0]	1
+// ecriture en memoire a l'adresse 15
+set	monitor[0]	1
+wait	1
+set	monitor[2]	1
+wait	1
+set	monitor[4]	1
+wait	1
+set	monitor[6]	1
+wait	1
+set	oe_num[1]	1
+wait	1
+set	dreg[0]	0
+wait	1
+set	write	1
+wait	1
+set	clk	1
+wait	1
+set	clk	0
+wait	1
+// relecture en memoire
+set	oe_num[0]	0
+wait	1
+set	monitor[6]	0
+wait	1
+set	monitor[4]	0
+wait	1
+set	monitor[2]	0
+wait	1
+set	monitor[0]	0
+wait	1
+set	write	0
+wait	1
+expect	leds[7]	0
+expect	leds[6]	0
+expect	leds[5]	0
+expect	leds[4]	0
+expect	leds[3]	0
+expect	leds[2]	0
+expect	leds[1]	0
+expect	leds[0]	0
+expect	break	1
+expect	ir[31]	0
+expect	ir[30]	0
+expect	ir[29]	0
+expect	ir[28]	0
+expect	ir[27]	0
+expect	ir[26]	0
+expect	ir[25]	0
+expect	ir[24]	0
+expect	ir[23]	0
+expect	ir[22]	0
+expect	ir[21]	0
+expect	ir[20]	0
+expect	ir[19]	0
+expect	ir[18]	0
+expect	ir[17]	0
+expect	ir[16]	0
+expect	ir[15]	0
+expect	ir[14]	0
+expect	ir[13]	0
+expect	ir[12]	0
+expect	ir[11]	0
+expect	ir[10]	0
+expect	ir[9]	0
+expect	ir[8]	0
+expect	ir[7]	0
+expect	ir[6]	0
+expect	ir[5]	0
+expect	ir[4]	0
+expect	ir[3]	0
+expect	ir[2]	0
+expect	ir[1]	0
+expect	ir[0]	0
+expect	c	0
+expect	v	0
+expect	z	0
+expect	n	0
+expect	dbus[31]	0
+expect	dbus[30]	0
+expect	dbus[29]	0
+expect	dbus[28]	0
+expect	dbus[27]	0
+expect	dbus[26]	0
+expect	dbus[25]	0
+expect	dbus[24]	0
+expect	dbus[23]	0
+expect	dbus[22]	0
+expect	dbus[21]	0
+expect	dbus[20]	0
+expect	dbus[19]	0
+expect	dbus[18]	0
+expect	dbus[17]	0
+expect	dbus[16]	0
+expect	dbus[15]	0
+expect	dbus[14]	0
+expect	dbus[13]	0
+expect	dbus[12]	0
+expect	dbus[11]	0
+expect	dbus[10]	0
+expect	dbus[9]	0
+expect	dbus[8]	0
+expect	dbus[7]	0
+expect	dbus[6]	1
+expect	dbus[5]	0
+expect	dbus[4]	1
+expect	dbus[3]	0
+expect	dbus[2]	1
+expect	dbus[1]	0
+expect	dbus[0]	1
+// lecture etat des switches
+set	switch[1]	1
+wait	1
+set	switch[3]	1
+wait	1
+set	switch[5]	1
+wait	1
+set	switch[7]	1
+wait	1
+set	swclk	1
+wait	1
+set	swclk	0
+wait	1
+set	oe_num[0]	1
+wait	1
+set	monitor[31]	1
+wait	1
+set	monitor[28]	1
+wait	1
+set	dreg[0]	1
+wait	1
+set	clk	1
+wait	1
+set	clk	0
+wait	1
+set	dreg[0]	0
+wait	1
+set	oe_num[0]	0
+wait	1
+expect	leds[7]	0
+expect	leds[6]	0
+expect	leds[5]	0
+expect	leds[4]	0
+expect	leds[3]	0
+expect	leds[2]	0
+expect	leds[1]	0
+expect	leds[0]	0
+expect	break	1
+expect	ir[31]	0
+expect	ir[30]	0
+expect	ir[29]	0
+expect	ir[28]	0
+expect	ir[27]	0
+expect	ir[26]	0
+expect	ir[25]	0
+expect	ir[24]	0
+expect	ir[23]	0
+expect	ir[22]	0
+expect	ir[21]	0
+expect	ir[20]	0
+expect	ir[19]	0
+expect	ir[18]	0
+expect	ir[17]	0
+expect	ir[16]	0
+expect	ir[15]	0
+expect	ir[14]	0
+expect	ir[13]	0
+expect	ir[12]	0
+expect	ir[11]	0
+expect	ir[10]	0
+expect	ir[9]	0
+expect	ir[8]	0
+expect	ir[7]	0
+expect	ir[6]	0
+expect	ir[5]	0
+expect	ir[4]	0
+expect	ir[3]	0
+expect	ir[2]	0
+expect	ir[1]	0
+expect	ir[0]	0
+expect	c	0
+expect	v	0
+expect	z	0
+expect	n	0
+expect	dbus[7]	1
+expect	dbus[6]	0
+expect	dbus[5]	1
+expect	dbus[4]	0
+expect	dbus[3]	1
+expect	dbus[2]	0
+expect	dbus[1]	1
+expect	dbus[0]	0
+// ecriture sur les leds
+set	monitor[29]	1
+wait	1
+set	dreg[0]	1
+wait	1
+set	oe_num[0]	1
+wait	1
+set	clk	1
+wait	1
+set	clk	0
+wait	1
+set	dreg[0]	0
+wait	1
+set	oe_num[0]	0
+wait	1
+set	oe_num[1]	0
+wait	1
+set	oe_num[0]	1
+wait	1
+set	monitor[31]	0
+wait	1
+set	monitor[29]	0
+wait	1
+set	monitor[28]	0
+wait	1
+set	monitor[6]	1
+wait	1
+set	monitor[5]	1
+wait	1
+set	monitor[4]	1
+wait	1
+set	oe_num[1]	1
+wait	1
+set	write	1
+wait	1
+set	clk	1
+wait	1
+set	clk	0
+wait	1
+expect	leds[7]	0
+expect	leds[6]	1
+expect	leds[5]	1
+expect	leds[4]	1
+expect	leds[3]	0
+expect	leds[2]	0
+expect	leds[1]	0
+expect	leds[0]	0
+expect	break	1
+expect	ir[31]	0
+expect	ir[30]	0
+expect	ir[29]	0
+expect	ir[28]	0
+expect	ir[27]	0
+expect	ir[26]	0
+expect	ir[25]	0
+expect	ir[24]	0
+expect	ir[23]	0
+expect	ir[22]	0
+expect	ir[21]	0
+expect	ir[20]	0
+expect	ir[19]	0
+expect	ir[18]	0
+expect	ir[17]	0
+expect	ir[16]	0
+expect	ir[15]	0
+expect	ir[14]	0
+expect	ir[13]	0
+expect	ir[12]	0
+expect	ir[11]	0
+expect	ir[10]	0
+expect	ir[9]	0
+expect	ir[8]	0
+expect	ir[7]	0
+expect	ir[6]	0
+expect	ir[5]	0
+expect	ir[4]	0
+expect	ir[3]	0
+expect	ir[2]	0
+expect	ir[1]	0
+expect	ir[0]	0
+expect	c	0
+expect	v	0
+expect	z	0
+expect	n	0
+expect	dbus[31]	0
+expect	dbus[30]	0
+expect	dbus[29]	0
+expect	dbus[28]	0
+expect	dbus[27]	0
+expect	dbus[26]	0
+expect	dbus[25]	0
+expect	dbus[24]	0
+expect	dbus[23]	0
+expect	dbus[22]	0
+expect	dbus[21]	0
+expect	dbus[20]	0
+expect	dbus[19]	0
+expect	dbus[18]	0
+expect	dbus[17]	0
+expect	dbus[16]	0
+expect	dbus[15]	0
+expect	dbus[14]	0
+expect	dbus[13]	0
+expect	dbus[12]	0
+expect	dbus[11]	0
+expect	dbus[10]	0
+expect	dbus[9]	0
+expect	dbus[8]	0
+expect	dbus[7]	0
+expect	dbus[6]	1
+expect	dbus[5]	1
+expect	dbus[4]	1
+expect	dbus[3]	0
+expect	dbus[2]	0
+expect	dbus[1]	0
+expect	dbus[0]	0
