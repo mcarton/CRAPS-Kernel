@@ -80,33 +80,28 @@ module registres(rst, clk, areg[4..0], breg[4..0], dreg[4..0], dbus[31..0],
   N := DN;
   N.clk = clk;
   N.rst = rst;
-  // setN,dsel[25]: 00=N, 01=dbus[7], 1X=N_UAL
   DN = /setN*/dsel[25]*N + setN*N_UAL + dsel[25]*dbus[7];
-  //DN = /setN*/dsel[25]*N + /setN*dsel[25]*dbus[7] + setN*N_UAL;
   abus[7] = N:asel[25];
   bbus[7] = N:bsel[25];
 
   Z := DZ;
   Z.clk = clk;
   Z.rst = rst;
-  DZ = setZ*Z_UAL + dsel[25]*dbus[6] + /setZ*/dsel[25]*Z;
-  //DZ = /setZ*/dsel[25]*Z + /setZ*dsel[25]*dbus[6] + setZ*Z_UAL;
+  DZ = /setZ*/dsel[25]*Z + setZ*Z_UAL + dsel[25]*dbus[6];
   abus[6] = Z:asel[25];
   bbus[6] = Z:bsel[25];
 
   V := DV;
   V.clk = clk;
   V.rst = rst;
-  DV = setVC*V_UAL + dsel[25]*dbus[5] + /setVC*/dsel[25]*V;
-  //DV = /setVC*/dsel[25]*V + /setVC*dsel[25]*dbus[5] + setVC*V_UAL;
+  DV = /setVC*/dsel[25]*V + setVC*V_UAL + dsel[25]*dbus[5];
   abus[5] = V:asel[25];
   bbus[5] = V:bsel[25];
 
   C := DC;
   C.clk = clk;
   C.rst = rst;
-  DC = setVC*C_UAL + dsel[25]*dbus[4] + /setVC*/dsel[25]*C;
-  //DC = /setVC*/dsel[25]*C + /setVC*dsel[25]*dbus[4] + setVC*C_UAL;
+  DC = /setVC*/dsel[25]*C + setVC*C_UAL + dsel[25]*dbus[4];
   abus[4] = C:asel[25];
   bbus[4] = C:bsel[25];
 
