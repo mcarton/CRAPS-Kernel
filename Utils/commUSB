@@ -1,0 +1,2 @@
+#!/bin/sh
+exec java -Djava.library.path=$(pwd)/libusbComm -jar commUSB4.10.jar
