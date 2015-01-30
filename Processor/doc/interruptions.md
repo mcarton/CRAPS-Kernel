@@ -40,7 +40,7 @@ each flags and the current interruption identifier/level.
 
 The *psr* register bits are as follow:
 
-| 0 .. 3 | 4 | 5 | 6 | 7 | 8       31 |
+| 0 .. 3 | 4 | 5 | 6 | 7 | 8  ...  31 |
 |--------|---|---|---|---|------------|
 | int ID | C | V | Z | N | `0xffffff` |
 
