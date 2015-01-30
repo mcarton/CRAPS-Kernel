@@ -1,8 +1,11 @@
-all: ProjectCharter.pdf Specifications.pdf
+all: ProjectCharter.pdf Specifications.pdf Gantt.pdf
 
 export TEXC = latexmk -pdflatex="lualatex %O %S" -pdf -dvi- -ps-
 
 .PHONY: FORCE
+
+ProjectCharter.pdf: ProjectCharter.tex Gantt.pdf
+	$(TEXC) -latexoption=-shell-escape $<
 
 %.pdf: %.tex FORCE
 	$(TEXC) -latexoption=-shell-escape $<

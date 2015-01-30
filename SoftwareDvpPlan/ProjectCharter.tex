@@ -5,7 +5,6 @@
 \usepackage{geometry}
 \usepackage{hyperref}
 \usepackage{lscape}
-\usepackage{pgfgantt}
 \usepackage{siunitx}
 \usepackage{titling}
 
@@ -91,7 +90,21 @@
 
     Controls: meetings?
 
-    %\afterpage{\input{gantt}}
+    \afterpage{%
+      \newgeometry{top=1cm,bottom=1cm}
+      \thispagestyle{empty}
+      \begin{figure}
+        \centering
+        \includegraphics[
+          angle=90,
+          width=\linewidth,
+          height=\textheight
+        ]{Gantt.pdf}
+        \label{fig:gantt}
+      \end{figure}
+      \clearpage
+      \restoregeometry
+    }
 
   \section{Meetings and Reporting}
     Two kinds of meetings are planned:
