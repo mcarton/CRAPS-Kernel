@@ -1,4 +1,4 @@
-all: ProjectCharter.pdf
+all: ProjectCharter.pdf Specifications.pdf
 
 export TEXC = latexmk -pdflatex="lualatex %O %S" -pdf -dvi- -ps-
 
