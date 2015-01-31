@@ -7,6 +7,8 @@ Linux
 Firstly, you will need some packages. On Archlinux, simply run
 `yaourt adept-runtime adept-utilities`
 
+You may need to reboot in order to reload udev rules.
+
 Then, go to the directory libusbComm, and run `make` to build libusbComm1.3.so
 
 To use commUSB or CrapsMon, you will need to update the Adept device table.
