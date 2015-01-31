@@ -1,0 +1,30 @@
+#! /usr/bin/env python
+
+import pathlib
+import pygraphviz as gv
+import re
+import sys
+
+def removeComments(string):
+    return re.sub(re.compile("//.*?\n" ), "", string)
+
+def edges(string):
+    pattern = re.compile(r'(\w*)\s*->\s*(\w*)')
+    return re.findall(pattern, s)
+
+if len(sys.argv) not in (2, 3):
+    print("Usage: graph filename.net [filetype=svg]\nDraws a graph of the processor's state machine")
+else:
+    netfile = sys.argv[1]
+    ext = 'svg' if len(sys.argv) == 2 else sys.argv[2]
+
+    with open(netfile, 'r') as f:
+        s = f.read()
+        s = removeComments(s)
+
+        G = gv.AGraph(directed=True, concentrate=True)
+
+        for match in edges(s):
+            G.add_edge(match)
+
+        G.draw(pathlib.Path(netfile).stem + '.' + ext, prog='dot')
