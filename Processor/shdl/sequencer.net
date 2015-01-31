@@ -112,6 +112,7 @@ added_outputs: state[4..0], mon_ack
       handle_int = 0,
       write = 0;
 
+
 ///////////////////////////     MONITEUR: REGISTRES       ////////////////////////////////
 
   // moniteur: lecture d'un registre
@@ -189,6 +190,7 @@ added_outputs: state[4..0], mon_ack
       cmd_ual[5..0] = 0b000000,
       handle_int = 0,
       write = 0;
+
 
 ///////////////////////////     RUN / STEP / BREAK       ////////////////////////////////
 
@@ -308,6 +310,7 @@ added_outputs: state[4..0], mon_ack
       handle_int = 0,
       write = 0;
 
+
 //////////////////     INSTRUCTIONS DE CALCUL AVEC 2EME OPERANDE IMMEDIAT       /////////////////////
 
   // calcul avec 2ème opérande immédiat -> tmp1 <- signext13(ir)
@@ -336,6 +339,7 @@ added_outputs: state[4..0], mon_ack
       handle_int = 0,
       write = 0;
 
+
 /////////////      LD/ST AVEC 2EME OPERANDE REGISTRE: EXTRACTION DE L'ADRESSE      //////////////
 
   // tmp1 <- %rs1 + %rs2
@@ -351,7 +355,8 @@ added_outputs: state[4..0], mon_ack
       handle_int = 0,
       write = 0;
 
-/////////////      LD/ST AVEC 2EME OPERANDE IMMEDIAT: EXTRACTION DE L'ADRESSE      //////////////
+
+/////////////      LD/ST AVEC 2EME OPERANDE IMMEDIAT: EXTRACTION DE LA CONSTANTE   //////////////
 
   // tmp1 <- constante extraite de %ir
   decode -> addr_imm
@@ -379,9 +384,10 @@ added_outputs: state[4..0], mon_ack
       handle_int = 0,
       write = 0;
 
+
 /////////////                 LD                   //////////////
 
-  // lecture en mémoire à l'adresse %r32
+  // lecture en mémoire à l'adresse %r21
   addr -> waitRamAddr
     when
       /ir[21]
@@ -389,7 +395,7 @@ added_outputs: state[4..0], mon_ack
       oe_num[1..0] = 0b10, // mémoire prend le controle du bus D
       areg[4..0] = 21,     // tmp1 sur bus d'adresses
       breg[4..0] = 0,
-      dreg[4..0] =  ir[29..25],    // écriture dans rd
+      dreg[4..0] = ir[29..25],    // écriture dans rd
       cmd_ual[5..0] = 0b000000, // opération neutre
       handle_int = 0,
       write = 0;
@@ -401,7 +407,7 @@ added_outputs: state[4..0], mon_ack
       oe_num[1..0] = 0b10, // mémoire prend le controle du bus D
       areg[4..0] = 21,     // tmp1 sur bus d'adresses
       breg[4..0] = 0,
-      dreg[4..0] =  ir[29..25],    // écriture dans rd
+      dreg[4..0] = ir[29..25],    // écriture dans rd
       cmd_ual[5..0] = 0b000000, // opération neutre
       handle_int = 0,
       write = 0;
@@ -422,11 +428,13 @@ added_outputs: state[4..0], mon_ack
       handle_int = 0,
       write = 1;
 
+
 ///////////////////////////           TEST AND SET                ////////////////////////////////
 
   decode -> testAndSetWaitRam
     when
       /ir[31]*ir[30]*ir[29]
+        */ir[28]*/ir[27]*/ir[26]*/ir[25]*/ir[24]*/ir[23]
     outputs
       oe_num[1..0] = 0b10,        // D-bus
       areg[4..0] = ir[4..0],      // reg
@@ -471,6 +479,7 @@ added_outputs: state[4..0], mon_ack
       cmd_ual[5..0] = 0b101000,   // nopb
       handle_int = 0,
       write = 1;
+
 
 ///////////////////////////     INSTRUCTIONS DE BRANCHEMENT       ////////////////////////////////
 
@@ -537,6 +546,7 @@ added_outputs: state[4..0], mon_ack
       handle_int = 0,
       write = 0;
 
+
 ///////////////////////////     SETHI       ////////////////////////////////
 
   // sethi: rd <- sethi(ir)
@@ -551,6 +561,7 @@ added_outputs: state[4..0], mon_ack
       cmd_ual[5..0] = 0b100011, // sethi
       handle_int = 0,
       write = 0;
+
 
 ///////////////////////////     GESTION DES INTERRUPTIONS       ////////////////////////////////
 
@@ -656,6 +667,7 @@ added_outputs: state[4..0], mon_ack
       cmd_ual[5..0] = 0b000000,
       handle_int = 0,
       write = 0;
+
 
 ///////////////////////////     RETI       ////////////////////////////////
 
