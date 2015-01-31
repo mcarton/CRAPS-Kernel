@@ -422,6 +422,56 @@ added_outputs: state[4..0], mon_ack
       handle_int = 0,
       write = 1;
 
+///////////////////////////           TEST AND SET                ////////////////////////////////
+
+  decode -> testAndSetWaitRam
+    when
+      /ir[31]*ir[30]*ir[29]
+    outputs
+      oe_num[1..0] = 0b10,        // D-bus
+      areg[4..0] = ir[4..0],      // reg
+      breg[4..0] = 0,
+      dreg[4..0] = 21,            // tmp1
+      cmd_ual[5..0] = 0b000000,   // no-op
+      handle_int = 0,
+      write = 0;
+
+  testAndSetWaitRam -> testAndSetRead
+    when
+      1
+    outputs
+      oe_num[1..0] = 0b10,        // D-bus
+      areg[4..0] = ir[4..0],      // reg
+      breg[4..0] = 0,
+      dreg[4..0] = 21,            // tmp1
+      cmd_ual[5..0] = 0b000000,   // no-op
+      handle_int = 0,
+      write = 0;
+
+  testAndSetRead -> testAndSetFlag
+    when
+      1
+    outputs
+      oe_num[1..0] = 0b01,
+      areg[4..0] = 21,            // tmp1
+      breg[4..0] = 20,            // == 1
+      dreg[4..0] = 0,             // %r0
+      cmd_ual[5..0] = 0b010100,   // subcc
+      handle_int = 0,
+      write = 0;
+
+  testAndSetFlag -> pcplus1
+    when
+      1
+    outputs
+      oe_num[1..0] = 0b01,
+      areg[4..0] = ir[4..0],      // reg
+      breg[4..0] = 20,            // == 1
+      dreg[4..0] = 0,
+      cmd_ual[5..0] = 0b101000,   // nopb
+      handle_int = 0,
+      write = 1;
+
 ///////////////////////////     INSTRUCTIONS DE BRANCHEMENT       ////////////////////////////////
 
 ++	eq4(ir[28..25], 0b1000, ba);
@@ -612,7 +662,7 @@ added_outputs: state[4..0], mon_ack
   // psr <- (sp)
   decode -> waitRamReti
     when
-      /ir[31]*ir[30]
+      /ir[31]*ir[30]*/ir[29]
     outputs
       oe_num[1..0] = 0b10,
       areg[4..0] = 29,
