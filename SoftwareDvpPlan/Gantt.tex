@@ -1,47 +1,49 @@
 \documentclass{standalone}
 
+\usepackage{xcolor}
+
 \usepackage{pgfgantt}
 
-\def\pgfcalendarweekdayletter#1{%
-  \ifcase#1M\or T\or W\or T\or F\or S\or S\fi%
-}
+\definecolor{darkgreen}{RGB}{100,200,100}
 
 \begin{document}
   \begin{tikzpicture}
     \begin{ganttchart}[
         /pgf/outer xsep=+0pt,
-        bar/.append style={orange!75},
-        time slot format=isodate,
+        time slot format=isodate, /pgfgantt/time slot format/base century=20
         link/.style={->},
-        bar label font=\normalsize\color{black!50}
-      ]{2015-01-19}{2015-03-15}
-      \gantttitlecalendar{month=name, week, day, weekday=letter}            \\
+        bar label font=\normalsize\color{black!50},
+        bar/.append style={darkgreen},
+        bar incomplete/.append style={orange!75},
+        today=15-02-01
+      ]{15-01-19}{15-03-15}
+      \gantttitlecalendar{month=name, week, day}                              \\
 
-      \ganttbar{Preliminary organization}{2015-01-19}{2015-01-23}           \\
+      \ganttbar{Preliminary organization}{15-01-19}{15-01-23}                 \\
 
-      \ganttgroup[name=CPU1]{CPU v1}{2015-01-22}{2015-01-30}                \\
-          \ganttbar[name=RAM]{RAM}{2015-01-22}{2015-01-27}                  \\
-          \ganttbar[name=IT]{Interruptions}{2015-01-23}{2015-01-28}         \\
-          \ganttbar{Add test\&set}{2015-01-29}{2015-01-30}                  \\
+      \ganttgroup[name=CPU1]{CPU v1}{15-01-22}{15-01-30}                      \\
+          \ganttbar[name=RAM]{RAM}{15-01-22}{15-01-27}                        \\
+          \ganttbar[name=IT]{Interruptions}{15-01-23}{15-01-28}               \\
+          \ganttbar{Add test\&set}{15-01-29}{15-01-30}                        \\
 
-      \ganttgroup[name=CPU2]{CPU v2}{2015-02-09}{2015-02-20}                \\
+      \ganttgroup[name=CPU2]{CPU v2}{15-02-09}{15-02-20}                      \\
           \ganttlink[link type=f-s]{CPU1}{CPU2}
-          \ganttbar[name=flash]{Flash}{2015-02-09}{2015-02-20}              \\
+          \ganttbar[name=flash, progress=0]{Flash}{15-02-09}{15-02-20}        \\
 
-      \ganttgroup[name=comp1]{Compiler v1}{2015-01-22}{2015-02-06}          \\
-          \ganttbar[name=MOC]{Remove µOc}{2015-01-22}{2015-01-23}           \\
-          \ganttbar[name=CRAPS]{CRAPS support}{2015-01-24}{2015-02-01}      \\
+      \ganttgroup[name=comp1]{Compiler v1}{15-01-22}{15-02-06}                \\
+          \ganttbar[name=MOC]{Remove µOc}{15-01-22}{15-01-23}                 \\
+          \ganttbar[name=CRAPS, progress=75]{CRAPS support}{15-01-24}{15-02-06} \\
 
-      \ganttgroup[name=os]{Operating system}{2015-02-02}{2015-03-13}        \\
-          \ganttbar{Scheduler}{2015-02-02}{2015-02-10}                      \\
-          \ganttbar{IO}{2015-02-10}{2015-02-20}                             \\
-          \ganttbar{Shell}{2015-02-16}{2015-02-27}                          \\
-          \ganttbar[name=FS]{Filesystem}{2015-02-29}{2015-03-07}            \\
+      \ganttgroup[name=os]{Operating system}{15-02-02}{15-03-13}              \\
+          \ganttbar[progress=10]{Scheduler}{15-02-02}{15-02-10}               \\
+          \ganttbar[progress=0]{IO}{15-02-10}{15-02-20}                       \\
+          \ganttbar[progress=0]{Shell}{15-02-16}{15-02-27}                    \\
+          \ganttbar[name=FS, progress=0]{Filesystem}{15-02-29}{15-03-07}      \\
 
           \ganttlink[link type=f-s]{flash}{FS}
 
-      \ganttgroup[name=comp2]{Compiler v2}{2015-01-30}{2015-02-06}          \\
-          \ganttbar{Add arrays and globals}{2015-01-30}{2015-02-06}         \\
+      \ganttgroup[name=comp2]{Compiler v2}{15-01-30}{15-02-06}                \\
+          \ganttbar[progress=20]{Add arrays and globals}{15-01-30}{15-02-06}  \\
 
           \ganttlink[link type=f-s]{MOC}{CRAPS}
     \end{ganttchart}
