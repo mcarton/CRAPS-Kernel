@@ -51,6 +51,9 @@ module registres(rst, clk, areg[4..0], breg[4..0], dreg[4..0], dbus[31..0],
   // %r0 = 0
   abus[31..0] = 0:asel[0];
   bbus[31..0] = 0:bsel[0];
+  // %r19 = 1
+  abus[31..0] = 0xffff:asel[19];
+  bbus[31..0] = 0xffff:bsel[19];
   // %r20 = 1
   abus[31..0] = 1:asel[20];
   bbus[31..0] = 1:bsel[20];
