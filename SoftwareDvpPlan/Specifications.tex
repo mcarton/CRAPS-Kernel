@@ -24,9 +24,10 @@
 \begin{document}
   \include{titlepage}
   \newpage
-    \section{V1 specifications}
-    The first version consists of the most basic OS functionalities. 
-      \subsection{Improvement of the processor}
+    \section{V1 Specifications}
+      The first version consists of the most basic OS functionalities.
+
+      \subsection{Improvement of the Processor}
         \begin{enumerate}
           \item The processor should have access to at least \SI{32}{kB} of RAM.
             The RAM should be accessed in a fast way, but the loss of a few
@@ -35,16 +36,15 @@
             a priority system. An interruption handler can only be interrupted
             by an interruption of a strictly higher priority.
           \item Several registers should be added.
-   
         \end{enumerate}
 
       \subsection{Compiler}
         To write the OS in reasonable time, we need to be able to compile a
-        higher level language to craps assembly. For that purpose, we chose to
+        higher level language to CRAPS assembly. For that purpose, we chose to
         reuse the compiler we wrote last year.
-        \begin{enumerate}     
-            \item The compiler input should be a subset of \textit{C89}
-                (see appendix for details)
+        \begin{enumerate}
+          \item The compiler input should be a subset of \textit{C89} (see
+            appendix~\ref{app:C89} for details).
           \item The compiler should generate valid CRAPS assembly.
         \end{enumerate}
 
@@ -53,40 +53,38 @@
           \item The OS should have a scheduler. There are no real-time
           constraint (but it should switch regularly, at least 10 times per
           second). It should support at least 10 hard-coded tasks.
-          %  -> test plan
-          %\item The OS should have a task making a led blink and showing that it
-          %  is working and that the scheduler runs.
-          \item The OS should provide a basic library available to any program :
+          \item The OS should provide a basic library available to any program:
             \begin{itemize}
-              \item a \verb+malloc+ to allocate dynamic memory
-              \item functions to write the leds and sseg display, and read the
-                 switches
-              \item division and modulus operations
+              \item a \verb+malloc+ to allocate dynamic memory;
+              \item functions to write on the LEDs and seven-segment display,
+                and read the switches;
+              \item division and modulus operations.
              \end{itemize}
         \end{enumerate}
 
-    \section{V2 specifications}
-    The second version adds distant communications, and updated tools.
-      \subsection{Improvement of the processor}
+    \section{V2 Specifications}
+      The second version adds distant communications, and updated tools.
+
+      \subsection{Improvement of the Processor}
         \begin{enumerate}
-          \item The processor should be connected to a serial port, to allow 
+          \item The processor should be connected to a serial port, to allow
             communication with other devices (like a computer). It can use the
             \textit{RS-232} port on the FPGA.
         \end{enumerate}
 
       \subsection{Compiler}
-        \begin{enumerate}     
+        \begin{enumerate}
           \item Enlarge the subset of \textit{C89}
           \item The compiler should generate valid CRAPS assembly.
-          \item The assembly generated should be more optimized. 
+          \item The assembly generated should be more optimized.
         \end{enumerate}
 
       \subsection{Development of the OS}
         \begin{enumerate}
           \item The OS should have a task communicating with the user through
-            the RS-232, in the form of a very simple shell.
-          \item extension to the OS library: an API to read/write to the serial 
-              port.
+            the \textit{RS-232}, in the form of a very simple shell.
+          \item Extension to the OS library: an API to read/write to the serial
+            port.
         \end{enumerate}
       \subsection{tools}
         \begin{enumerate}
@@ -96,36 +94,47 @@
           \item Adapt the tools to provide a good environment to be used by the
             students.
 
-      \section{further development}
-        If we have enough time, it would be interesting to access the flash
-        memory present on the board. This implies the development of a shdl/vhdl
-        module and the OS code to use it. With this improvements, we could:
-        \begin{itemize}
-          \item write and read memory from the shell.
-          \item implement a basic file system.
-        \end{itemize}
-        Ideally, we could write a TP subject for the students, explaining the
-        steps to realise their own OS.
-
-
-\newpage
-  \begin{appendix}
-    \section{Description of the C subset}
+    \section{Further Development}
+      If we have enough time, it would be interesting to access the flash memory
+      present on the board. This implies the development of a SHDL/VHDL module
+      and the OS code to use it. With this improvements, we could:
       \begin{itemize}
-        \item while loop
-        \item pointers
-        \item conditions
-        \item functions
-        \item most binary operators (division and modulo are not supported by the
-          hardware)
+        \item write and read memory from the shell;
+        \item implement a basic file system.
       \end{itemize}
-      The following elements are planned for the v2:
+      Ideally, we could write a tutorial for the students, explaining the steps
+      to realise their own OS.
+
+  \newpage
+
+  \begin{appendix}
+    \section{Description of the C subset}\label{app:C89}
+      The C subset available at the beginning of the project includes
+      (non-exhaustive list):
       \begin{itemize}
-        \item globals
+        \item \textit{while} loop
+        \item \textit{if} loop (no \textit{else if})
+        \item 32-bits integer arithmetic (without division, modulo and only
+          16-bits multiplication)
+        \item functions
+        \item an \text{x86} back-end
+      \end{itemize}
+
+      \noindent The \textit{V1} should add:
+      \begin{itemize}
+        \item a \text{CRAPS} back-end
+        \item global variables
+        \item exported functions
+        \item \textit{for} loop
+        \item missing operators
+      \end{itemize}
+
+      \noindent The following elements are planned for the \textit{V2}:
+      \begin{itemize}
+        \item dynamic memory
         \item arrays
-        \item structs
-        \item \& (address) operator
-        \item for loop
+        \item structures
+        \item the \verb+&+ (address) operator
       \end{itemize}
       We will add more functionalities if they prove to be needed to write the
       OS. 
