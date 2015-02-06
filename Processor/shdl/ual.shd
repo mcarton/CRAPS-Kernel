@@ -10,7 +10,7 @@ module ual(a[31..0], b[31..0], cmd[5..0] : s[31..0], setN, setZ, setVC, N, Z, V,
   s[31..0] = saddsub[31..0]:oe[4]; // sub
 
   // umul
-  umult16x16(a[15..0], b[15..0]: smul[31..0]);
+  umult32x32(a[31..0], b[31..0]: smul[63..0]);
   s[31..0] = smul[31..0]:oe[26];
 
   // and
