@@ -9,13 +9,12 @@ Register `%r1` to `%r9` can be used as normal registers.
 Constant registers
 ------------------
 
-Three registers are constant. When read their value is always the same (see
+Two registers are constant. When read their value is always the same (see
 bellow). When written to, the value is discarded.
 
  Name | Value
 ------|------------------------
 `%r0` | `0`
-`%r19`| `0xffff` (all bits set)
 `%r20`| `1`
 
 Temporary registers
