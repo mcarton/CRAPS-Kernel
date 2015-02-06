@@ -5,7 +5,7 @@ Linux
 -----
 
 Firstly, you will need some packages. On Archlinux, simply run
-`yaourt adept-runtime adept-utilities`
+`yaourt -S adept-runtime adept-utilities`
 
 You may need to reboot in order to reload udev rules.
 
