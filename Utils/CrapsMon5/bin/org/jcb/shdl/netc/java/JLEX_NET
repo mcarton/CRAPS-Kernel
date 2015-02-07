@@ -1,0 +1,45 @@
+package org.jcb.shdl.netc.java;
+import mg.egg.eggc.libjava.lex.*;
+%%
+%{
+%}
+%full
+%line
+%char
+%egg NET
+%public
+%eofval{
+	return new Yytoken(LEX_NET.EOF , "EOF" , yyline , yychar , yychar+1 ) ;
+%eofval}
+%%
+//.*$			 {return new Yytoken(LEX_NET.token_comm, yytext(), yyline, yychar, yychar+1);}
+[\ ]+			 {return new Yytoken(LEX_NET.token_blank, yytext(), yyline, yychar, yychar+1);}
+[\n]+			 {return new Yytoken(LEX_NET.token_rc, yytext(), yyline, yychar, yychar+1);}
+[\n\r]+			 {return new Yytoken(LEX_NET.token_lfs, yytext(), yyline, yychar, yychar+1);}
+[\t]+			 {return new Yytoken(LEX_NET.token_tabs, yytext(), yyline, yychar, yychar+1);}
+module			 {return new Yytoken(LEX_NET.token_module, yytext(), yyline, yychar, yychar+1);}
+reset			 {return new Yytoken(LEX_NET.token_reset, yytext(), yyline, yychar, yychar+1);}
+clock			 {return new Yytoken(LEX_NET.token_clock, yytext(), yyline, yychar, yychar+1);}
+inputs			 {return new Yytoken(LEX_NET.token_inputs, yytext(), yyline, yychar, yychar+1);}
+outputs			 {return new Yytoken(LEX_NET.token_outputs, yytext(), yyline, yychar, yychar+1);}
+added_outputs			 {return new Yytoken(LEX_NET.token_added_outputs, yytext(), yyline, yychar, yychar+1);}
+when			 {return new Yytoken(LEX_NET.token_when, yytext(), yyline, yychar, yychar+1);}
+\*			 {return new Yytoken(LEX_NET.token_and, yytext(), yyline, yychar, yychar+1);}
+\+			 {return new Yytoken(LEX_NET.token_or, yytext(), yyline, yychar, yychar+1);}
+\-\>			 {return new Yytoken(LEX_NET.token_arrow, yytext(), yyline, yychar, yychar+1);}
+\(			 {return new Yytoken(LEX_NET.token_lpar, yytext(), yyline, yychar, yychar+1);}
+\)			 {return new Yytoken(LEX_NET.token_rpar, yytext(), yyline, yychar, yychar+1);}
+,			 {return new Yytoken(LEX_NET.token_virg, yytext(), yyline, yychar, yychar+1);}
+=			 {return new Yytoken(LEX_NET.token_egal, yytext(), yyline, yychar, yychar+1);}
+;			 {return new Yytoken(LEX_NET.token_pv, yytext(), yyline, yychar, yychar+1);}
+:			 {return new Yytoken(LEX_NET.token_semicol, yytext(), yyline, yychar, yychar+1);}
+/			 {return new Yytoken(LEX_NET.token_slash, yytext(), yyline, yychar, yychar+1);}
+\[			 {return new Yytoken(LEX_NET.token_crocouv, yytext(), yyline, yychar, yychar+1);}
+\]			 {return new Yytoken(LEX_NET.token_crocfer, yytext(), yyline, yychar, yychar+1);}
+\.\.			 {return new Yytoken(LEX_NET.token_ptpt, yytext(), yyline, yychar, yychar+1);}
+[A-Za-z_]+[A-Za-z_0-9]*			 {return new Yytoken(LEX_NET.token_ident, yytext(), yyline, yychar, yychar+1);}
+\+\+.*$			 {return new Yytoken(LEX_NET.token_added, yytext(), yyline, yychar, yychar+1);}
+0b[0-1]+			 {return new Yytoken(LEX_NET.token_num2, yytext(), yyline, yychar, yychar+1);}
+\-?[0-9]+			 {return new Yytoken(LEX_NET.token_num10, yytext(), yyline, yychar, yychar+1);}
+0x[0-9a-fA-F]+			 {return new Yytoken(LEX_NET.token_num16, yytext(), yyline, yychar, yychar+1);}
+. 			{return new Yytoken(LEX_NET.token_autre, yytext(), yyline, yychar, yychar+1);}

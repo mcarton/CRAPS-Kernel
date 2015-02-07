@@ -1,0 +1,66 @@
+package org.jcb.craps.crapsc.java;
+import mg.egg.eggc.libjava.lex.*;
+%%
+%{
+%}
+%full
+%line
+%char
+%egg CRAPS
+%public
+%eofval{
+	return new Yytoken(LEX_CRAPS.EOF , "EOF" , yyline , yychar , yychar+1 ) ;
+%eofval}
+%%
+clr			 {return new Yytoken(LEX_CRAPS.token_clr, yytext(), yyline, yychar, yychar+1);}
+mov			 {return new Yytoken(LEX_CRAPS.token_mov, yytext(), yyline, yychar, yychar+1);}
+inc			 {return new Yytoken(LEX_CRAPS.token_inc, yytext(), yyline, yychar, yychar+1);}
+inccc			 {return new Yytoken(LEX_CRAPS.token_inccc, yytext(), yyline, yychar, yychar+1);}
+dec			 {return new Yytoken(LEX_CRAPS.token_dec, yytext(), yyline, yychar, yychar+1);}
+deccc			 {return new Yytoken(LEX_CRAPS.token_deccc, yytext(), yyline, yychar, yychar+1);}
+set			 {return new Yytoken(LEX_CRAPS.token_set, yytext(), yyline, yychar, yychar+1);}
+setq			 {return new Yytoken(LEX_CRAPS.token_setq, yytext(), yyline, yychar, yychar+1);}
+cmp			 {return new Yytoken(LEX_CRAPS.token_cmp, yytext(), yyline, yychar, yychar+1);}
+tst			 {return new Yytoken(LEX_CRAPS.token_tst, yytext(), yyline, yychar, yychar+1);}
+negcc			 {return new Yytoken(LEX_CRAPS.token_negcc, yytext(), yyline, yychar, yychar+1);}
+notcc			 {return new Yytoken(LEX_CRAPS.token_notcc, yytext(), yyline, yychar, yychar+1);}
+nop			 {return new Yytoken(LEX_CRAPS.token_nop, yytext(), yyline, yychar, yychar+1);}
+jmp			 {return new Yytoken(LEX_CRAPS.token_jmp, yytext(), yyline, yychar, yychar+1);}
+ret			 {return new Yytoken(LEX_CRAPS.token_ret, yytext(), yyline, yychar, yychar+1);}
+push			 {return new Yytoken(LEX_CRAPS.token_push, yytext(), yyline, yychar, yychar+1);}
+pop			 {return new Yytoken(LEX_CRAPS.token_pop, yytext(), yyline, yychar, yychar+1);}
+call			 {return new Yytoken(LEX_CRAPS.token_call, yytext(), yyline, yychar, yychar+1);}
+sethi			 {return new Yytoken(LEX_CRAPS.token_sethi, yytext(), yyline, yychar, yychar+1);}
+reti			 {return new Yytoken(LEX_CRAPS.token_reti, yytext(), yyline, yychar, yychar+1);}
+add|addcc|sub|subcc|umulcc|and|andcc|or|orcc|xor|xorcc|xnor|xnorcc|sll|srl|jmpl			 {return new Yytoken(LEX_CRAPS.token_codeop3, yytext(), yyline, yychar, yychar+1);}
+ld|ldub			 {return new Yytoken(LEX_CRAPS.token_ld_ldub, yytext(), yyline, yychar, yychar+1);}
+st|stb			 {return new Yytoken(LEX_CRAPS.token_st_stb, yytext(), yyline, yychar, yychar+1);}
+ba|be|beq|bz|bne|bnz|bneg|bn|bpos|bnn|bcs|blu|bcc|bgeu|bvs|bvc|bg|bgt|bge|bl|blt|ble|bgu|bleu			 {return new Yytoken(LEX_CRAPS.token_branch, yytext(), yyline, yychar, yychar+1);}
+.org			 {return new Yytoken(LEX_CRAPS.token_org, yytext(), yyline, yychar, yychar+1);}
+.equ			 {return new Yytoken(LEX_CRAPS.token_equ, yytext(), yyline, yychar, yychar+1);}
+.global			 {return new Yytoken(LEX_CRAPS.token_global_, yytext(), yyline, yychar, yychar+1);}
+.byte			 {return new Yytoken(LEX_CRAPS.token_byte, yytext(), yyline, yychar, yychar+1);}
+.word			 {return new Yytoken(LEX_CRAPS.token_word, yytext(), yyline, yychar, yychar+1);}
+%r			 {return new Yytoken(LEX_CRAPS.token_r, yytext(), yyline, yychar, yychar+1);}
+%fp			 {return new Yytoken(LEX_CRAPS.token_fp, yytext(), yyline, yychar, yychar+1);}
+%sp			 {return new Yytoken(LEX_CRAPS.token_sp, yytext(), yyline, yychar, yychar+1);}
+%pc			 {return new Yytoken(LEX_CRAPS.token_pc, yytext(), yyline, yychar, yychar+1);}
+\=			 {return new Yytoken(LEX_CRAPS.token_equals, yytext(), yyline, yychar, yychar+1);}
+:			 {return new Yytoken(LEX_CRAPS.token_semicol, yytext(), yyline, yychar, yychar+1);}
+,			 {return new Yytoken(LEX_CRAPS.token_virg, yytext(), yyline, yychar, yychar+1);}
+\[			 {return new Yytoken(LEX_CRAPS.token_lbra, yytext(), yyline, yychar, yychar+1);}
+\]			 {return new Yytoken(LEX_CRAPS.token_rbra, yytext(), yyline, yychar, yychar+1);}
+\(			 {return new Yytoken(LEX_CRAPS.token_lpar, yytext(), yyline, yychar, yychar+1);}
+\)			 {return new Yytoken(LEX_CRAPS.token_rpar, yytext(), yyline, yychar, yychar+1);}
+\+|\-			 {return new Yytoken(LEX_CRAPS.token_plus_minus, yytext(), yyline, yychar, yychar+1);}
+\*|\/			 {return new Yytoken(LEX_CRAPS.token_mult_div, yytext(), yyline, yychar, yychar+1);}
+//.*$			 {return new Yytoken(LEX_CRAPS.token_comm, yytext(), yyline, yychar, yychar+1);}
+[\ ]+			 {return new Yytoken(LEX_CRAPS.token_blank, yytext(), yyline, yychar, yychar+1);}
+[\n]+			 {return new Yytoken(LEX_CRAPS.token_rc, yytext(), yyline, yychar, yychar+1);}
+[\n\r]+			 {return new Yytoken(LEX_CRAPS.token_lfs, yytext(), yyline, yychar, yychar+1);}
+[\t]+			 {return new Yytoken(LEX_CRAPS.token_tabs, yytext(), yyline, yychar, yychar+1);}
+[A-Za-z_]+[A-Za-z_0-9]*			 {return new Yytoken(LEX_CRAPS.token_ident, yytext(), yyline, yychar, yychar+1);}
+0b[0-1]+			 {return new Yytoken(LEX_CRAPS.token_num2, yytext(), yyline, yychar, yychar+1);}
+[0-9]+			 {return new Yytoken(LEX_CRAPS.token_num10, yytext(), yyline, yychar, yychar+1);}
+0x[0-9a-fA-F]+			 {return new Yytoken(LEX_CRAPS.token_num16, yytext(), yyline, yychar, yychar+1);}
+. 			{return new Yytoken(LEX_CRAPS.token_autre, yytext(), yyline, yychar, yychar+1);}

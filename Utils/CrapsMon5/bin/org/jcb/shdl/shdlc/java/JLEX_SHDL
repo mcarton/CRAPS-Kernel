@@ -1,0 +1,40 @@
+package org.jcb.shdl.shdlc.java;
+import mg.egg.eggc.libjava.lex.*;
+%%
+%{
+%}
+%full
+%line
+%char
+%egg SHDL
+%public
+%eofval{
+	return new Yytoken(LEX_SHDL.EOF , "EOF" , yyline , yychar , yychar+1 ) ;
+%eofval}
+%%
+//.*$			 {return new Yytoken(LEX_SHDL.token_comm, yytext(), yyline, yychar, yychar+1);}
+[\ ]+			 {return new Yytoken(LEX_SHDL.token_blank, yytext(), yyline, yychar, yychar+1);}
+[\n]+			 {return new Yytoken(LEX_SHDL.token_rc, yytext(), yyline, yychar, yychar+1);}
+[\n\r]+			 {return new Yytoken(LEX_SHDL.token_lfs, yytext(), yyline, yychar, yychar+1);}
+[\t]+			 {return new Yytoken(LEX_SHDL.token_tabs, yytext(), yyline, yychar, yychar+1);}
+\+			 {return new Yytoken(LEX_SHDL.token_or, yytext(), yyline, yychar, yychar+1);}
+\*			 {return new Yytoken(LEX_SHDL.token_and, yytext(), yyline, yychar, yychar+1);}
+\(			 {return new Yytoken(LEX_SHDL.token_parouv, yytext(), yyline, yychar, yychar+1);}
+\)			 {return new Yytoken(LEX_SHDL.token_parfer, yytext(), yyline, yychar, yychar+1);}
+\[			 {return new Yytoken(LEX_SHDL.token_crocouv, yytext(), yyline, yychar, yychar+1);}
+\]			 {return new Yytoken(LEX_SHDL.token_crocfer, yytext(), yyline, yychar, yychar+1);}
+\.\.			 {return new Yytoken(LEX_SHDL.token_ptpt, yytext(), yyline, yychar, yychar+1);}
+\.			 {return new Yytoken(LEX_SHDL.token_pt, yytext(), yyline, yychar, yychar+1);}
+:			 {return new Yytoken(LEX_SHDL.token_semicol, yytext(), yyline, yychar, yychar+1);}
+,			 {return new Yytoken(LEX_SHDL.token_virg, yytext(), yyline, yychar, yychar+1);}
+;			 {return new Yytoken(LEX_SHDL.token_pv, yytext(), yyline, yychar, yychar+1);}
+=			 {return new Yytoken(LEX_SHDL.token_aff, yytext(), yyline, yychar, yychar+1);}
+:=			 {return new Yytoken(LEX_SHDL.token_affs, yytext(), yyline, yychar, yychar+1);}
+end			 {return new Yytoken(LEX_SHDL.token_end_, yytext(), yyline, yychar, yychar+1);}
+module			 {return new Yytoken(LEX_SHDL.token_module, yytext(), yyline, yychar, yychar+1);}
+\/			 {return new Yytoken(LEX_SHDL.token_slash, yytext(), yyline, yychar, yychar+1);}
+[A-Za-z_]+[A-Za-z_0-9]*			 {return new Yytoken(LEX_SHDL.token_ident, yytext(), yyline, yychar, yychar+1);}
+0b[0-1]+			 {return new Yytoken(LEX_SHDL.token_num2, yytext(), yyline, yychar, yychar+1);}
+\-?[0-9]+			 {return new Yytoken(LEX_SHDL.token_num10, yytext(), yyline, yychar, yychar+1);}
+0x[0-9a-fA-F]+			 {return new Yytoken(LEX_SHDL.token_num16, yytext(), yyline, yychar, yychar+1);}
+. 			{return new Yytoken(LEX_SHDL.token_autre, yytext(), yyline, yychar, yychar+1);}

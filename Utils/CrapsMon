@@ -1,2 +1,2 @@
 #!/bin/sh
-exec java -Djava.library.path=$(pwd)/libusbComm -jar CrapsMon4.6.jar
+exec java -Djava.library.path=$(pwd)/libusbComm -jar CrapsMon5.jar
