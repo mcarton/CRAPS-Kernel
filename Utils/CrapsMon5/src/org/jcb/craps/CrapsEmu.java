@@ -17,7 +17,6 @@ import mg.egg.eggc.libjava.*;
 import mg.egg.eggc.libegg.base.*;
 import org.jcb.tools.*;
 import org.jcb.shdl.*;
-//import org.jcb.craps.crapsc.*;
 import org.jcb.craps.crapsc.java.*;
 
 
@@ -1408,7 +1407,7 @@ public class CrapsEmu extends JFrame {
 
 		public int getRowCount() {
 			if (memCache == null) memCache = new HashMap();
-			return 1024; // RAM = 512x32
+			return 8192; // RAM = 8192x32
 		}
 		
 		private long getValue(long addr) {
