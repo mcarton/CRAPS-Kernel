@@ -5,6 +5,7 @@ Todo list
     - [x] 15/01
     - [x] 19/01
     - [ ] 22/01
+    - [x] 28/01
     - [ ] 29/01
     - [ ] 05/02
     - [ ] 12/02
@@ -18,7 +19,50 @@ Todo list
 - [ ] User Manual
 - [ ] Présentation final (surtout gestion de projet)
 - [ ] Rapport final
-- [ ] Récupérer softs auprès de Buisson
+- [x] Récupérer softs auprès de Buisson
+
+Compilor:
+- [x] arrays
+  - [ ] array initilisation with `= { values }`
+- [x] global values
+- [x] structures
+- [ ] missing operators
+  - [x] << and >>
+  - [x] ^, |, and &
+  - [ ] += and co.
+  - [ ] ++ and --
+- [x] fix operator priority
+- [ ] don't include what's not used
+  - [x] functions
+  - [ ] global values
+- [x] sizeof
+- [x] else if
+- [x] optimize registers
+- [ ] ptr+1 should add type size
+- [ ] break, continue
+  - [ ] handle stack correctly
+- [ ] label1: label2:
+- [ ] "chaine" "chaine"
+- [ ] register keyword
+- [ ] forward declaration
+  - [ ] struct
+  - [ ] functions
+
+CPU:
+- [x] Interuptions
+  - [x] Do it
+  - [x] Document if
+  - [x] Test it
+- [ ] Test and set
+  - [x] Do it
+  - [x] Document if
+  - [x] Test it
+  - [ ] Really test it
+- [x] 32 bits multiplication
+
+Tools:
+- [ ] label1: label2:
+- [ ] test&set
 
 Travail personnel :
 - Rapport individuel de gestion de projet
