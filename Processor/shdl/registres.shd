@@ -44,6 +44,46 @@ module registres(rst, clk, areg[4..0], breg[4..0], dreg[4..0], dbus[31..0],
   reg32(rst, clk, dsel[9], dbus[31..0], r9[31..0]);
   abus[31..0] = r9[31..0]:asel[9];
   bbus[31..0] = r9[31..0]:bsel[9];
+  // %r10
+  reg32(rst, clk, dsel[10], dbus[31..0], r10[31..0]);
+  abus[31..0] = r10[31..0]:asel[10];
+  bbus[31..0] = r10[31..0]:bsel[10];
+  // %r11
+  reg32(rst, clk, dsel[11], dbus[31..0], r11[31..0]);
+  abus[31..0] = r11[31..0]:asel[11];
+  bbus[31..0] = r11[31..0]:bsel[11];
+  // %r12
+  reg32(rst, clk, dsel[12], dbus[31..0], r12[31..0]);
+  abus[31..0] = r12[31..0]:asel[12];
+  bbus[31..0] = r12[31..0]:bsel[12];
+  // %r13
+  reg32(rst, clk, dsel[13], dbus[31..0], r13[31..0]);
+  abus[31..0] = r13[31..0]:asel[13];
+  bbus[31..0] = r13[31..0]:bsel[13];
+  // %r14
+  reg32(rst, clk, dsel[14], dbus[31..0], r14[31..0]);
+  abus[31..0] = r14[31..0]:asel[14];
+  bbus[31..0] = r14[31..0]:bsel[14];
+  // %r15
+  reg32(rst, clk, dsel[15], dbus[31..0], r15[31..0]);
+  abus[31..0] = r15[31..0]:asel[15];
+  bbus[31..0] = r15[31..0]:bsel[15];
+  // %r16
+  reg32(rst, clk, dsel[16], dbus[31..0], r16[31..0]);
+  abus[31..0] = r16[31..0]:asel[16];
+  bbus[31..0] = r16[31..0]:bsel[16];
+  // %r17
+  reg32(rst, clk, dsel[17], dbus[31..0], r17[31..0]);
+  abus[31..0] = r17[31..0]:asel[17];
+  bbus[31..0] = r17[31..0]:bsel[17];
+  // %r18
+  reg32(rst, clk, dsel[18], dbus[31..0], r18[31..0]);
+  abus[31..0] = r18[31..0]:asel[18];
+  bbus[31..0] = r18[31..0]:bsel[18];
+  // %r19
+  reg32(rst, clk, dsel[19], dbus[31..0], r19[31..0]);
+  abus[31..0] = r19[31..0]:asel[19];
+  bbus[31..0] = r19[31..0]:bsel[19];
 
 
   ////////////////////////     registres à valeurs constantes     ///////////////////////
