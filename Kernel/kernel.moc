@@ -19,20 +19,22 @@ start:
 // every N PWM interruptions we do a context switch, this is the counter
 int pwm_count;
 
-// Address of the process table structure. The process table is like this:
-//     int process_count
-//     int current_process
-//     void* stack_pointer_0
-//     void* stack_pointer_1
-//     ... (one stack pointer for each process)
-void *process_table;
+#define PROCESS_COUNT 4
+
+struct process_table_t {
+    int process_count;
+    int current_process;
+    void*[PROCESS_COUNT] stack_pointers;
+};
+
+struct process_table_t* process_table;
 
 // used internally by the malloc
 void *malloc_start;
 
 // implementation of the context switch
 asm("
-    pwm_handler:
+pwm_handler:
     push %r1
 
     ld $pwm_count, %r1
@@ -50,7 +52,7 @@ asm("
     // context switch //
     ////////////////////
 
-    pwm_handler_do_it:
+pwm_handler_do_it:
     xor %r1, %r1, %r1 // reset the counter
     st %r1, $pwm_count
 
@@ -91,7 +93,7 @@ asm("
     cmp %r4, %r3
     bl pwm_handler_afterreset
     xor %r4, %r4, %r4 // %r4 <- 0
-    pwm_handler_afterreset:
+pwm_handler_afterreset:
 
     st %r4, [%r2 + 1]
 
@@ -176,108 +178,51 @@ int main() {
     // /!\ Should be big enough not to overwrite the code !
     malloc_start = (void*)0x300;
 
-    int nb_tasks = 4;
+    // process table
+    process_table = (struct process_table_t*)syscall_malloc(sizeof(struct process_table_t));
+    process_table->process_count = PROCESS_COUNT;
+    process_table->current_process = 0;
 
-    // alloc the process table
-    // 2 for nb_tasks and current_task and 1 per process
-    process_table = syscall_malloc(2 + nb_tasks);
+    void*[PROCESS_COUNT] tasks;
+    tasks[0] = task1;
+    tasks[1] = task2;
+    tasks[2] = task3;
+    tasks[3] = task4;
 
-    // nb_tasks and current_task
-    *((int*)process_table) = nb_tasks;
-    *((int*)process_table + 1) = 0;
+    // initialize all processes
+    void*[] stack_pointers = process_table->stack_pointers;
+    int i;
+    int j;
 
-    // stacks !
-    // as a convention, we put on the stack the address of the first
-    // instruction of the task (for "bootstraping" the processes)
-    void *stack;
-    int task;
+    for(i=0; i < PROCESS_COUNT; i=i+1) {
+        // we build the stack for the process i
+        void* stack = syscall_malloc(256) + 255;
 
-    stack = syscall_malloc(256) + 255;
-    *((void**)process_table + 2 + 0) = stack;
-    asm("set f_task1, %r9
-    st %r9, $task");
-    *((int*)stack) = task;
+        // as a convention, we put on the stack the address of the first
+        // instruction of the task (for "bootstraping" the processes)
+        *((int*) stack) = (int)tasks[i];
 
-    stack = syscall_malloc(256) + 255;
-    *((void**)process_table + 2 + 1) = stack;
-    asm("set f_task2, %r9
-    st %r9, $task");
-    *((int*)stack) = task;
+        if(i > 0) {
+            // fill the end of the stack of the processes that are waiting: they will
+            // be restored by the scheduler!
+            // we push %psr, %r1..%r19, %fp, %r28 (ret)
+            for(j=0; j < 22; j=j+1) {
+                stack = stack - 1;
+                *((int*) stack) = 0;
+            }
+        }
 
-    stack = syscall_malloc(256) + 255;
-    *((void**)process_table + 2 + 2) = stack;
-    asm("set f_task3, %r9
-    st %r9, $task");
-    *((int*)stack) = task;
-
-    stack = syscall_malloc(256) + 255;
-    *((void**)process_table + 2 + 3) = stack;
-    asm("set f_task4, %r9
-    st %r9, $task");
-    *((int*)stack) = task;
-
-    // fill the end of the stack of the processes that are waiting: they will
-    // be restored by the scheduler!
-    asm("
-    mov %sp, %r9 // save stack
-    ld $process_table, %r2
-    ld [%r2], %r3 // %r3: nb_tasks
-    ld [%r2 + 1], %r4 // %r4: current_task
-
-    start_load_loop:
-    inccc %r4
-    cmp %r4, %r3
-    bge end_load_loop
-
-    add %r4, 2, %r5
-    add %r5, %r2, %r5 // %r5: current task entry
-
-    ld [%r5], %sp
-
-    // don't need to put pc: it's already set by convention
-    push %r0 // psr
-
-    push %r0
-    push %r0
-    push %r0
-    push %r0
-    push %r0
-    push %r0
-    push %r0
-    push %r0
-    push %r0
-    push %r0
-    push %r0
-    push %r0
-    push %r0
-    push %r0
-    push %r0
-    push %r0
-    push %r0
-    push %r0
-    push %r0
-    push %r0
-    push %r0
-
-    st %sp, [%r5]
-
-    ba start_load_loop
-    end_load_loop:
-    mov %r9, %sp // restore stack
-    ");
+        stack_pointers[i] = stack;
+    }
 
     // PWM rising edge every milliseconds
     *((int*)0xC0000000) = 195; // P
     *((int*)0xC0000001) = 98; // N
 
     // first task: loads its stack and runs it
+    void* sp = stack_pointers[0];
     asm("
-    // load %sp
-    ld $process_table, %r2
-    ld [%r2], %r3 // %r3: nb_tasks
-    ld [%r2 + 1], %r4 // %r4: current_task
-    add %r2, %r4, %r5 // %r5: current task entry
-    ld [%r5 + 2], %sp
+    ld $sp, %sp
     ld [%sp], %pc
     ");
 }
