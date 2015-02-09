@@ -62,6 +62,16 @@ asm("
     push %r7
     push %r8
     push %r9
+    push %r10
+    push %r11
+    push %r12
+    push %r13
+    push %r14
+    push %r15
+    push %r16
+    push %r17
+    push %r18
+    push %r19
     push %fp
     push %r28 // @ret
 
@@ -93,6 +103,16 @@ asm("
 
     pop %r28 // @ret
     pop %fp
+    pop %r19
+    pop %r18
+    pop %r17
+    pop %r16
+    pop %r15
+    pop %r14
+    pop %r13
+    pop %r12
+    pop %r11
+    pop %r10
     pop %r9
     pop %r8
     pop %r7
@@ -217,6 +237,16 @@ int main() {
     // don't need to put pc: it's already set by convention
     push %r0 // psr
 
+    push %r0
+    push %r0
+    push %r0
+    push %r0
+    push %r0
+    push %r0
+    push %r0
+    push %r0
+    push %r0
+    push %r0
     push %r0
     push %r0
     push %r0
