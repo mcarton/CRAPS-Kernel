@@ -56,17 +56,17 @@
 
     We will also need to adapt the tools that have been developed for the
     original craps. Some aspects of the tools need to be reworked. For
-    instance, the additional RAM is not displayed. We would also like to have
-    tools that can work on Linux systems.
+    instance, the additional RAM is not displayed. They are also working
+    only on Windows, and we would also like to have them work on GNU/Linux systems.
     
-    Another important and time-consuming element will be to adapt the compiler
-    we made last year during a project, to make it generate the CRAPS assembly.
-    We will surely need to make other modifications to the compiler.
+    Another important and time-consuming element will be to adapt the C compiler
+    we made last year during a project, to make it generate the CRAPS assembly instead
+    of X86 assembly.
 
   \section{Method, Tools and Test Facilities}
     \subsection{Method and Tools}
     A room and two FPGAs have been made available for us to work.
-    The operating system will be written in C, once we have a functional
+    The operating system will be written in C once we have a functional
     compiler.
     At the end, we want to be able to run a few processes that will communicate
     with the user, and store data in permanent memory.
@@ -124,13 +124,22 @@
     A file with the actions (listing who did what and when) has been created.
 
   \section{Management of Risks}
-    \begin{itemize}
-      \item A FPGA can be damaged, making any test impossible. This is likely to
-          happen but we have two FPGAs and the possibility to have more in case
-          of problem.
-      \item We may not be able to integrate the RAM, leading to huge memory
-          limitations that may make the project impossible.
-    \end{itemize}
+
+    For each risk, we do the product $probability \times impact$.
+    \vspace{12pt}
+
+    \begin{tabular}{|p{0.8\textwidth}|r|}\hline
+        A FPGA can be damaged, making any test impossible. & $3 \times 3 = 9$ \\ \hline
+        \multicolumn{2}{|p{\textwidth}|}{This likely to happen and very problematic but we have two FPGAs and the possibility to have more in case of problem.} \\ \hline
+        \multicolumn{2}{|p{\textwidth}|}{Actually, we have 6 FPGAs, the risk is considered closed.} \\ \hline
+    \end{tabular}
+    \vspace{12pt}
+
+    \begin{tabular}{|p{0.8\textwidth}|r|}\hline
+        We may not be able to integrate the RAM, leading to huge memory limitations that may make the project impossible. & $2 \times 3 = 6$ \\ \hline
+        \multicolumn{2}{|p{\textwidth}|}{We can also use the BRAM integrated to the FPGA, but it is way smaller.} \\ \hline
+        \multicolumn{2}{|p{\textwidth}|}{In case of memory limitations, we can try to optimize for size the code we generate.} \\ \hline
+    \end{tabular}
 
   \section{Management of Change Requests}
     When a change request occurs from the client, we evaluate the additional
@@ -148,6 +157,7 @@
             operating system
       \item The test code we produce according to the software test plan
       \item The documentation, as described in the following section
+      \item The coding rules we imposed to ourselves
     \end{itemize}
 
   \section{Documentation}
@@ -163,54 +173,14 @@
     \end{itemize}
 
     \section{Deliveries}
-      The software will be delivered in several iterations, described in the
-      specifications. Each delivery will be accompanied by the corresponding
-      documentation.
-      Delivery dates:
-        TODO
+      The software will be delivered in several iterations.
+      Each delivery will be accompanied by the corresponding documentation.
 
-  \newpage
-  \begin{appendix}
-      \section{Tasks}
-      \begin{itemize}
-        \item Improvement of the processor
-          \begin{itemize}
-            \item the FPGA shall have access to the RAM to have more than
-              \SI{2}{kB} of memory
-            \item the FPGA shall be able to use the \textit{RS-232} serial port
-              to communicate with the user
-            \item the FPGA shall have a permanent storage, such as flash memory
-          \end{itemize}
-        \item Compiler
-          \begin{itemize}
-            \item the compiler shall have a CRAPS backend
-            \item the language shall be more similar to C
-              \begin{itemize}
-                \item operators shall have the same priority
-                \item users should be able to use arrays
-              \end{itemize}
-          \end{itemize}
-          \item Development of the OS
-            \begin{itemize}
-              \item test task 1: make a led blink
-              \item test task 2: communicate with the user
-                \begin{itemize}
-                  \item development of a mini-shell ?
-                  \item management of the I/O from the software
-                \end{itemize}
-              \item scheduler and process management
-              \item system calls and API of the OS:
-                \begin{itemize}
-                  \item very simple file system
-                  \item user I/O (using the serial port or other means)
-                  \item system task to manage the I/O?
-                  \item functions like \verb+malloc+, etc.
-                \end{itemize}
-            \end{itemize}
-        \item Report
-          \begin{itemize}
-            \item write the developer documentation
-          \end{itemize}
-      \end{itemize}
-  \end{appendix}
+      Delivery dates:
+      \begin{description}
+          \item{Version with basic functionalities} TODO
+          \item{RS-232 Version} TODO
+          \item{Version with persistent storage} If we have time ?
+      \end{description}
+
 \end{document}
