@@ -22,6 +22,8 @@ For now, we have only 4 types of interruptions:
   2 | btn[1] | The button 1 is pressed
   3 | btn[2] | The button 2 is pressed
   4 | btn[3] | The button 3 is pressed
+  5 | RS-232 | TODO
+  6 |   soft | A software interruption
 
 Note: button 0 is used for the reset.
 
@@ -58,6 +60,17 @@ lower priority is received, the corresponding interruption handler will be
 launched after the current one.
 If an interruption with a higher priority is received, the handler will be
 launched directly, and we will come back to the current handler after.
+
+Software interruption
+---------------------
+
+A new instruction has been added to launch a software interruption.
+Their bits are as follow:
+
+| 0 | 1 | 2 | 3 .. 8 | 9 ... 31 |
+|:-:|:-:|:-:|:------:|:--------:|
+| 0 | 1 | 1 | 000001 | *unused* |
+
 
 The interruption system in deep
 -------------------------------
