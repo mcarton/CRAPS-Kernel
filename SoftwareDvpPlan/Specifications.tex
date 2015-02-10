@@ -24,18 +24,17 @@
 \begin{document}
   \include{titlepage}
   \newpage
-    \section{V1 Specifications}
+    \section{Basic Functionalities}
       The first version consists of the most basic OS functionalities.
 
       \subsection{Improvement of the Processor}
         \begin{enumerate}
-          \item The processor should have access to at least \SI{32}{kB} of RAM.
-            The RAM should be accessed in a fast way, but the loss of a few
-            (less than 10) cycles is acceptable.
-          \item The processor should handle several interruptions sources, with
+          \item The processor shall have access to at least \SI{32}{kB} of RAM.
+            The RAM shall be accessed in less than 10 cycles.
+          \item The processor shall handle several interruptions sources, with
             a priority system. An interruption handler can only be interrupted
             by an interruption of a strictly higher priority.
-          \item Several registers should be added.
+          \item Several registers shall be added.
         \end{enumerate}
 
       \subsection{Compiler}
@@ -43,17 +42,17 @@
         higher level language to CRAPS assembly. For that purpose, we chose to
         reuse the compiler we wrote last year.
         \begin{enumerate}
-          \item The compiler input should be a subset of \textit{C89} (see
+          \item The compiler input shall be a subset of \textit{C89} (see
             appendix~\ref{app:C89} for details).
-          \item The compiler should generate valid CRAPS assembly.
+          \item The compiler shall generate valid CRAPS assembly.
         \end{enumerate}
 
       \subsection{Development of the OS}
         \begin{enumerate}
-          \item The OS should have a scheduler. There are no real-time
-          constraint (but it should switch regularly, at least 10 times per
-          second). It should support at least 10 hard-coded tasks.
-          \item The OS should provide a basic library available to any program:
+          \item The OS shall have a scheduler. There are no real-time
+          constraint (but it shall switch regularly, at least 10 times per
+          second). It shall support at least 10 hard-coded tasks.
+          \item The OS shall provide a basic library available to any program:
             \begin{itemize}
               \item a \verb+malloc+ to allocate dynamic memory;
               \item functions to write on the LEDs and seven-segment display,
@@ -62,12 +61,11 @@
              \end{itemize}
         \end{enumerate}
 
-    \section{V2 Specifications}
-      The second version adds distant communications, and updated tools.
+    \section{RS-232 Version}
 
       \subsection{Improvement of the Processor}
         \begin{enumerate}
-          \item The processor should be connected to a serial port, to allow
+          \item The processor shall be connected to a serial port, to allow
             communication with other devices (like a computer). It can use the
             \textit{RS-232} port on the FPGA.
         \end{enumerate}
@@ -75,27 +73,25 @@
       \subsection{Compiler}
         \begin{enumerate}
           \item Enlarge the subset of \textit{C89}
-          \item The compiler should generate valid CRAPS assembly.
-          \item The assembly generated should be more optimized.
+          \item The assembly generated shall be more optimized.
         \end{enumerate}
 
       \subsection{Development of the OS}
         \begin{enumerate}
-          \item The OS should have a task communicating with the user through
+          \item The OS shall have a task communicating with the user through
             the \textit{RS-232}, in the form of a very simple shell.
           \item Extension to the OS library: an API to read/write to the serial
             port.
         \end{enumerate}
       \subsection{tools}
         \begin{enumerate}
-          \item The monitor should be available in Linux.
-          \item The monitor should display all the ram.
-          \item The Craps assembler should be available without a FPGA.
-          \item Adapt the tools to provide a good environment to be used by the
-            students.
+          \item The monitor shall be available in Linux.
+          \item The monitor shall display all the RAM.
+          \item The CRAPS assembler tool shall be available without a FPGA connected to the computer (it is the case with the tool we were given).
+          \item Adapt the tools to make them work on Linux (they are working only on Windows for now).
         \end{enumerate}
 
-    \section{Further Development}
+    \section{Version with persistent storage}
       If we have enough time, it would be interesting to access the flash memory
       present on the board. This implies the development of a SHDL/VHDL module
       and the OS code to use it. With this improvements, we could:
@@ -121,13 +117,13 @@
         \item an \text{x86} back-end
       \end{itemize}
 
-      \noindent The \textit{V1} should add:
+      \noindent The \textit{V1} shall add:
       \begin{itemize}
         \item a \text{CRAPS} back-end
         \item global variables
         \item exported functions
         \item \textit{for} loop
-        \item missing operators
+        \item missing operators (address operator, bitwise operators, bit shift)
       \end{itemize}
 
       \noindent The following elements are planned for the \textit{V2}:
