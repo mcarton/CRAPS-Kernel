@@ -20,6 +20,19 @@
   \and Pierre-Louis Michel
 }
 
+\newcommand{\risk}[4]{%
+  \noindent
+  \begin{tabular}{|p{0.8\textwidth}|c|}
+      \hline
+      #2 & $#1$
+    \\\hline
+      \multicolumn{2}{|p{\textwidth}|}{#3}
+    \\\hline
+      \multicolumn{2}{|p{\textwidth}|}{#4}
+    \\\hline
+  \end{tabular}
+}
+
 \begin{document}
   \include{titlepage}
   \tableofcontents
@@ -56,12 +69,12 @@
 
     We will also need to adapt the tools that have been developed for the
     original craps. Some aspects of the tools need to be reworked. For
-    instance, the additional RAM is not displayed. They are also working
-    only on Windows, and we would also like to have them work on GNU/Linux systems.
-    
+    instance, the additional RAM is not displayed. They are also working only on
+    Windows, and we would also like to have them work on GNU/Linux systems.
+
     Another important and time-consuming element will be to adapt the C compiler
-    we made last year during a project, to make it generate the CRAPS assembly instead
-    of X86 assembly.
+    we made last year during a project, to make it generate the CRAPS assembly
+    instead of x86 assembly.
 
   \section{Method, Tools and Test Facilities}
     \subsection{Method and Tools}
@@ -128,18 +141,26 @@
     For each risk, we do the product $probability \times impact$.
     \vspace{12pt}
 
-    \begin{tabular}{|p{0.8\textwidth}|r|}\hline
-        A FPGA can be damaged, making any test impossible. & $3 \times 3 = 9$ \\ \hline
-        \multicolumn{2}{|p{\textwidth}|}{This likely to happen and very problematic but we have two FPGAs and the possibility to have more in case of problem.} \\ \hline
-        \multicolumn{2}{|p{\textwidth}|}{Actually, we have 6 FPGAs, the risk is considered closed.} \\ \hline
-    \end{tabular}
+    \risk{3 \times 3 = 9}{
+      A FPGA can be damaged, making any test impossible.
+    }{
+      This likely to happen and very problematic but we have two FPGAs and the
+      possibility to have more in case of problem.
+    }{
+      Actually, we have 6 FPGAs, the risk is considered closed.
+    }
+
     \vspace{12pt}
 
-    \begin{tabular}{|p{0.8\textwidth}|r|}\hline
-        We may not be able to integrate the RAM, leading to huge memory limitations that may make the project impossible. & $2 \times 3 = 6$ \\ \hline
-        \multicolumn{2}{|p{\textwidth}|}{We can also use the BRAM integrated to the FPGA, but it is way smaller.} \\ \hline
-        \multicolumn{2}{|p{\textwidth}|}{In case of memory limitations, we can try to optimize for size the code we generate.} \\ \hline
-    \end{tabular}
+    \risk{2 \times 3 = 6}{
+      We may not be able to integrate the RAM, leading to huge memory
+      limitations that may make the project impossible.
+    }{
+      We can also use the BRAM integrated to the FPGA, but it is way smaller.
+    }{
+      In case of memory limitations, we can try to optimize for size the code we
+      generate.
+    }
 
   \section{Management of Change Requests}
     When a change request occurs from the client, we evaluate the additional
@@ -157,8 +178,11 @@
             operating system
       \item The test code we produce according to the software test plan
       \item The documentation, as described in the following section
-      \item The coding rules we imposed to ourselves
     \end{itemize}
+
+    We impose some coding rules for what we do, but the project contains code
+    from different preexisting projects with no common coding rules, so it is
+    difficult to keep consistent.
 
   \section{Documentation}
     As the system will be modular and expected to be used by students, a
@@ -166,7 +190,7 @@
 
     \begin{itemize}
       \item User Manual
-      \item Modifications of the CRAPS processor
+      \item Modifications we did to the CRAPS processor
       \item This present Software Development Plan
       \item The specifications
       \item The test plan and test reports
@@ -178,9 +202,8 @@
 
       Delivery dates:
       \begin{description}
-          \item{Version with basic functionalities} TODO
-          \item{RS-232 Version} TODO
-          \item{Version with persistent storage} If we have time ?
+        \item{Version with basic functionalities} TODO
+        \item{RS-232 Version} TODO
+        \item{Version with persistent storage} If we have time ?
       \end{description}
-
 \end{document}
