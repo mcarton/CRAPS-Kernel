@@ -1,0 +1,9 @@
+module encodeurpriorite16(e[15..0]: num[3..0], act)
+  encodeurpriorite8(e[7..0]: num_low[2..0], act_low);
+  encodeurpriorite8(e[15..8]: num_high[2..0], act_high);
+  act = act_low + act_high;
+  num[0] = num_high[0]*act_high + num_low[0]*/act_high*act_low;
+  num[1] = num_high[1]*act_high + num_low[1]*/act_high*act_low;
+  num[2] = num_high[2]*act_high + num_low[2]*/act_high*act_low;
+  num[3] = act_high;
+end module

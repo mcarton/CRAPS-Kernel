@@ -15,7 +15,7 @@ fitted this instruction. Their bits are as follow:
 | 0 | 1 | 1 | *op* | *unused* |   *reg*   |
 
 *op* represents the operation to be done. The only operation supported at the
-moment is `0000000` which is the test-and-set operation but other similar
+moment is `000000` which is the test-and-set operation but other similar
 instructions could be added such as test-and-reset, test-and-complement or
 compare-and-swap.
 

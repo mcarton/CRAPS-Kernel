@@ -21,12 +21,11 @@ module interruptions(rst, clk, pwm_out, button[2..0], handle_int: int_id[3..0])
 
   // les interruptions non mappées sont mises à 0
   int[0] = 0;
-  int[7..5] = 0;
+  int[15..5] = 0;
 
-  int_mem[7..0] := /rst_int[7..0]*int_mem[7..0] + int[7..0]*/int_mem[7..0];
-  int_mem[7..0].rst = rst;
-  int_mem[7..0].clk = clk;
+  int_mem[15..0] := /rst_int[15..0]*int_mem[15..0] + int[15..0]*/int_mem[15..0];
+  int_mem[15..0].rst = rst;
+  int_mem[15..0].clk = clk;
 
-  encodeurpriorite8(int_mem[7..0]: int_id[2..0], act);
-  int_id[3] = 0;
+  encodeurpriorite16(int_mem[15..0]: int_id[3..0], act);
 end module
