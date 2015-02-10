@@ -2,7 +2,7 @@ module: sequencer
 reset: rst
 clock: clk
 inputs: mon_req, mon_cmd[3..0], monitor[37..0], break, run, ir[31..0], N, Z, V, C, curr_int[3..0], waiting_int[3..0]
-outputs: write, oe_num[1..0], areg[4..0], breg[4..0], dreg[4..0], cmd_ual[5..0], handle_int
+outputs: write, oe_num[1..0], areg[4..0], breg[4..0], dreg[4..0], cmd_ual[5..0], soft_int, handle_int
 added_outputs: state[4..0], mon_ack
 
 ++	eq4(mon_cmd[3..0], 0b0000, memReadCmd);
@@ -35,6 +35,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 21,
       cmd_ual[5..0] = 0b000000,
+      soft_int = 0,
       handle_int = 0,
       write = 0;
 
@@ -47,6 +48,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 0,
       cmd_ual[5..0] = 0b000000,
+      soft_int = 0,
       handle_int = 0,
       write = 0;
 
@@ -59,6 +61,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 22,
       cmd_ual[5..0] = 0b000000,
+      soft_int = 0,
       handle_int = 0,
       write = 0;
 
@@ -71,6 +74,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 22,
       dreg[4..0] = 0,
       cmd_ual[5..0] = 0b101000,
+      soft_int = 0,
       handle_int = 0,
       write = 1;
 
@@ -85,6 +89,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 21,
       cmd_ual[5..0] = 0b000000,
+      soft_int = 0,
       handle_int = 0,
       write = 0;
 
@@ -97,6 +102,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 0,
       cmd_ual[5..0] = 0b000000,
+      soft_int = 0,
       handle_int = 0,
       write = 0;
 
@@ -109,6 +115,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 0,
       cmd_ual[5..0] = 0b000000,
+      soft_int = 0,
       handle_int = 0,
       write = 0;
 
@@ -126,6 +133,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = monitor[4..0],
       dreg[4..0] = 0,
       cmd_ual[5..0] = 0b101000,
+      soft_int = 0,
       handle_int = 0,
       write = 0;
 
@@ -138,6 +146,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = monitor[4..0],
       dreg[4..0] = 0,
       cmd_ual[5..0] = 0b101000,
+      soft_int = 0,
       handle_int = 0,
       write = 0;
 
@@ -150,6 +159,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 0,
       cmd_ual[5..0] = 0b000000,
+      soft_int = 0,
       handle_int = 0,
       write = 0;
 
@@ -164,6 +174,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 0,
       cmd_ual[5..0] = 0b000000,
+      soft_int = 0,
       handle_int = 0,
       write = 0;
 
@@ -176,6 +187,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 0,
       cmd_ual[5..0] = 0b000000,
+      soft_int = 0,
       handle_int = 0,
       write = 0;
 
@@ -188,6 +200,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = wdreg[4..0],
       cmd_ual[5..0] = 0b000000,
+      soft_int = 0,
       handle_int = 0,
       write = 0;
 
@@ -203,6 +216,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 0,
       cmd_ual[5..0] = 0b000000,
+      soft_int = 0,
       handle_int = 0,
       write = 0;
 
@@ -215,6 +229,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 0,
       cmd_ual[5..0] = 0b000000,
+      soft_int = 0,
       handle_int = 0,
       write = 0;
 
@@ -227,6 +242,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 0,
       cmd_ual[5..0] = 0b000000,
+      soft_int = 0,
       handle_int = 0,
       write = 0;
 
@@ -239,6 +255,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 31,
       cmd_ual[5..0] = 0b000000,
+      soft_int = 0,
       handle_int = 0,
       write = 0;
 
@@ -251,6 +268,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 31,
       cmd_ual[5..0] = 0b000000,
+      soft_int = 0,
       handle_int = 0,
       write = 0;
 
@@ -266,6 +284,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 31,
       cmd_ual[5..0] = 0b000000,
+      soft_int = 0,
       handle_int = 0,
       write = 0;
 
@@ -278,6 +297,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 31,
       cmd_ual[5..0] = 0b000000,
+      soft_int = 0,
       handle_int = 0,
       write = 0;
 
@@ -294,6 +314,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = ir[4..0],
       dreg[4..0] = ir[29..25],
       cmd_ual[5..0] = ir[24..19], // op
+      soft_int = 0,
       handle_int = 0,
       write = 0;
 
@@ -307,6 +328,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 20,
       dreg[4..0] = 30,
       cmd_ual[5..0] = 0b000000, // add
+      soft_int = 0,
       handle_int = 0,
       write = 0;
 
@@ -323,6 +345,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 21,
       cmd_ual[5..0] = 0b100000, // signext13
+      soft_int = 0,
       handle_int = 0,
       write = 0;
 
@@ -336,6 +359,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 21,
       dreg[4..0] = ir[29..25],
       cmd_ual[5..0] = ir[24..19], // op
+      soft_int = 0,
       handle_int = 0,
       write = 0;
 
@@ -352,6 +376,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = ir[4..0],
       dreg[4..0] = 21,
       cmd_ual[5..0] = 0b000000, // add
+      soft_int = 0,
       handle_int = 0,
       write = 0;
 
@@ -368,6 +393,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 21,
       cmd_ual[5..0] = 0b100000, // signext13
+      soft_int = 0,
       handle_int = 0,
       write = 0;
 
@@ -381,6 +407,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 21,
       dreg[4..0] = 21,
       cmd_ual[5..0] = 0b000000, // add
+      soft_int = 0,
       handle_int = 0,
       write = 0;
 
@@ -397,6 +424,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = ir[29..25],    // écriture dans rd
       cmd_ual[5..0] = 0b000000, // opération neutre
+      soft_int = 0,
       handle_int = 0,
       write = 0;
 
@@ -409,6 +437,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = ir[29..25],    // écriture dans rd
       cmd_ual[5..0] = 0b000000, // opération neutre
+      soft_int = 0,
       handle_int = 0,
       write = 0;
 
@@ -425,6 +454,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = ir[29..25], // %rd sur le bus D par nopb
       dreg[4..0] = 0,
       cmd_ual[5..0] = 0b101000, // nopb
+      soft_int = 0,
       handle_int = 0,
       write = 1;
 
@@ -441,6 +471,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 21,            // tmp1
       cmd_ual[5..0] = 0b000000,   // no-op
+      soft_int = 0,
       handle_int = 0,
       write = 0;
 
@@ -453,6 +484,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 21,            // tmp1
       cmd_ual[5..0] = 0b000000,   // no-op
+      soft_int = 0,
       handle_int = 0,
       write = 0;
 
@@ -465,6 +497,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 20,            // == 1
       dreg[4..0] = 0,             // %r0
       cmd_ual[5..0] = 0b010100,   // subcc
+      soft_int = 0,
       handle_int = 0,
       write = 0;
 
@@ -477,9 +510,26 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 20,            // == 1
       dreg[4..0] = 0,
       cmd_ual[5..0] = 0b101000,   // nopb
+      soft_int = 0,
       handle_int = 0,
       write = 1;
 
+
+///////////////////////////        SOFTWARE INTERRUPTION          ////////////////////////////////
+
+  decode -> pcplus1
+    when
+      /ir[31]*ir[30]*ir[29]
+        */ir[28]*/ir[27]*/ir[26]*/ir[25]*/ir[24]*ir[23]
+    outputs
+      oe_num[1..0] = 0b01,
+      areg[4..0] = 0,
+      breg[4..0] = 0,
+      dreg[4..0] = 0,
+      cmd_ual[5..0] = 0b000000,
+      soft_int = 1,
+      handle_int = 0,
+      write = 0;
 
 ///////////////////////////     INSTRUCTIONS DE BRANCHEMENT       ////////////////////////////////
 
@@ -517,6 +567,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 20,
       dreg[4..0] = 30,
       cmd_ual[5..0] = 0b000000, // add
+      soft_int = 0,
       handle_int = 0,
       write = 0;
 
@@ -530,6 +581,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 21,
       cmd_ual[5..0] = 0b100001,
+      soft_int = 0,
       handle_int = 0,
       write = 0;
 
@@ -543,6 +595,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 21,
       dreg[4..0] = 30,
       cmd_ual[5..0] = 0b000000, // add
+      soft_int = 0,
       handle_int = 0,
       write = 0;
 
@@ -559,6 +612,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = ir[28..24],
       cmd_ual[5..0] = 0b100011, // sethi
+      soft_int = 0,
       handle_int = 0,
       write = 0;
 
@@ -575,6 +629,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 20,
       dreg[4..0] = 29,
       cmd_ual[5..0] = 0b000100, // sub
+      soft_int = 0,
       handle_int = 0,
       write = 0;
 
@@ -588,6 +643,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 30,
       dreg[4..0] = 0,
       cmd_ual[5..0] = 0b101000, // nopb
+      soft_int = 0,
       handle_int = 0,
       write = 1;
 
@@ -601,6 +657,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 20,
       dreg[4..0] = 29,
       cmd_ual[5..0] = 0b000100, // sub
+      soft_int = 0,
       handle_int = 0,
       write = 0;
 
@@ -614,6 +671,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 25,
       dreg[4..0] = 0,
       cmd_ual[5..0] = 0b101000, // nopb
+      soft_int = 0,
       handle_int = 0,
       write = 1;
 
@@ -627,6 +685,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 0,
       cmd_ual[5..0] = 0b000000,
+      soft_int = 0,
       handle_int = 1,
       write = 0;
 
@@ -640,6 +699,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 21,
       cmd_ual[5..0] = 0b100100, // and15
+      soft_int = 0,
       handle_int = 0,
       write = 0;
 
@@ -653,6 +713,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 30,
       cmd_ual[5..0] = 0b000000,
+      soft_int = 0,
       handle_int = 0,
       write = 0;
 
@@ -665,6 +726,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 30,
       cmd_ual[5..0] = 0b000000,
+      soft_int = 0,
       handle_int = 0,
       write = 0;
 
@@ -681,6 +743,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 25,
       cmd_ual[5..0] = 0b000000,
+      soft_int = 0,
       handle_int = 0,
       write = 0;
 
@@ -693,6 +756,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 25,
       cmd_ual[5..0] = 0b000000,
+      soft_int = 0,
       handle_int = 0,
       write = 0;
 
@@ -707,6 +771,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 20,
       dreg[4..0] = 29,
       cmd_ual[5..0] = 0b000000,
+      soft_int = 0,
       handle_int = 0,
       write = 0;
 
@@ -720,6 +785,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 30,
       cmd_ual[5..0] = 0b000000,
+      soft_int = 0,
       handle_int = 0,
       write = 0;
 
@@ -732,6 +798,7 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 0,
       dreg[4..0] = 30,
       cmd_ual[5..0] = 0b000000,
+      soft_int = 0,
       handle_int = 0,
       write = 0;
 
@@ -745,5 +812,6 @@ added_outputs: state[4..0], mon_ack
       breg[4..0] = 20,
       dreg[4..0] = 29,
       cmd_ual[5..0] = 0b000000,
+      soft_int = 0,
       handle_int = 0,
       write = 0;
