@@ -5,6 +5,7 @@ import org.jcb.craps.crapsc.java.*;
 
 public class SourceContext {
     private File sourceFile;
+    private File outputFile;
     private boolean sourceModified;
     private boolean highlightsExists;
     private ObjModule symbolTable;
@@ -12,14 +13,16 @@ public class SourceContext {
 
     public SourceContext() {
         sourceFile = null;
+        outputFile = null;
         sourceModified = false;
         highlightsExists = false;
         symbolTable = new ObjModule();
         objModule = new ObjModule();
     }
 
-    public SourceContext(File sourceFile) {
+    public SourceContext(File sourceFile, File outputFile) {
         this.sourceFile = sourceFile;
+        this.outputFile = outputFile;
         sourceModified = false;
         highlightsExists = false;
         symbolTable = new ObjModule();
@@ -37,6 +40,14 @@ public class SourceContext {
 
     public void setSourceFile(File sourceFile) {
         this.sourceFile = sourceFile;
+    }
+
+    public File getOutputFile() {
+        return outputFile;
+    }
+
+    public void setOutputFile(File outputFile) {
+        this.outputFile = outputFile;
     }
 
     public String getTitle() {
@@ -62,5 +73,9 @@ public class SourceContext {
 
     public ObjModule getObjModule() {
         return symbolTable;
+    }
+
+    public void save() throws IOException {
+        symbolTable.save(outputFile);
     }
 }

@@ -14,36 +14,46 @@ public class CRAPSC implements Serializable {
         throw new CRAPSException(Messages.getString("CRAPS.error", a));
     }
 
-    private static File parseArguments(String[] args) throws CRAPSException {
-        String fileName = null;
+    private static SourceContext parseArguments(String[] args) throws CRAPSException {
+        String sourceFileName = null;
+        String outputFileName = null;
 
         for (int i = 0; i < args.length; i++) {
             String opt = args[i];
             if(opt.equals("-h") || opt.equals("--help")) { /* -h, --help */
                 help();
             }
-            else if(fileName == null) { /* FILE.asm */
+            else if((opt.equals("-o") || opt.equals("--output"))
+                        && i + 1 < args.length) {
+                outputFileName = args[i + 1];
+                i++;
+            }
+            else if(sourceFileName == null) { /* FILE.asm */
                 if (!opt.endsWith(".asm")) {
                     error(Messages.getString("CRAPS.ext_error"));
                 }
 
-                fileName = opt;
+                sourceFileName = opt;
             }
             else {
                 error(Messages.getString("CRAPS.unknown_option", opt));
             }
         }
 
-        if(fileName == null) {
+        if(sourceFileName == null) {
             error(Messages.getString("CRAPS.file_error"));
         }
 
-        return new File(fileName);
+        if(outputFileName == null) {
+            outputFileName = sourceFileName.substring(0, sourceFileName.length() - 4) + ".obj";
+        }
+
+        return new SourceContext(new File(sourceFileName), new File(outputFileName));
     }
 
     public static void main(String[] args) {
         try {
-            SourceContext sc = new SourceContext(parseArguments(args));
+            SourceContext sc = parseArguments(args);
             Assembler assembler = new Assembler();
 
             if(assembler.assemble(sc) > 0) {
@@ -54,11 +64,15 @@ public class CRAPSC implements Serializable {
                 System.exit(1);
             }
             else {
-                System.out.println("TODO"); // TODO
+                sc.save();
             }
         }
         catch (CRAPSException e) {
             // Internal errors
+            System.err.println(e.getMessage());
+            System.exit(1);
+        }
+        catch (IOException e) {
             System.err.println(e.getMessage());
             System.exit(1);
         }
