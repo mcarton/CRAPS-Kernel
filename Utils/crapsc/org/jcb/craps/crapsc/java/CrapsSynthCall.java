@@ -37,7 +37,6 @@ public class CrapsSynthCall extends CrapsInstrDirecSynth {
 	private long getDisp(ObjModule localSymbols, ObjModule globalSymbols) {
 		if (cacheDisp != 33554432L) return cacheDisp;
 		cacheDisp = targetAddr.getValue(localSymbols, globalSymbols, this) - getAddress() - 1;
-		System.out.println("target=" + targetAddr.getValue(localSymbols, globalSymbols, this) + ", addr=" + getAddress());
 		return cacheDisp;
 	}
 

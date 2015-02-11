@@ -1,4 +1,5 @@
 option k = 2;
+option version = 1.0.0;
 
 syn	lines :		SourceLines
   for PROG ;
@@ -159,13 +160,8 @@ PROG -> #init LINES ;
         end
 }
 
-LINES -> #print ;
-#print {
-	local
-	do
-		write LINES^hlines @ "%N" ;
-	end
-}
+LINES -> ;
+
 LINES -> #trans LINE #add LINES ;
 #trans {
 	local
