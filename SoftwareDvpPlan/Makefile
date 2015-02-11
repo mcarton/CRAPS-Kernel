@@ -1,4 +1,4 @@
-all: ProjectCharter.pdf Specifications.pdf Gantt.pdf
+all: FinalReport.pdf ProjectCharter.pdf Specifications.pdf Gantt.pdf
 
 export TEXC = latexmk -pdflatex="lualatex %O %S" -pdf -dvi- -ps-
 
