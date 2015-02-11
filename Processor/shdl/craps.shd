@@ -1,4 +1,4 @@
-module Nexys(mclk, btn[3..0], sw[7..0], ld[7..0], ssg[7..0], an[3..0], pdb[7..0], astb, dstb, pwr, pwait)
+module Nexys(mclk, btn[3..0], sw[7..0], ld[7..0], ssg[7..0], an[3..0], pdb[7..0], ja1, ja2, astb, dstb, pwr, pwait)
   rst = btn[0];
   irq = pwm_out + btn[3];
   count24(rst, mclk, 1 : clock[23..0], ripple);
@@ -29,8 +29,8 @@ module Nexys(mclk, btn[3..0], sw[7..0], ld[7..0], ssg[7..0], an[3..0], pdb[7..0]
   sequencer(rst, clk, mon_req, mon_cmd[3..0], monitor[37..0], break, run, ir[31..0], N, Z, V, C, curr_int[3..0], waiting_int[3..0] :
             write, oe_num[1..0], areg[4..0], breg[4..0], dreg[4..0], cmd_ual[5..0], soft_int, handle_int, state[4..0], mon_ack);
 
-  micromachine(rst, clk, areg[4..0], breg[4..0], dreg[4..0], cmd_ual[5..0], oe_num[1..0], write, soft_int, handle_int,
-               monitor[31..0], btn[3..1], sw[7..0], swClk, ssgClk, pwmClk :
+  micromachine(rst, clk, mclk, areg[4..0], breg[4..0], dreg[4..0], cmd_ual[5..0], oe_num[1..0], write, soft_int, handle_int,
+               monitor[31..0], btn[3..1], sw[7..0], swClk, ssgClk, pwmClk, ja1 :
                dbus[31..0], N, Z, V, C, ir[31..0], break, curr_int[3..0], waiting_int[3..0],
-               ld[7..0], ssg[7..0], an[3..0], pwm_out);
+               ld[7..0], ssg[7..0], an[3..0], pwm_out, ja2);
 end module
