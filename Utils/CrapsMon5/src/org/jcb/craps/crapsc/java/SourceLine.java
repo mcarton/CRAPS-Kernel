@@ -2,7 +2,6 @@ package org.jcb.craps.crapsc.java;
 
 import java.util.*;
 import java.text.*;
-import org.jcb.tools.*;
 import org.jcb.craps.*;
 import org.jcb.craps.crapsc.java.*;
 
@@ -44,8 +43,8 @@ public class SourceLine {
 	}
 
 	public String format() {
-		String slineno = Strings.formatd0(lineno + "", 5);
-		String slabel = Strings.formats(label + ":", 10);
+		String slineno = lineno + "";
+		String slabel = label + ":";
 		String sinstr = "";
 		return (slineno + "  " + slabel + "     " + sinstr + "   ;" + comment);
 	}

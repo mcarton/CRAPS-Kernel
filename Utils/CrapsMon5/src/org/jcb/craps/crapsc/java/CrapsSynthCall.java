@@ -1,6 +1,5 @@
 package org.jcb.craps.crapsc.java;
 
-import org.jcb.tools.*;
 import org.jcb.craps.*;
 import org.jcb.craps.crapsc.java.*;
 
@@ -38,7 +37,6 @@ public class CrapsSynthCall extends CrapsInstrDirecSynth {
 	private long getDisp(ObjModule localSymbols, ObjModule globalSymbols) {
 		if (cacheDisp != 33554432L) return cacheDisp;
 		cacheDisp = targetAddr.getValue(localSymbols, globalSymbols, this) - getAddress() - 1;
-		System.out.println("target=" + targetAddr.getValue(localSymbols, globalSymbols, this) + ", addr=" + getAddress());
 		return cacheDisp;
 	}
 
