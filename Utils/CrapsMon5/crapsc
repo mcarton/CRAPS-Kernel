@@ -1,7 +1,0 @@
-#!/bin/sh
-
-CRAPSMON_DIR=$(dirname "${BASH_SOURCE[0]}")
-JDIR=/usr/bin
-JAVA="$JDIR"/java
-
-$JAVA -ea -classpath "$CRAPSMON_DIR/build" org.mmek.craps.crapsc.CRAPSC $*
