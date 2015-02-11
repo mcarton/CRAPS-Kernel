@@ -542,8 +542,24 @@ public class CrapsEmu extends JFrame {
 				File file = objectFileDialog.getSelectedFile();
 				ObjModule objModule = ObjModule.load(file);
 				crapsMachine.addObjModule(objModule);
+
 				// update views
 				updateViews();
+
+				// upload code in memory
+				Long [] newKeys = (Long[]) objModule.getKeySet().toArray(new Long[0]);
+				Map.Entry[] newEntries = (Map.Entry[]) objModule.getEntrySet().toArray(new Map.Entry[0]);
+				for (int i = 0; i < newEntries.length; i++) {
+					int addr = newKeys[i].intValue();
+					ObjEntry oe = objModule.get(addr);
+					long val = Long.parseLong(oe.word, 2);
+					runMemoryModel.setValue((long) addr, val);
+				}
+
+				runMemoryModel.fireTableChanged(new TableModelEvent(runMemoryModel));
+				TableColumn col1 = runMemoryTable.getColumnModel().getColumn(1);
+				col1.setPreferredWidth(100);
+				setTabIndex(tabbedPane.getTabCount() - 1);
 
 			} catch(ObjConflictException ex) {
 				JOptionPane.showMessageDialog(frame, "Le code de ce module entre en conflit avec celui des autres, a partir de l'adresse : " + ex.getAddr());
