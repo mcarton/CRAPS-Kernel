@@ -1,7 +1,5 @@
 package org.jcb.craps.crapsc.java;
 
-import org.jcb.tools.*;
-
 
 public class SumExpr {
 

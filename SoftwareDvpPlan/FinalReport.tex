@@ -1,0 +1,42 @@
+\documentclass{article}
+
+\usepackage{afterpage}
+\usepackage{fontspec}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{lscape}
+\usepackage{siunitx}
+\usepackage{titling}
+
+\newcommand*{\subtitle}[1]{\gdef\thesubtitle{#1}}
+
+\title{CRAPS Kernel}
+\subtitle{Final Report}
+\author{
+       Maxime Arthaud
+  \and Korantin Auguste
+  \and Martin Carton
+  \and Étienne Lebrun
+  \and Pierre-Louis Michel
+}
+
+\begin{document}
+  \include{titlepage}
+  \tableofcontents
+  \newpage
+
+  \section{Introduction}
+    This project, suggested by Daniel Hagimont, is based on the CRAPS processor
+    developed by Jean-Christophe Buisson and used in the first-year CPU
+    architecture courses at ENSEEIHT. The goal is to develop an operating
+    system that would run on top of that processor.
+
+    The reasons for that project are that before, it was only possible to do a
+    little of assembly directly on the processor to see it work, but nothing
+    more.  After our project, it should be possible for students to really see
+    the layer that goes on top of the CPU in modern computers: the operating
+    system. So that the students can really make the link between the processor
+    they just built and the computer and underlying operating systems they use
+    everyday.
+
+\end{document}

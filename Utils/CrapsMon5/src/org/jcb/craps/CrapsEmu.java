@@ -1,4 +1,3 @@
-
 package org.jcb.craps;
 
 import java.awt.event.*;
@@ -13,11 +12,15 @@ import javax.swing.border.*;
 import javax.swing.filechooser.*;
 import java.io.*;
 import java.net.*;
-import mg.egg.eggc.libjava.*;
-import mg.egg.eggc.libegg.base.*;
 import org.jcb.tools.*;
 import org.jcb.shdl.*;
 import org.jcb.craps.crapsc.java.*;
+
+import mg.egg.eggc.runtime.libjava.ISourceUnit;
+import mg.egg.eggc.runtime.libjava.EGGException;
+import mg.egg.eggc.runtime.libjava.problem.IProblem;
+import mg.egg.eggc.runtime.libjava.problem.ProblemReporter;
+import mg.egg.eggc.runtime.libjava.problem.ProblemRequestor;
 
 
 public class CrapsEmu extends JFrame {
@@ -542,8 +545,24 @@ public class CrapsEmu extends JFrame {
 				File file = objectFileDialog.getSelectedFile();
 				ObjModule objModule = ObjModule.load(file);
 				crapsMachine.addObjModule(objModule);
+
 				// update views
 				updateViews();
+
+				// upload code in memory
+				Long [] newKeys = (Long[]) objModule.getKeySet().toArray(new Long[0]);
+				Map.Entry[] newEntries = (Map.Entry[]) objModule.getEntrySet().toArray(new Map.Entry[0]);
+				for (int i = 0; i < newEntries.length; i++) {
+					int addr = newKeys[i].intValue();
+					ObjEntry oe = objModule.get(addr);
+					long val = Long.parseLong(oe.word, 2);
+					runMemoryModel.setValue((long) addr, val);
+				}
+
+				runMemoryModel.fireTableChanged(new TableModelEvent(runMemoryModel));
+				TableColumn col1 = runMemoryTable.getColumnModel().getColumn(1);
+				col1.setPreferredWidth(100);
+				setTabIndex(tabbedPane.getTabCount() - 1);
 
 			} catch(ObjConflictException ex) {
 				JOptionPane.showMessageDialog(frame, "Le code de ce module entre en conflit avec celui des autres, a partir de l'adresse : " + ex.getAddr());
@@ -896,18 +915,38 @@ public class CrapsEmu extends JFrame {
 		boolean syntaxError = false;
 		ArrayList sourceLines = null;
 		try {
-			Options opts = new Options(null);
-			CRAPS compilo = new CRAPS(opts, source) ;
-			compilo.compile();
+			ISourceUnit su = new StringSourceUnit(source);
+
+			// Error management
+			ProblemReporter prp = new ProblemReporter(su);
+			ProblemRequestor prq = new ProblemRequestor(true);
+
+			// Start compilation
+			CRAPS compilo = new CRAPS(prp);
+			prq.beginReporting();
+
+			compilo.set_eval(true);
+			compilo.compile(su);
 			sourceLines = compilo.get_lines();
-		} catch(EGGException e){
-			syntaxError = true;
-			nbErr += 1;
-			if (e.getLine() == -1)
-				messages.addMessage("*** syntax error: " + e.getMsg() + "\n");
-			else
-				messages.addMessage("*** syntax error: " + e.getLine() + " : " + e.getMsg() + "\n");
+
+			// Handle errors
+			for (IProblem problem : prp.getAllProblems()) {
+				if (problem.isError()) {
+					syntaxError = true;
+					nbErr++;
+				}
+
+				messages.addMessage("*** syntax error line "
+								  + problem.getSourceLineNumber() + ": "
+								  + problem.getMessage() + "\n");
+			}
 		}
+		catch(Exception e) {
+			// internal error
+			e.printStackTrace();
+			System.exit(1);
+		}
+
 		if (syntaxError) return nbErr;
 
 		// second pass: try and resolve all references

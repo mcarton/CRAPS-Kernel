@@ -2,12 +2,6 @@ package org.mmek.craps.crapsc;
 
 import java.io.*;
 
-import mg.egg.eggc.runtime.libjava.SourceUnit;
-import mg.egg.eggc.runtime.libjava.problem.IProblem;
-import mg.egg.eggc.runtime.libjava.problem.ProblemReporter;
-import mg.egg.eggc.runtime.libjava.problem.ProblemRequestor;
-
-import org.jcb.craps.crapsc.java.CRAPS;
 
 public class CRAPSC implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -20,63 +14,66 @@ public class CRAPSC implements Serializable {
         throw new CRAPSException(Messages.getString("CRAPS.error", a));
     }
 
-    private static SourceUnit parseArguments(String[] args) throws CRAPSException {
-        String fileName = null;
+    private static SourceContext parseArguments(String[] args) throws CRAPSException {
+        String sourceFileName = null;
+        String outputFileName = null;
 
         for (int i = 0; i < args.length; i++) {
             String opt = args[i];
             if(opt.equals("-h") || opt.equals("--help")) { /* -h, --help */
                 help();
             }
-            else if(fileName == null) { /* FILE.asm */
+            else if((opt.equals("-o") || opt.equals("--output"))
+                        && i + 1 < args.length) {
+                outputFileName = args[i + 1];
+                i++;
+            }
+            else if(sourceFileName == null) { /* FILE.asm */
                 if (!opt.endsWith(".asm")) {
                     error(Messages.getString("CRAPS.ext_error"));
                 }
 
-                fileName = opt;
+                sourceFileName = opt;
             }
             else {
                 error(Messages.getString("CRAPS.unknown_option", opt));
             }
         }
 
-        if(fileName == null) {
+        if(sourceFileName == null) {
             error(Messages.getString("CRAPS.file_error"));
         }
 
-        return new SourceUnit(fileName);
+        if(outputFileName == null) {
+            outputFileName = sourceFileName.substring(0, sourceFileName.length() - 4) + ".obj";
+        }
+
+        return new SourceContext(new File(sourceFileName), new File(outputFileName));
     }
 
     public static void main(String[] args) {
         try {
-            SourceUnit source = parseArguments(args);
+            SourceContext sc = parseArguments(args);
+            Assembler assembler = new Assembler();
 
-            // Error management
-            ProblemReporter prp = new ProblemReporter(source);
-            ProblemRequestor prq = new ProblemRequestor(true);
+            if(assembler.assemble(sc) > 0) {
+                for(String message : assembler.getMessages()) {
+                    System.err.println("error: " + message);
+                }
 
-            // Start compilation
-            CRAPS compilo = new CRAPS(prp);
-            prq.beginReporting();
-
-            compilo.set_eval(true);
-            compilo.compile(source);
-
-            // Handle errors
-            for (IProblem problem : prp.getAllProblems())
-                prq.acceptProblem(problem);
-
-            prq.endReporting();
-            System.exit(prq.getFatal());
+                System.exit(1);
+            }
+            else {
+                sc.save();
+            }
         }
         catch (CRAPSException e) {
             // Internal errors
             System.err.println(e.getMessage());
             System.exit(1);
         }
-        catch (Exception e) {
-            // Other errors
-            e.printStackTrace();
+        catch (IOException e) {
+            System.err.println(e.getMessage());
             System.exit(1);
         }
     }

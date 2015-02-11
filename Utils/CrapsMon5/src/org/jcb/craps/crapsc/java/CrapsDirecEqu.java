@@ -1,7 +1,6 @@
 package org.jcb.craps.crapsc.java;
 
 import java.util.*;
-import org.jcb.tools.*;
 import org.jcb.craps.*;
 
 
