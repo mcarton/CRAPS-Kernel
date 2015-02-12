@@ -222,6 +222,12 @@ export int task4()
         *((int*)i+1) = 6;
         *ssegs = (int)i;
         syscall_free(i);
+        i = syscall_malloc(10);
+        void* j = syscall_malloc(10);
+        syscall_free(i);
+        void* k = syscall_malloc(5);
+        syscall_free(j);
+        syscall_free(k);
     }
 }
 
