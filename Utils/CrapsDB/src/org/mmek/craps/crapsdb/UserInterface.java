@@ -22,7 +22,6 @@ public class UserInterface {
     public UserInterface(CrapsApi api) {
         this.api = api;
 
-        this.commands.put("exit", new ExitCommand());
         this.commands.put("print", new PrintCommand(api));
         this.commands.put("run", new RunCommand(api));
         this.commands.put("step", new StepCommand(api));
@@ -33,22 +32,25 @@ public class UserInterface {
         Scanner sc = new Scanner(System.in);
         String cmd;
 
-        while(alive) {
+        while (true) {
             System.out.print("> ");
 
             try {
                 cmd = sc.nextLine();
             }
             catch(NoSuchElementException e) {
-                cmd = "exit";
+                break;
             }
 
+            if (cmd.equals("exit")) {
+                break;
+            }
 
             if (!cmd.isEmpty()) {
                 String[] splitCmd = cmd.split(" ");
                 Command command = commands.get(splitCmd[0]);
                 if (command != null) {
-                    alive = command.run(cmd);
+                    command.run(cmd);
                 }
                 else {
                     System.out.println("Unknown command: " + splitCmd[0]);
@@ -57,20 +59,13 @@ public class UserInterface {
         }
     }
 
-    class ExitCommand implements Command {
-        public boolean run(String command) {
-            return false;
-        }
-    }
-
     class RunCommand implements Command {
         CrapsApi api;
 
         RunCommand(CrapsApi api) { this.api = api; }
 
-        public boolean run(String command) throws CommException {
+        public void run(String command) throws CommException {
             api.run();
-            return true;
         }
     }
 
@@ -79,9 +74,8 @@ public class UserInterface {
 
         StepCommand(CrapsApi api) { this.api = api; }
 
-        public boolean run(String command) throws CommException {
+        public void run(String command) throws CommException {
             api.step();
-            return true;
         }
     }
 }

@@ -14,7 +14,7 @@ public class PrintCommand implements Command {
 
     PrintCommand(CrapsApi api) { this.api = api; }
 
-    public boolean run(String command) throws CommException {
+    public void run(String command) throws CommException {
         try {
             if (!impl(command)) {
                 System.out.println("format:\n\tprint %reg\n\tprint 0xADDR");
@@ -23,8 +23,6 @@ public class PrintCommand implements Command {
         catch (NumberFormatException e) {
             System.out.println("Invalid register or address");
         }
-
-        return true;
     }
 
     public boolean impl(String command) throws CommException {
