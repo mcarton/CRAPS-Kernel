@@ -23,9 +23,23 @@ public class HelpCommand implements Command {
         Matcher matcher = pattern.matcher(cmd);
         if (matcher.matches()) {
             cmd = matcher.group(1);
+
+            if (cmd.equals("exit")) {
+                System.out.println(
+                    "exit crapsdb, the program will continue on the board"
+                );
+            }
+
             for (Command command : commands) {
                 if (cmd.equals(command.name())) {
-                    System.out.println(command.help());
+                    if (command.help() == null) {
+                        System.out.println(
+                            cmd + " is so simple it does not even need help"
+                        );
+                    }
+                    else {
+                        System.out.println(command.help());
+                    }
                 }
             }
         }
