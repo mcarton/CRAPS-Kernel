@@ -97,7 +97,7 @@ public class ObjModule {
 		Iterator its = sym2val.keySet().iterator();
 		while (its.hasNext()) {
 			String sym = (String) its.next();
-			if (! isGlobalSymbol(sym)) continue;
+			if (isGlobalSymbol(sym)) continue;
 			String val = (String) sym2val.get(sym);
 			writer.println("sym " + sym + " " + val);
 		}
