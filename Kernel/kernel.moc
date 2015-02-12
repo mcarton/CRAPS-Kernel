@@ -29,9 +29,6 @@ struct process_table_t {
 
 struct process_table_t* process_table;
 
-// used internally by the malloc
-void *malloc_start;
-
 // implementation of the context switch
 asm("
 pwm_handler:
@@ -127,13 +124,64 @@ pwm_handler_afterreset:
     reti
 ")
 
-void* syscall_malloc(int size)
+///////////////////////////////////
+//            MALLOC
+
+// used internally by the malloc
+void *malloc_start;
+
+// Very simple system : in block. Before each block we have a header.
+// The last bit tell if the block is allocated or not.
+// The rest is the size of the block (so we shift >> 1, and we have the size)
+
+void* syscall_malloc(int size) // palkeo's malloc
 {
-    // dumb malloc implementation
-    void *old_malloc_start = malloc_start;
-    malloc_start = malloc_start + size;
-    return old_malloc_start;
+    int* c = (int*)malloc_start;
+    while((bool)((*c) & 1) || ((((*c) >> 1) < size) && ((bool)*c)))
+    {
+        c = c + ((*c) >> 1) + 1;
+    }
+    // c now points to an unused block header of the good size
+    int bs = (*c) >> 1;
+    if(bs == 0) // end of the blocklist
+    {
+        *c = (size << 1) + 1;
+        *(c + size + 1) = 0;
+    }
+    else
+    {
+        // TODO: Split the block
+        *c = (*c) | 1;
+    }
+    return (void*)c + 1;
 }
+
+int syscall_free(void* addr)
+{
+    int* c = (int*)malloc_start;
+    while(c < addr - 1)
+    {
+        c = c + ((*c) >> 1) + 1;
+        if(*c == 0)
+        {
+            return -1; // the address is after the last allocated block...
+        }
+    }
+    if((c != addr - 1) || (((*c) & 1) == 0)) // can't find block or already freed
+    {
+        return -1;
+    }
+    *c = (*c) & 0xFFFFFFFE;
+    if(*((int*) ((*c) >> 1) + 1) == 0)
+    {
+        *c = 0; // if it was the last block...
+    }
+    // TODO: Merge with the next block if it is empty
+    return 0;
+}
+
+//          END MALLOC
+///////////////////////////////////
 
 export int task1()
 {
@@ -169,7 +217,11 @@ export int task4()
     int *ssegs = (int*) 0xA0000000;
     while(true)
     {
-        *(ssegs + 1) = 0b1110;
+        void* i = syscall_malloc(2);
+        *((int*)i) = 7;
+        *((int*)i+1) = 6;
+        *ssegs = (int)i;
+        syscall_free(i);
     }
 }
 
@@ -177,6 +229,7 @@ int main() {
     pwm_count = 0;
     // /!\ Should be big enough not to overwrite the code !
     malloc_start = (void*)0x300;
+    *((int*)malloc_start) = 0;
 
     // process table
     process_table = (struct process_table_t*)syscall_malloc(sizeof(struct process_table_t));
