@@ -21,7 +21,7 @@ public class UserInterface {
         this.commands.add(new PrintCommand(api));
         this.commands.add(new RunCommand(api));
         this.commands.add(new SetCommand(api));
-        this.commands.add(new StepCommand(api));
+        this.commands.add(new StepCommand(api, new StatePrinter(api, objModule)));
     }
 
     public void loop() throws CommException {
@@ -79,8 +79,12 @@ public class UserInterface {
 
     class StepCommand implements Command {
         CrapsApi api;
+        StatePrinter sp;
 
-        StepCommand(CrapsApi api) { this.api = api; }
+        StepCommand(CrapsApi api, StatePrinter sp) {
+            this.api = api;
+            this.sp = sp;
+        }
 
         public String help() {
             return null;
@@ -92,6 +96,11 @@ public class UserInterface {
 
         public void run(String command) throws CommException {
             api.step();
+
+            sp.printRegisters();
+            sp.printAssembly();
+            sp.printStack();
+            sp.printEndLine();
         }
     }
 }
