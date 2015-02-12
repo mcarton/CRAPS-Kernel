@@ -17,15 +17,15 @@ public class UserInterface {
     private final String YELLOW = "\033[1;33m";
 
     private CrapsApi api;
-    private HashMap<String, Command> commands = new HashMap<>();
+    private ArrayList<Command> commands = new ArrayList<>();
 
     public UserInterface(CrapsApi api) {
         this.api = api;
 
-        this.commands.put("print", new PrintCommand(api));
-        this.commands.put("run", new RunCommand(api));
-        this.commands.put("set", new SetCommand(api));
-        this.commands.put("step", new StepCommand(api));
+        this.commands.add(new PrintCommand(api));
+        this.commands.add(new RunCommand(api));
+        this.commands.add(new SetCommand(api));
+        this.commands.add(new StepCommand(api));
     }
 
     public void loop() throws CommException {
@@ -48,13 +48,17 @@ public class UserInterface {
             }
 
             if (!cmd.isEmpty()) {
-                String[] splitCmd = cmd.split(" ");
-                Command command = commands.get(splitCmd[0]);
-                if (command != null) {
-                    command.run(cmd);
+                boolean found = false;
+                for (Command command : commands) {
+                    if (cmd.startsWith(command.name())) {
+                        command.run(cmd);
+                        found = true;
+                        break;
+                    }
                 }
-                else {
-                    System.out.println("Unknown command: " + splitCmd[0]);
+
+                if (!found) {
+                    System.out.println("Unknown command");
                 }
             }
         }
@@ -65,6 +69,10 @@ public class UserInterface {
 
         RunCommand(CrapsApi api) { this.api = api; }
 
+        public String name() {
+            return "run";
+        }
+
         public void run(String command) throws CommException {
             api.run();
         }
@@ -74,6 +82,10 @@ public class UserInterface {
         CrapsApi api;
 
         StepCommand(CrapsApi api) { this.api = api; }
+
+        public String name() {
+            return "step";
+        }
 
         public void run(String command) throws CommException {
             api.step();

@@ -14,6 +14,10 @@ public class SetCommand implements Command {
 
     SetCommand(CrapsApi api) { this.api = api; }
 
+    public String name() {
+        return "set";
+    }
+
     public void run(String command) throws CommException {
         try {
             if (!impl(command)) {

@@ -14,6 +14,10 @@ public class PrintCommand implements Command {
 
     PrintCommand(CrapsApi api) { this.api = api; }
 
+    public String name() {
+        return "print";
+    }
+
     public void run(String command) throws CommException {
         try {
             if (!impl(command)) {
