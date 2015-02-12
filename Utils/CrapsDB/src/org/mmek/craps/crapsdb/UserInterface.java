@@ -18,12 +18,14 @@ public class UserInterface {
         this.api = api;
         this.objModule = objModule;
 
+        Disassembler dis = new Disassembler(objModule);
         StatePrinter sp = new StatePrinter(api, objModule);
+        this.commands.add(new DisasmCommand(api, dis, sp));
         this.commands.add(new HelpCommand(commands));
         this.commands.add(new PrintCommand(api, sp));
         this.commands.add(new RunCommand(api));
         this.commands.add(new SetCommand(api));
-        this.commands.add(new StepCommand(api, sp));
+        this.commands.add(new StepCommand(api, dis, sp));
     }
 
     public void loop() throws CommException {
@@ -81,10 +83,12 @@ public class UserInterface {
 
     class StepCommand implements Command {
         CrapsApi api;
+        Disassembler dis;
         StatePrinter sp;
 
-        StepCommand(CrapsApi api, StatePrinter sp) {
+        StepCommand(CrapsApi api, Disassembler dis, StatePrinter sp) {
             this.api = api;
+            this.dis = dis;
             this.sp = sp;
         }
 
@@ -100,7 +104,7 @@ public class UserInterface {
             api.step();
 
             sp.printRegisters();
-            sp.printAssembly();
+            sp.printAssembly(dis);
             sp.printStack();
             sp.printEndLine();
         }

@@ -66,13 +66,18 @@ public class StatePrinter {
           + Colors.ALL_OFF;
     }
 
-    public void printAssembly() throws CommException {
+    public void printAssembly(Disassembler dis) throws CommException {
         System.out.println(title("code"));
 
-        Disassembler disas = new Disassembler(objModule);
         long pc = api.readRegister(30);
 
-        for(long addr = Math.max(0, pc - 3); addr <= pc + 5; addr++) {
+        printAssembly(pc-3, pc+5, pc, dis);
+    }
+
+    public void printAssembly(
+        long first, long last, long pc, Disassembler disas
+    ) throws CommException {
+        for(long addr = Math.max(0, first); addr <= last; addr++) {
             System.out.print(" 0x" + formatHexString(addr) + " | ");
 
             if (
