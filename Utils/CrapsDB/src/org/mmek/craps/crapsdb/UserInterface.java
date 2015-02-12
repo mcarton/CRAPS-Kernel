@@ -24,6 +24,7 @@ public class UserInterface {
 
         this.commands.put("print", new PrintCommand(api));
         this.commands.put("run", new RunCommand(api));
+        this.commands.put("set", new SetCommand(api));
         this.commands.put("step", new StepCommand(api));
     }
 
