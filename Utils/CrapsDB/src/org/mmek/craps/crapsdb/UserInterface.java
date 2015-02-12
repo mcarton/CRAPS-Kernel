@@ -22,6 +22,7 @@ public class UserInterface {
     public UserInterface(CrapsApi api) {
         this.api = api;
 
+        this.commands.add(new HelpCommand(commands));
         this.commands.add(new PrintCommand(api));
         this.commands.add(new RunCommand(api));
         this.commands.add(new SetCommand(api));
