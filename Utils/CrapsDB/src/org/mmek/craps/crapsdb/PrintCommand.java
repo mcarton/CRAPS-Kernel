@@ -8,17 +8,26 @@ import org.mmek.craps.crapsusb.CrapsApi;
 
 public class PrintCommand implements Command {
     CrapsApi api;
+    StatePrinter sp;
 
-    Pattern register = Pattern.compile("print +%r(\\d+)");
-    Pattern address  = Pattern.compile("print +0x(\\p{XDigit}+)");
+    Pattern register     = Pattern.compile("print +%r(\\d+)");
+    Pattern address      = Pattern.compile("print +0x(\\p{XDigit}+)");
+    Pattern addressRange = Pattern.compile(
+        "print +0x(\\p{XDigit}+) *\\.* *0x(\\p{XDigit}+)"
+    );
 
-    PrintCommand(CrapsApi api) { this.api = api; }
+    PrintCommand(CrapsApi api, StatePrinter sp) {
+        this.api = api;
+        this.sp = sp;
+    }
 
     public String help() {
         return
-            "format:\n"
+            "prints the value of a register, of an address or a range of addresses\n"
+          + "format:\n"
           + "\tprint %reg\n"
-          + "\tprint 0xADDR"
+          + "\tprint 0xADDR\n"
+          + "\tprint 0xBEGIN .. 0xEND"
         ;
     }
 
@@ -54,6 +63,16 @@ public class PrintCommand implements Command {
             long value = api.readMemory(address);
 
             System.out.println("0x" + mAddress.group(1) + " = " + value);
+
+            return true;
+        }
+
+        Matcher mRange = addressRange.matcher(command);
+        if (mRange.matches()) {
+            long first = Long.parseLong(mRange.group(1), 16);
+            long last  = Long.parseLong(mRange.group(2), 16);
+
+            sp.printStack(first, last);
 
             return true;
         }

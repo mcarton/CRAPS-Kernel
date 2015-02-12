@@ -17,11 +17,13 @@ public class UserInterface {
     public UserInterface(CrapsApi api, ObjModule objModule) {
         this.api = api;
         this.objModule = objModule;
+
+        StatePrinter sp = new StatePrinter(api, objModule);
         this.commands.add(new HelpCommand(commands));
-        this.commands.add(new PrintCommand(api));
+        this.commands.add(new PrintCommand(api, sp));
         this.commands.add(new RunCommand(api));
         this.commands.add(new SetCommand(api));
-        this.commands.add(new StepCommand(api, new StatePrinter(api, objModule)));
+        this.commands.add(new StepCommand(api, sp));
     }
 
     public void loop() throws CommException {

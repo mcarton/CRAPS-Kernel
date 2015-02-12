@@ -103,7 +103,11 @@ public class StatePrinter {
 
         long sp = api.readRegister(29);
 
-        for(long addr = sp; addr <= Math.min(sp + 6, 8192); addr++) {
+        printStack(sp, sp+6);
+    }
+
+    public void printStack(long first, long last) throws CommException {
+        for(long addr = first; addr <= Math.min(last, 8192); addr++) {
             System.out.println(
                 Colors.BLUE
               + " 0x" + formatHexString(addr)
