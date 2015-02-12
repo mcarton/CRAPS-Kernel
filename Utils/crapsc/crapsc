@@ -1,8 +1,0 @@
-#!/bin/sh
-
-ROOTDIR=`dirname "$0"`
-EGGJAR=eggc-5.3.1.jar
-JDIR=/usr/bin
-JAVA="$JDIR"/java
-
-$JAVA -ea -classpath "$ROOTDIR:$ROOTDIR/$EGGJAR" org.mmek.craps.crapsc.CRAPSC $*

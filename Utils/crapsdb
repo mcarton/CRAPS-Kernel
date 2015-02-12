@@ -1,0 +1,9 @@
+#!/bin/sh
+
+UTILS_DIR=$(dirname "${BASH_SOURCE[0]}")
+CRAPSMON_DIR="$UTILS_DIR"/CrapsMon5
+
+exec java \
+    -Djava.library.path="$UTILS_DIR"/libusbComm \
+    -classpath "$CRAPSMON_DIR/bin:$CRAPSMON_DIR/build" \
+    org.mmek.craps.crapsdb.CrapsDB $*

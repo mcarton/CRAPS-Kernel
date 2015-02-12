@@ -1,8 +1,0 @@
-*.class
-org/jcb/craps/crapsc/CRAPS.properties
-org/jcb/craps/crapsc/java/CRAPS.java
-org/jcb/craps/crapsc/java/CRAPSMessages.java
-org/jcb/craps/crapsc/java/ICRAPSMessages.java
-org/jcb/craps/crapsc/java/*LEX_CRAPS.java
-org/jcb/craps/crapsc/java/S_*.java
-org/jcb/craps/crapsc/java/T_*.java

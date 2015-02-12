@@ -3,7 +3,6 @@ package org.jcb.craps.crapsc.java;
 
 import java.util.*;
 import java.io.*;
-import org.jcb.tools.*;
 import org.jcb.craps.crapsc.java.*;
 
 
@@ -85,7 +84,7 @@ public class ObjModule {
 	}
 
 
-	public void save(File file) throws Exception {
+	public void save(File file) throws IOException {
 		PrintWriter writer = new PrintWriter(new FileWriter(file));
 		// save word contents
 		Iterator it = map.keySet().iterator();

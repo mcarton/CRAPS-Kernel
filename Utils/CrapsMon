@@ -1,2 +1,10 @@
 #!/bin/sh
-exec java -Djava.library.path=$(pwd)/libusbComm -jar CrapsMon5.jar
+
+UTILS_DIR=$(dirname "${BASH_SOURCE[0]}")
+CRAPSMON_DIR="$UTILS_DIR"/CrapsMon5
+EGGJAR=eggc-5.3.1.jar
+
+exec java \
+    -Djava.library.path="$UTILS_DIR"/libusbComm \
+    -classpath "$CRAPSMON_DIR/$EGGJAR:$CRAPSMON_DIR/bin:$CRAPSMON_DIR/build" \
+    org.jcb.craps.CrapsEmu $*

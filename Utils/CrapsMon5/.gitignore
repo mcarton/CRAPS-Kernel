@@ -1,0 +1,8 @@
+src/org/jcb/craps/crapsc/CRAPS.properties
+src/org/jcb/craps/crapsc/java/CRAPS.java
+src/org/jcb/craps/crapsc/java/*CRAPSMessages.java
+src/org/jcb/craps/crapsc/java/*LEX_CRAPS.java
+src/org/jcb/craps/crapsc/java/S_*.java
+src/org/jcb/craps/crapsc/java/T_*.java
+CrapsMon5.jar
+build

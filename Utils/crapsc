@@ -1,0 +1,9 @@
+#!/bin/sh
+
+UTILS_DIR=$(dirname "${BASH_SOURCE[0]}")
+CRAPSMON_DIR="$UTILS_DIR"/CrapsMon5
+EGGJAR=eggc-5.3.1.jar
+
+exec java -ea \
+    -classpath "$CRAPSMON_DIR/$EGGJAR:$CRAPSMON_DIR/build" \
+    org.mmek.craps.crapsc.CRAPSC $*
