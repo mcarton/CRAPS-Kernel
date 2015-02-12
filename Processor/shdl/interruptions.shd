@@ -1,4 +1,4 @@
-module interruptions(rst, clk, pwm_out, button[2..0], soft_int, handle_int: int_id[3..0])
+module interruptions(rst, clk, pwm_out, button[2..0], rsDataAvailable, soft_int, handle_int: int_id[3..0])
   // pwm_out : signal pwm
   // button[2..0] : bouton de 1 à 4
   // handle_int : prise en compte de l'interruption de plus haute priorité
@@ -20,7 +20,7 @@ module interruptions(rst, clk, pwm_out, button[2..0], soft_int, handle_int: int_
   frontMontant(rst, clk, button[2] : int[4]);
 
   // RS-232
-  int[5] = 0; // TODO
+  frontMontant(rst, clk, rsDataAvailable : int[5]);
 
   // software interruption
   int[6] = soft_int;
