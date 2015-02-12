@@ -90,6 +90,7 @@ public class CrapsDB {
 
         Device device = chooseDevice();
         CrapsApi api = null;
+        ObjModule objModule = null;
 
         try {
             api = new CrapsApi(device);
@@ -99,13 +100,13 @@ public class CrapsDB {
 
             // load object file
             if(objFile != null) {
-                System.out.print("Loading file " + objFile.getPath() + " ..");
-                ObjModule objModule = ObjModule.load(objFile);
+                System.out.print("Loading file " + objFile.getPath() + " ... ");
+                objModule = ObjModule.load(objFile);
                 api.loadObj(objModule);
-                System.out.println(" done.");
+                System.out.println("done.");
             }
 
-            UserInterface ui = new UserInterface(api);
+            UserInterface ui = new UserInterface(api, objModule);
             ui.loop();
         }
         catch(IOException e) {
