@@ -1,11 +1,10 @@
-all: crapsc crapsmon crapsdb
+all: crapsc crapsmon
 
 EGGJAR = eggc-5.3.1.jar
 JAVA_Sources = src
 crapsmon_Sources = $(JAVA_Sources)/org/jcb/craps
 crapsc_Sources = $(JAVA_Sources)/org/jcb/craps/crapsc
 crapsc_utils_Sources = $(JAVA_Sources)/org/mmek/craps/crapsc
-crapsdb_Sources = $(JAVA_Sources)/org/mmek/craps/crapsdb
 JAVA_Classes = bin
 JAVA_Dest = build
 
@@ -23,9 +22,6 @@ crapsc: build crapsc_egg
 	javac -d $(JAVA_Dest) -classpath $(EGGJAR):$(JAVA_Sources) $(crapsc_utils_Sources)/*.java $(crapsc_Sources)/java/*.java
 	cp $(crapsc_utils_Sources)/messages.properties $(JAVA_Dest)/org/mmek/craps/crapsc
 	cp $(crapsc_Sources)/CRAPS.properties $(JAVA_Dest)/org/jcb/craps/crapsc
-
-crapsdb: build crapsc
-	javac -d $(JAVA_Dest) -classpath $(JAVA_Classes):$(JAVA_Sources) $(crapsdb_Sources)/*.java
 
 clean_dest:
 	rm  -rf $(JAVA_Dest)
