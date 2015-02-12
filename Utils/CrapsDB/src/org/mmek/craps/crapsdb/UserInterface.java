@@ -11,22 +11,23 @@ import org.jcb.craps.crapsc.java.ObjModule;
 public class UserInterface {
     private CrapsApi api;
     private ObjModule objModule;
-    private HashMap<String, Command> commands = new HashMap<>();
+    private ArrayList<Command> commands = new ArrayList<>();
 
     public UserInterface(CrapsApi api, ObjModule objModule) {
         this.api = api;
         this.objModule = objModule;
-        this.commands.put("exit", new ExitCommand());
-        this.commands.put("run", new RunCommand(api));
-        this.commands.put("step", new StepCommand(api));
+        this.commands.add(new HelpCommand(commands));
+        this.commands.add(new PrintCommand(api));
+        this.commands.add(new RunCommand(api));
+        this.commands.add(new SetCommand(api));
+        this.commands.add(new StepCommand(api));
     }
 
     public void loop() throws CommException {
-        boolean alive = true;
         Scanner sc = new Scanner(System.in);
         String cmd;
 
-        while(alive) {
+        while (true) {
             printRegisters();
             printAssembly();
             printStack();
@@ -37,17 +38,25 @@ public class UserInterface {
                 cmd = sc.nextLine();
             }
             catch(NoSuchElementException e) {
-                cmd = "exit";
+                break;
+            }
+
+            if (cmd.equals("exit")) {
+                break;
             }
 
             if (!cmd.isEmpty()) {
-                String[] splitCmd = cmd.split(" ");
-                Command command = commands.get(splitCmd[0]);
-                if (command != null) {
-                    alive = command.run(cmd);
+                boolean found = false;
+                for (Command command : commands) {
+                    if (cmd.startsWith(command.name())) {
+                        command.run(cmd);
+                        found = true;
+                        break;
+                    }
                 }
-                else {
-                    System.out.println("Unknown command: " + splitCmd[0]);
+
+                if (!found) {
+                    System.out.println("Unknown command");
                 }
             }
         }
@@ -157,20 +166,21 @@ public class UserInterface {
         return sb.toString();
     }
 
-    class ExitCommand implements Command {
-        public boolean run(String command) {
-            return false;
-        }
-    }
-
     class RunCommand implements Command {
         CrapsApi api;
 
         RunCommand(CrapsApi api) { this.api = api; }
 
-        public boolean run(String command) throws CommException {
+        public String help() {
+            return null;
+        }
+
+        public String name() {
+            return "run";
+        }
+
+        public void run(String command) throws CommException {
             api.run();
-            return true;
         }
     }
 
@@ -179,9 +189,16 @@ public class UserInterface {
 
         StepCommand(CrapsApi api) { this.api = api; }
 
-        public boolean run(String command) throws CommException {
+        public String help() {
+            return null;
+        }
+
+        public String name() {
+            return "step";
+        }
+
+        public void run(String command) throws CommException {
             api.step();
-            return true;
         }
     }
 }
