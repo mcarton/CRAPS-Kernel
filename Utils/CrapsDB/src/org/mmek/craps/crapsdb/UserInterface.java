@@ -69,6 +69,10 @@ public class UserInterface {
 
         RunCommand(CrapsApi api) { this.api = api; }
 
+        public String help() {
+            return null;
+        }
+
         public String name() {
             return "run";
         }
@@ -82,6 +86,10 @@ public class UserInterface {
         CrapsApi api;
 
         StepCommand(CrapsApi api) { this.api = api; }
+
+        public String help() {
+            return null;
+        }
 
         public String name() {
             return "step";

@@ -14,6 +14,14 @@ public class SetCommand implements Command {
 
     SetCommand(CrapsApi api) { this.api = api; }
 
+    public String help() {
+        return 
+            "format:\n"
+          + "\tset %reg = value\n"
+          + "\tset 0xADDR = value"
+        ;
+    }
+
     public String name() {
         return "set";
     }
@@ -21,11 +29,7 @@ public class SetCommand implements Command {
     public void run(String command) throws CommException {
         try {
             if (!impl(command)) {
-                System.out.println(
-                    "format:\n"
-                  + "\tset %reg = value\n"
-                  + "\tset 0xADDR = value"
-                );
+                System.out.println(help());
             }
         }
         catch (NumberFormatException e) {

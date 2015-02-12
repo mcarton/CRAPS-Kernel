@@ -14,6 +14,14 @@ public class PrintCommand implements Command {
 
     PrintCommand(CrapsApi api) { this.api = api; }
 
+    public String help() {
+        return
+            "format:\n"
+          + "\tprint %reg\n"
+          + "\tprint 0xADDR"
+        ;
+    }
+
     public String name() {
         return "print";
     }
@@ -21,7 +29,7 @@ public class PrintCommand implements Command {
     public void run(String command) throws CommException {
         try {
             if (!impl(command)) {
-                System.out.println("format:\n\tprint %reg\n\tprint 0xADDR");
+                System.out.println(help());
             }
         }
         catch (NumberFormatException e) {
