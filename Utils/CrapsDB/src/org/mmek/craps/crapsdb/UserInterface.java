@@ -25,10 +25,17 @@ public class UserInterface {
     public void loop() throws CommException {
         boolean alive = true;
         Scanner sc = new Scanner(System.in);
+        String cmd;
 
         while(alive) {
             System.out.print("> ");
-            String cmd = sc.nextLine();
+
+            try {
+                cmd = sc.nextLine();
+            }
+            catch(NoSuchElementException e) {
+                cmd = "exit";
+            }
 
             if(cmd.equals("exit")) {
                 alive = false;

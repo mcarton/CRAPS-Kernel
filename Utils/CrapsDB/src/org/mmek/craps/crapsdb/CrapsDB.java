@@ -94,6 +94,9 @@ public class CrapsDB {
         try {
             api = new CrapsApi(device);
 
+            // fix segfault with Ctrl-C
+            Runtime.getRuntime().addShutdownHook(new ExitThread(api));
+
             // load object file
             if(objFile != null) {
                 System.out.print("Loading file " + objFile.getPath() + " ..");
@@ -107,7 +110,6 @@ public class CrapsDB {
         }
         catch(IOException e) {
             System.err.print(e);
-            System.exit(1);
         }
         finally {
             if(api != null) {
@@ -118,6 +120,26 @@ public class CrapsDB {
                     System.err.println(e);
                     System.exit(1);
                 }
+            }
+        }
+    }
+
+    /**
+     * Thread called when typing Ctrl-C
+     */
+    static class ExitThread extends Thread {
+        private CrapsApi api;
+
+        public ExitThread(CrapsApi api) {
+            this.api = api;
+        }
+
+        public void run() {
+            try {
+                api.close();
+            }
+            catch(CommException e) {
+                System.err.println(e);
             }
         }
     }
