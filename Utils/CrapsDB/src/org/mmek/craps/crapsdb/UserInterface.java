@@ -39,6 +39,7 @@ public class UserInterface {
         sp.printStack();
         sp.printEndLine();
 
+        String lastCmd = "";
         while (true) {
             System.out.print("> ");
 
@@ -53,11 +54,16 @@ public class UserInterface {
                 break;
             }
 
+            if (cmd.isEmpty()) {
+                cmd = lastCmd;
+            }
+
             if (!cmd.isEmpty()) {
                 boolean found = false;
                 for (Command command : commands) {
                     if (cmd.startsWith(command.name())) {
                         command.run(cmd);
+                        lastCmd = cmd;
                         found = true;
                         break;
                     }
