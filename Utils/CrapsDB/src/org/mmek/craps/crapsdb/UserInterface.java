@@ -12,14 +12,16 @@ import org.jcb.craps.crapsc.java.ObjModule;
 public class UserInterface {
     private CrapsApi api;
     private ObjModule objModule;
+    private Disassembler dis = new Disassembler(objModule);
+    private StatePrinter sp;
     private ArrayList<Command> commands = new ArrayList<>();
 
     public UserInterface(CrapsApi api, ObjModule objModule) {
         this.api = api;
         this.objModule = objModule;
+        this.dis = new Disassembler(objModule);
+        this.sp = new StatePrinter(api, objModule);
 
-        Disassembler dis = new Disassembler(objModule);
-        StatePrinter sp = new StatePrinter(api, objModule);
         this.commands.add(new DisasmCommand(api, dis, sp));
         this.commands.add(new HelpCommand(commands));
         this.commands.add(new PrintCommand(api, sp));
@@ -31,6 +33,11 @@ public class UserInterface {
     public void loop() throws CommException {
         Scanner sc = new Scanner(System.in);
         String cmd;
+
+        sp.printRegisters();
+        sp.printAssembly(dis);
+        sp.printStack();
+        sp.printEndLine();
 
         while (true) {
             System.out.print("> ");
