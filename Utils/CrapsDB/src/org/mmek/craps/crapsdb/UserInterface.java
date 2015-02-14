@@ -42,7 +42,7 @@ public class UserInterface {
                 break;
             }
 
-            if (cmd.equals("exit")) {
+            if (cmd.equals("exit") || cmd.equals(":q")) {
                 break;
             }
 
