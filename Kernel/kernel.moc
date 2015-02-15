@@ -6,6 +6,8 @@ asm("
     .word null_handler
     .word null_handler
     .word null_handler
+    .word null_handler
+    .word null_handler
 
 null_handler: reti
 start:
@@ -16,7 +18,7 @@ start:
 
 // global variables
 
-// every N PWM interruptions we do a context switch, this is the counter
+// every N PWM-interruptions we do a context switch, this is the counter
 int pwm_count;
 
 #define PROCESS_COUNT 4
@@ -124,99 +126,90 @@ pwm_handler_afterreset:
     reti
 ")
 
-///////////////////////////////////
-//            MALLOC
+// MALOC {{{
 
 // used internally by the malloc
 void *malloc_start;
 
+// palkeo's malloc
 // Very simple system : in block. Before each block we have a header.
 // The last bit tell if the block is allocated or not.
 // The rest is the size of the block (so we shift >> 1, and we have the size)
-
-void* syscall_malloc(int size) // palkeo's malloc
-{
+void* syscall_malloc(int size) {
     int* c = (int*)malloc_start;
-    while((bool)((*c) & 1) || ((((*c) >> 1) < size) && ((bool)*c)))
-    {
-        c = c + ((*c) >> 1) + 1;
+    while (
+        (bool)(*c & 1)
+     || (((*c >> 1) < size) && ((bool)*c))
+    ) {
+        c = c + (*c >> 1) + 1;
     }
-    // c now points to an unused block header of the good size
-    int bs = (*c) >> 1;
-    if(bs == 0) // end of the blocklist
-    {
+    // c now points to an unused block header of the right size
+
+    int bs = *c >> 1;
+    if(bs == 0) { // end of the blocklist
         *c = (size << 1) + 1;
         *(c + size + 1) = 0;
     }
-    else
-    {
+    else {
         // TODO: Split the block
-        *c = (*c) | 1;
+        *c = *c | 1;
     }
     return (void*)c + 1;
 }
 
-int syscall_free(void* addr)
-{
+int syscall_free(void* addr) {
     int* c = (int*)malloc_start;
-    while(c < addr - 1)
-    {
-        c = c + ((*c) >> 1) + 1;
-        if(*c == 0)
-        {
+    while (c < addr - 1) {
+        c = c + (*c >> 1) + 1;
+        if(*c == 0) {
             return -1; // the address is after the last allocated block...
         }
     }
-    if((c != addr - 1) || (((*c) & 1) == 0)) // can't find block or already freed
-    {
+
+    // can't find block or already freed
+    if ((c != addr - 1) || ((*c & 1) == 0)) {
         return -1;
     }
-    *c = (*c) & 0xFFFFFFFE;
-    if(*((int*) ((*c) >> 1) + 1) == 0)
-    {
+
+    *c = *c & 0xFFFFFFFE;
+    if (*((int*) (*c >> 1) + 1) == 0) {
         *c = 0; // if it was the last block...
     }
+
     // TODO: Merge with the next block if it is empty
     return 0;
 }
 
-//          END MALLOC
-///////////////////////////////////
+// MALLOC }}}
 
-export int task1()
-{
+// TASKS {{{
+
+export int task1() {
     int *ssegs = (int*) 0xA0000000;
-    while(true)
-    {
+    while (true) {
         *(ssegs + 1) = 0b1111;
         *ssegs = 0x4321;
     }
 }
 
-export int task2()
-{
+export int task2() {
     int *ssegs = (int*) 0xA0000000;
-    while(true)
-    {
+    while (true) {
         *(ssegs + 1) = 0b1111;
         *ssegs = 0x1234;
     }
 }
 
-export int task3()
-{
+export int task3() {
     int *ssegs = (int*) 0xA0000000;
-    while(true)
-    {
+    while (true) {
         *(ssegs + 1) = 0b0111;
     }
 }
 
-export int task4()
-{
+export int task4() {
     int *ssegs = (int*) 0xA0000000;
-    while(true)
-    {
+    while (true) {
         void* i = syscall_malloc(2);
         *((int*)i) = 7;
         *((int*)i+1) = 6;
@@ -230,6 +223,8 @@ export int task4()
         syscall_free(k);
     }
 }
+
+// TASKS }}}
 
 int main() {
     pwm_count = 0;
@@ -253,7 +248,7 @@ int main() {
     int i;
     int j;
 
-    for(i=0; i < PROCESS_COUNT; i=i+1) {
+    for (i=0; i < PROCESS_COUNT; i=i+1) {
         // we build the stack for the process i
         void* stack = syscall_malloc(256) + 255;
 
@@ -261,11 +256,11 @@ int main() {
         // instruction of the task (for "bootstraping" the processes)
         *((int*) stack) = (int)tasks[i];
 
-        if(i > 0) {
+        if (i > 0) {
             // fill the end of the stack of the processes that are waiting: they will
             // be restored by the scheduler!
             // we push %psr, %r1..%r19, %fp, %r28 (ret)
-            for(j=0; j < 22; j=j+1) {
+            for (j=0; j < 22; j=j+1) {
                 stack = stack - 1;
                 *((int*) stack) = 0;
             }
@@ -281,8 +276,8 @@ int main() {
     // first task: loads its stack and runs it
     void* sp = stack_pointers[0];
     asm("
-    ld $sp, %sp
-    ld [%sp], %pc
+        ld $sp, %sp
+        ld [%sp], %pc
     ");
 }
 
