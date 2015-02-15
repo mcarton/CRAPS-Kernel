@@ -21,6 +21,7 @@ public class UserInterface {
         this.dis = new Disassembler(objModule);
         this.sp = new StatePrinter(api, objModule);
 
+        this.commands.add(new BreakCommand(api));
         this.commands.add(new DisasmCommand(api, dis, sp));
         this.commands.add(new HelpCommand(commands));
         this.commands.add(new PrintCommand(api, sp));
