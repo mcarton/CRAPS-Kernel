@@ -11,7 +11,7 @@ import org.jcb.craps.crapsc.java.ObjModule;
 public class UserInterface {
     private CrapsApi api;
     private ObjModule objModule;
-    private Disassembler dis = new Disassembler(objModule);
+    private Disassembler dis;
     private StatePrinter sp;
     private ArrayList<Command> commands = new ArrayList<>();
 
@@ -21,7 +21,7 @@ public class UserInterface {
         this.dis = new Disassembler(objModule);
         this.sp = new StatePrinter(api, objModule);
 
-        this.commands.add(new BreakCommand(api));
+        this.commands.add(new BreakCommand(api, dis, sp));
         this.commands.add(new DisasmCommand(api, dis, sp));
         this.commands.add(new HelpCommand(commands));
         this.commands.add(new PrintCommand(api, sp));
