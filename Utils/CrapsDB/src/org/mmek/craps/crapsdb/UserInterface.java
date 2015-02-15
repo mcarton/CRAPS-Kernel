@@ -5,7 +5,6 @@ import java.util.*;
 
 import org.mmek.craps.crapsusb.CommException;
 import org.mmek.craps.crapsusb.CrapsApi;
-import org.mmek.craps.crapsusb.CrapsApi;
 
 import org.jcb.craps.crapsc.java.ObjModule;
 
@@ -91,35 +90,6 @@ public class UserInterface {
 
         public void run(String command) throws CommException {
             api.run();
-        }
-    }
-
-    class StepCommand implements Command {
-        CrapsApi api;
-        Disassembler dis;
-        StatePrinter sp;
-
-        StepCommand(CrapsApi api, Disassembler dis, StatePrinter sp) {
-            this.api = api;
-            this.dis = dis;
-            this.sp = sp;
-        }
-
-        public String help() {
-            return null;
-        }
-
-        public String name() {
-            return "step";
-        }
-
-        public void run(String command) throws CommException {
-            api.step();
-
-            sp.printRegisters();
-            sp.printAssembly(dis);
-            sp.printStack();
-            sp.printEndLine();
         }
     }
 }
