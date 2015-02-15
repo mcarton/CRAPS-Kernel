@@ -49,7 +49,11 @@ public class HelpCommand implements Command {
                 System.out.println("\t- " + command.name());
             }
 
-            System.out.println("\t- exit");
+            System.out.println(
+                "\t- exit"
+              + "\n"
+              + "See \"help command\" for details."
+            );
         }
     }
 }
