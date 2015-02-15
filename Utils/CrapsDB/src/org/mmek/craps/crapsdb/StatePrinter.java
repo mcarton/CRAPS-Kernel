@@ -7,10 +7,12 @@ import org.mmek.craps.crapsusb.CrapsApi;
 
 public class StatePrinter {
     private CrapsApi api;
+    private Disassembler dis;
     private ObjModule objModule;
 
-    public StatePrinter(CrapsApi api, ObjModule module) {
+    public StatePrinter(CrapsApi api, Disassembler dis, ObjModule module) {
         this.api = api;
+        this.dis = dis;
         this.objModule = objModule;
     }
 
@@ -66,16 +68,16 @@ public class StatePrinter {
           + Colors.ALL_OFF;
     }
 
-    public void printAssembly(Disassembler dis) throws CommException {
+    public void printAssembly() throws CommException {
         System.out.println(title("code"));
 
         long pc = api.readRegister(30);
 
-        printAssembly(pc-3, pc+5, pc, dis);
+        printAssembly(pc-3, pc+5, pc);
     }
 
     public void printAssembly(
-        long first, long last, long pc, Disassembler disas
+        long first, long last, long pc
     ) throws CommException {
         for(long addr = Math.max(0, first); addr <= last; addr++) {
             System.out.print(" 0x" + formatHexString(addr) + " | ");
@@ -98,7 +100,7 @@ public class StatePrinter {
             if(addr == pc) {
                 System.out.print(Colors.GREEN);
             }
-            System.out.print(disas.disassemble(addr, api.readMemory(addr)));
+            System.out.print(dis.disassemble(addr, api.readMemory(addr)));
             System.out.println(Colors.ALL_OFF);
         }
     }
@@ -125,6 +127,13 @@ public class StatePrinter {
 
     public void printEndLine() {
         System.out.println(title(""));
+    }
+
+    public void printAll() throws CommException {
+        printRegisters();
+        printAssembly();
+        printStack();
+        printEndLine();
     }
 
     private String formatHexString(long val) {

@@ -5,12 +5,10 @@ import org.mmek.craps.crapsusb.CrapsApi;
 
 class StepCommand implements Command {
     CrapsApi api;
-    Disassembler dis;
     StatePrinter sp;
 
-    StepCommand(CrapsApi api, Disassembler dis, StatePrinter sp) {
+    StepCommand(CrapsApi api, StatePrinter sp) {
         this.api = api;
-        this.dis = dis;
         this.sp = sp;
     }
 
@@ -31,10 +29,7 @@ class StepCommand implements Command {
         api.step();
 
         if (!command.endsWith("silent") && !command.endsWith("!")) {
-            sp.printRegisters();
-            sp.printAssembly(dis);
-            sp.printStack();
-            sp.printEndLine();
+            sp.printAll();
         }
     }
 }

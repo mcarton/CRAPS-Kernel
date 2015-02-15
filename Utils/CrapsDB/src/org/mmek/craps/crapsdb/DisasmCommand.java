@@ -63,7 +63,7 @@ public class DisasmCommand implements Command {
             long last  = Long.parseLong(mRange.group(2), 16);
             long pc = api.readRegister(30);
 
-            sp.printAssembly(first, last, pc, dis);
+            sp.printAssembly(first, last, pc);
 
             return true;
         }

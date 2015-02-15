@@ -19,25 +19,22 @@ public class UserInterface {
         this.api = api;
         this.objModule = objModule;
         this.dis = new Disassembler(objModule);
-        this.sp = new StatePrinter(api, objModule);
+        this.sp = new StatePrinter(api, dis, objModule);
 
-        this.commands.add(new BreakCommand(api, dis, sp));
+        this.commands.add(new BreakCommand(api, sp));
         this.commands.add(new DisasmCommand(api, dis, sp));
         this.commands.add(new HelpCommand(commands));
         this.commands.add(new PrintCommand(api, sp));
         this.commands.add(new RunCommand(api));
         this.commands.add(new SetCommand(api));
-        this.commands.add(new StepCommand(api, dis, sp));
+        this.commands.add(new StepCommand(api, sp));
     }
 
     public void loop() throws CommException {
         Scanner sc = new Scanner(System.in);
         String cmd;
 
-        sp.printRegisters();
-        sp.printAssembly(dis);
-        sp.printStack();
-        sp.printEndLine();
+        sp.printAll();
 
         String lastCmd = "";
         while (true) {

@@ -13,9 +13,9 @@ public class BreakCommand implements Command {
 
     Pattern address = Pattern.compile("break +0x(\\p{XDigit}+)");
 
-    BreakCommand(CrapsApi api, Disassembler dis, StatePrinter sp) {
+    BreakCommand(CrapsApi api, StatePrinter sp) {
         this.api = api;
-        this.api.addCommListener(new BreakListener(api, dis, sp));
+        this.api.addCommListener(new BreakListener(api, sp));
     }
 
     public String help() {
@@ -43,13 +43,11 @@ public class BreakCommand implements Command {
 
 class BreakListener implements CommListener {
     private CrapsApi api;
-    private Disassembler dis;
     private StatePrinter sp;
     private int previousBrk = 0;
 
-    BreakListener(CrapsApi api, Disassembler dis, StatePrinter sp) {
+    BreakListener(CrapsApi api, StatePrinter sp) {
         this.api = api;
-        this.dis = dis;
         this.sp = sp;
     }
 
@@ -61,12 +59,7 @@ class BreakListener implements CommListener {
                 api.stop();
 
                 System.out.print("\rBreakpoint\n");
-
-                sp.printRegisters();
-                sp.printAssembly(dis);
-                sp.printStack();
-                sp.printEndLine();
-
+                sp.printAll();
                 System.out.print("> ");
             }
             catch (CommException ce) {}
