@@ -3,8 +3,10 @@ package org.mmek.craps.crapsdb;
 import java.io.*;
 import java.util.*;
 
+import org.mmek.craps.crapsusb.CommEvent;
 import org.mmek.craps.crapsusb.CommException;
 import org.mmek.craps.crapsusb.CrapsApi;
+import org.mmek.craps.crapsusb.CommListener;
 
 import org.jcb.craps.crapsc.java.ObjModule;
 
@@ -28,6 +30,8 @@ public class UserInterface {
         this.commands.add(new RunCommand(api));
         this.commands.add(new SetCommand(api));
         this.commands.add(new StepCommand(api, sp));
+
+        this.api.addCommListener(new ResetListener(api, sp));
     }
 
     public void loop() throws CommException {
@@ -88,6 +92,31 @@ public class UserInterface {
 
         public void run(String command) throws CommException {
             api.run();
+        }
+    }
+}
+
+class ResetListener implements CommListener {
+    private CrapsApi api;
+    private StatePrinter sp;
+
+    ResetListener(CrapsApi api, StatePrinter sp) {
+        this.api = api;
+        this.sp = sp;
+    }
+
+    public void valueChanged(CommEvent ev) {
+        int rst = ev.getBitVector()[61];
+
+        if (rst == 1) {
+            try {
+                api.stop();
+
+                System.out.print("\rReset\n");
+                sp.printAll();
+                System.out.print("> ");
+            }
+            catch (CommException ce) {}
         }
     }
 }
