@@ -16,7 +16,6 @@ public class CrapsApi {
 
     public CrapsApi(Device device) throws IOException {
         commThread = new CommThread(device);
-        commThread.addCommListener(new CrapsCommListener());
         commThread.start();
     }
 
@@ -52,6 +51,7 @@ public class CrapsApi {
     public synchronized long readRegister(int numreg) throws CommException {
         setBits(60, 63, 1); // mon_cmd = "0001" (read register)
         commThread.sendByte(7, getByte(7));
+
         setBits(0, 4, numreg);
         commThread.sendByte(0, getByte(0));
 
@@ -59,8 +59,7 @@ public class CrapsApi {
         commThread.sendByte(7, getByte(7));
 
         // wait for mon_ack = 1
-        do { }
-        while ((commThread.readByte(7) & 128) == 0);
+        do {} while ((commThread.readByte(7) & 128) == 0);
 
         // get read data
         long value = 0;
@@ -73,12 +72,14 @@ public class CrapsApi {
 
         outs[59] = 0; // mon_req = 0
         commThread.sendByte(7, getByte(7));
+
         return value;
     }
 
     public synchronized void writeRegister(int numreg, long val) throws CommException {
         setBits(60, 63, 3); // mon_cmd = "0011" (write register)
         commThread.sendByte(7, getByte(7));
+
         setBits(32, 36, numreg);
         commThread.sendByte(4, getByte(4));
 
@@ -92,8 +93,7 @@ public class CrapsApi {
         commThread.sendByte(7, getByte(7));
 
         // wait for mon_ack = 1
-        do { }
-        while ((commThread.readByte(7) & 128) == 0);
+        do {} while ((commThread.readByte(7) & 128) == 0);
 
         outs[59] = 0; // mon_req = 0
         commThread.sendByte(7, getByte(7));
@@ -112,8 +112,7 @@ public class CrapsApi {
         commThread.sendByte(7, getByte(7));
 
         // wait for mon_ack = 1
-        do { }
-        while ((commThread.readByte(7) & 128) == 0);
+        do {} while ((commThread.readByte(7) & 128) == 0);
 
         // get read data
         long value = 0;
@@ -126,6 +125,7 @@ public class CrapsApi {
 
         outs[59] = 0; // mon_req = 0
         commThread.sendByte(7, getByte(7));
+
         return value;
     }
 
@@ -141,8 +141,7 @@ public class CrapsApi {
         commThread.sendByte(7, getByte(7));
 
         // wait for mon_ack = 1
-        do { }
-        while ((commThread.readByte(7) & 128) == 0);
+        do {} while ((commThread.readByte(7) & 128) == 0);
 
         // value to write on pc2board[31..0]
         setBits(0, 31, val);
@@ -154,13 +153,12 @@ public class CrapsApi {
         commThread.sendByte(7, getByte(7));
 
         // wait for mon_ack = 0
-        do { }
-        while ((commThread.readByte(7) & 128) != 0);
+        do {} while ((commThread.readByte(7) & 128) != 0);
     }
 
     public void loadObj(ObjModule objModule) throws CommException {
-        Long[] newKeys = (Long[]) objModule.getKeySet().toArray(new Long[0]);
-        Map.Entry[] newEntries = (Map.Entry[]) objModule.getEntrySet().toArray(new Map.Entry[0]);
+        Long[] newKeys = objModule.getKeySet().toArray(new Long[0]);
+        Map.Entry<Long, ObjEntry>[] newEntries = objModule.getEntrySet().toArray(new Map.Entry[0]);
 
         for (int i = 0; i < newEntries.length; i++) {
             int addr = newKeys[i].intValue();
@@ -170,10 +168,14 @@ public class CrapsApi {
         }
     }
 
+    public void addCommListener(CommListener cl) {
+        commThread.addCommListener(cl);
+    }
+
     // Communication methods
     private int getByte(int i) {
         int res = 0;
-        if (outs[8*i] == 1) res |= 1;
+        if (outs[8*i  ] == 1) res |= 1;
         if (outs[8*i+1] == 1) res |= 2;
         if (outs[8*i+2] == 1) res |= 4;
         if (outs[8*i+3] == 1) res |= 8;
@@ -196,37 +198,5 @@ public class CrapsApi {
             Thread.sleep(n);
         }
         catch(InterruptedException ex) {}
-    }
-
-    class CrapsCommListener implements CommListener {
-        public void valueChanged(CommEvent ev) {
-            int[] bitVector = ev.getBitVector();
-            int brk = bitVector[62];
-            int rst = bitVector[61];
-
-            /*
-            if ((brk == 1) && runButton.getActionCommand().equals("stop")) {
-                System.out.println("****************** break!!!");
-                // run <- 0
-                outs[55] = 0;
-                commThread.sendByte(6, getByte(6));
-                runButton.setText("run");
-                runButton.setActionCommand("run");
-                stepButton.setEnabled(true);
-                updateViews();
-            }
-
-            if (rst == 1) {
-                System.out.println("****************** reset!!!");
-                // run <- 0
-                outs[55] = 0;
-                commThread.sendByte(6, getByte(6));
-                runButton.setText("run");
-                runButton.setActionCommand("run");
-                stepButton.setEnabled(true);
-                updateViews();
-            }
-            */
-        }
     }
 }

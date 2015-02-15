@@ -58,6 +58,7 @@ public class CrapsDB {
         if(devices.size() == 0) {
             System.err.println("No device available.");
             System.exit(1);
+            return null; // unreachable
         }
         else if(devices.size() == 1) {
             return devices.get(0);
@@ -79,8 +80,6 @@ public class CrapsDB {
 
             return devices.get(deviceIndex);
         }
-
-        return null; // unreachable
     }
 
     public static void main(String[] args) {
