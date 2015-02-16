@@ -1,4 +1,4 @@
-\documentclass{article}
+\documentclass[openany]{book}
 
 \usepackage{afterpage}
 \usepackage{fontspec}
@@ -22,21 +22,52 @@
 
 \begin{document}
   \include{titlepage}
+
+  \chapter*{Acknowledgments}
+    We would like to thank Jean-Christophe Buisson for giving us all the tools
+    related to CRAPS that he has developed. We won a lot of time thanks to this.
+
+    \paragraph{}
+    We also would like to thank Bernard Desmyter and Benoît Lemarchand for
+    having tested our compiler and showed us some bugs we did not see ourselves.
+
+    \paragraph{}
+    Finally, we would like to thank Xavier Mechin, our industrial supervisor,
+    for guiding us throughout this two-month project.
+
   \tableofcontents
-  \newpage
 
-  \section{Introduction}
-    This project, suggested by Daniel Hagimont, is based on the CRAPS processor
-    developed by Jean-Christophe Buisson and used in the first-year CPU
-    architecture courses at ENSEEIHT. The goal is to develop an operating
-    system that would run on top of that processor.
+  \chapter{Introduction}
+    \section{Context}
+      This project, suggested by Daniel Hagimont, is based on the CRAPS
+      processor developed by Jean-Christophe Buisson and used in the first-year
+      CPU architecture courses at ENSEEIHT. The goal is to develop an operating
+      system that would run on top of that processor.
 
-    The reasons for that project are that before, it was only possible to do a
-    little of assembly directly on the processor to see it work, but nothing
-    more.  After our project, it should be possible for students to really see
-    the layer that goes on top of the CPU in modern computers: the operating
-    system. So that the students can really make the link between the processor
-    they just built and the computer and underlying operating systems they use
-    everyday.
+      The reasons for that project are that before, it was only possible to do a
+      little of assembly directly on the processor to see it work, but nothing
+      more.  After our project, it should be possible for students to really see
+      the layer that goes on top of the CPU in modern computers: the operating
+      system. So that the students can really make the link between the
+      processor they just built and the computer and underlying operating
+      systems they use everyday.
 
+    \section{Work required}
+    \section{Available resources}
+
+  \chapter{Project management}
+
+  \chapter{Specification phase}
+
+  \chapter{Implementation phase}
+
+  \chapter{Validation phase}
+    \section{Tests}
+    \section{Limitations}
+
+  \chapter{Conclusion}
+
+  \addcontentsline{toc}{chapter}{Bibliography}
+  \begin{thebibliography}{10}
+  \end{thebibliography}
 \end{document}
