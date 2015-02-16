@@ -136,10 +136,19 @@ void *malloc_start;
 // The last bit tell if the block is allocated or not.
 // The rest is the size of the block (so we shift >> 1, and we have the size)
 void* syscall_malloc(int size) {
+    // get the nearest power of two that is bigger than the size.
+    int s = size - 1;
+    size = 1;
+    while(s)
+    {
+        s = s >> 1;
+        size = size << 1;
+    }
+
     int* c = (int*)malloc_start;
     while (
         (bool)(*c & 1)
-     || (((*c >> 1) < size) && ((bool)*c))
+     || (((*c >> 1) != size) && ((bool)*c))
     ) {
         c = c + (*c >> 1) + 1;
     }
@@ -151,7 +160,7 @@ void* syscall_malloc(int size) {
         *(c + size + 1) = 0;
     }
     else {
-        // TODO: Split the block
+        // We could split the block here
         *c = *c | 1;
     }
     return (void*)c + 1;
@@ -176,7 +185,7 @@ int syscall_free(void* addr) {
         *c = 0; // if it was the last block...
     }
 
-    // TODO: Merge with the next block if it is empty
+    // We could merge with the next block if it is empty here
     return 0;
 }
 
@@ -204,9 +213,7 @@ rs232_handler_read:
 ")
 
 export void rs232_handler_read() {
-    int* rs232 = (int*) 0xD0000000;
-
-    rs232_read_buf[rs232_read_buf_end] = (char)*rs232;
+    rs232_read_buf[rs232_read_buf_end] = *((char*)0xD0000000);
 
     rs232_read_buf_end = (rs232_read_buf_end+1) & 255;
 
