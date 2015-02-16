@@ -139,7 +139,7 @@ void* syscall_malloc(int size) {
     // get the nearest power of two that is bigger than the size.
     int s = size - 1;
     size = 1;
-    while(s)
+    while((bool)s)
     {
         s = s >> 1;
         size = size << 1;
