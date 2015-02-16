@@ -232,6 +232,69 @@ char getc() {
     }
 }
 
+char* strcpy(char* dest, char* src)
+{
+    int i;
+
+    for (i = 0; src[i] != '\0'; i = i+1) {
+        dest[i] = src[i];
+    }
+
+    return dest;
+}
+
+char* getline() {
+    int i;
+    char c = (char)-1;
+    int size = 32;
+    char* buf = (char*)syscall_malloc(size);
+    char* new_buf;
+
+    for (i = 0; c != '\n' && c != '\0'; i = i+1) {
+        c = getc();
+
+        if ((int)c == -1) {
+            continue;
+        }
+
+        // TODO: palkeo: realloc
+        if (i == size) {
+            size = size*2;
+
+            new_buf = (char*)syscall_malloc(size);
+            strcpy(new_buf, buf);
+
+            syscall_free((void*)buf);
+            buf = new_buf;
+        }
+
+        buf[i] = c;
+    }
+
+    // TODO: palkeo: realloc
+    if (i == size) {
+        size = size*2;
+
+        new_buf = (char*)syscall_malloc(size);
+        strcpy(new_buf, buf);
+
+        syscall_free((void*)buf);
+        buf = new_buf;
+    }
+
+    buf[i] = '\0';
+
+    return buf;
+}
+
+int strlen(char* str) {
+    int i = 0;
+    while (str[i] != '\0') {
+        i = i+1;
+    }
+    return i;
+}
+
 void putc(char c) {
     *((char*)0xD0000001) = c;
 
@@ -304,15 +367,10 @@ export int task2() {
 }
 
 export int task3() {
-    int *ssegs = (int*) 0xA0000000;
-    int i = 0;
-    char[12] string;
     while (true) {
-        i = i + 1;
-        write("test ");
-        dtoa(i, (char*)&string);
-        write(string);
-        putc('\n');
+        char* line = getline();
+        write(line);
+        syscall_free((void*)line);
     }
 }
 
