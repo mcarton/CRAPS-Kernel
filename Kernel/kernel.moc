@@ -388,9 +388,5 @@ int main() {
         ld $sp, %sp
         ld [%sp], %pc
     ");
-
-    // RS-232 init:
-    rs232_read_buf_begin = 0;
-    rs232_read_buf_end   = 0;
 }
 
