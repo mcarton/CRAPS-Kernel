@@ -6,13 +6,13 @@ asm("
     .word null_handler
     .word null_handler
     .word null_handler
+    .word rs232_handler_read
     .word null_handler
     .word null_handler
 
 null_handler: reti
 start:
-    // stack at the end of the memory
-    set 0x2000, %sp
+    set 0x2000, %sp // stack at the end of the memory
     ba f_main
 ")
 
@@ -182,13 +182,60 @@ int syscall_free(void* addr) {
 
 // MALLOC }}}
 
+// RS-232 {{{
+
+char[256] rs232_read_buf;
+int rs232_read_buf_begin;
+int rs232_read_buf_end;
+asm("
+rs232_handler_read:
+    push %r1
+    push %r2
+    push %r3
+
+    push %r28
+    call f_rs232_handler_read
+    pop %r28
+
+    pop %r3
+    pop %r2
+    pop %r1
+    reti
+")
+
+export void rs232_handler_read() {
+    int* rs232 = (int*) 0xD0000000;
+
+    rs232_read_buf[rs232_read_buf_end] = (char)*rs232;
+
+    rs232_read_buf_end = (rs232_read_buf_end+1) & 255;
+
+    rs232_read_buf_begin = rs232_read_buf_begin
+                         + (int)(rs232_read_buf_begin == rs232_read_buf_end);
+}
+
+char getc() {
+    if (rs232_read_buf_begin == rs232_read_buf_end) {
+        return (char)-1;
+    }
+    else {
+        char result = rs232_read_buf[rs232_read_buf_begin];
+        rs232_read_buf_begin = (rs232_read_buf_begin+1) & 255;
+        return result;
+    }
+}
+
+// RS-232 }}}
+
 // TASKS {{{
 
 export int task1() {
-    int *ssegs = (int*) 0xA0000000;
+    int *rs232 = (int*) 0xD0000001;
     while (true) {
-        *(ssegs + 1) = 0b1111;
-        *ssegs = 0x4321;
+        int got = (int)getc();
+        if (got != -1) {
+            *rs232 = got;
+        }
     }
 }
 
@@ -196,7 +243,7 @@ export int task2() {
     int *ssegs = (int*) 0xA0000000;
     while (true) {
         *(ssegs + 1) = 0b1111;
-        *ssegs = 0x1234;
+        *ssegs = rs232_read_buf_end-rs232_read_buf_begin;
     }
 }
 
@@ -210,6 +257,7 @@ export int task3() {
 export int task4() {
     int *ssegs = (int*) 0xA0000000;
     while (true) {
+        /*
         void* i = syscall_malloc(2);
         *((int*)i) = 7;
         *((int*)i+1) = 6;
@@ -221,6 +269,7 @@ export int task4() {
         void* k = syscall_malloc(5);
         syscall_free(j);
         syscall_free(k);
+        */
     }
 }
 
@@ -279,5 +328,9 @@ int main() {
         ld $sp, %sp
         ld [%sp], %pc
     ");
+
+    // RS-232 init:
+    rs232_read_buf_begin = 0;
+    rs232_read_buf_end   = 0;
 }
 
