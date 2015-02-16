@@ -257,30 +257,27 @@ void dtoa(int number, char* string)
     string[1] = 'x';
     int i = 2;
     int n = number;
-    while((bool)n)
-    {
-        n >> 4;
+    while ((bool)n) {
+        n = n >> 4;
         i = i + 1;
     }
-    if(i == 2)
-    {
+
+    if (i == 2) {
         i = 3; // if number == 0, we print a zero after 0x.
     }
+
     // i contains the number of chars
     string[i+1] = (char)0;
-    while(i > 2)
-    {
+    while (i > 2) {
         n = number & 0xF;
-        if(n < 10)
-        {
+        if (n < 10) {
             n = n + (int)'0';
         }
-        else
-        {
-            n = n + (int)'A';
+        else {
+            n = n - 10 + (int)'A';
         }
-        string[i] = (char)n;
         i = i - 1;
+        string[i] = (char)n;
         number = number >> 4;
     }
 }
