@@ -232,6 +232,59 @@ char getc() {
     }
 }
 
+void putc(char c)
+{
+    *((char*)0xD0000001) = c;
+    int i;
+    for(i = 0; i < 10000; i=i+1)
+    {
+    }
+}
+
+void write(char* string)
+{
+    int i;
+    for(i = 0; (bool)string[i]; i=i+1)
+    {
+        putc(string[i]);
+    }
+}
+
+// convert an int to an hexadecimal string like 0xDEADBEEF
+void dtoa(int number, char* string)
+{
+    string[0] = '0';
+    string[1] = 'x';
+    int i = 2;
+    int n = number;
+    while((bool)n)
+    {
+        n >> 4;
+        i = i + 1;
+    }
+    if(i == 2)
+    {
+        i = 3; // if number == 0, we print a zero after 0x.
+    }
+    // i contains the number of chars
+    string[i+1] = (char)0;
+    while(i > 2)
+    {
+        n = number & 0xF;
+        if(n < 10)
+        {
+            n = n + (int)'0';
+        }
+        else
+        {
+            n = n + (int)'A';
+        }
+        string[i] = (char)n;
+        i = i - 1;
+        number = number >> 4;
+    }
+}
+
 // RS-232 }}}
 
 // TASKS {{{
@@ -239,10 +292,12 @@ char getc() {
 export int task1() {
     int *rs232 = (int*) 0xD0000001;
     while (true) {
+        /*
         int got = (int)getc();
         if (got != -1) {
             *rs232 = got;
         }
+        */
     }
 }
 
@@ -256,8 +311,14 @@ export int task2() {
 
 export int task3() {
     int *ssegs = (int*) 0xA0000000;
+    int i = 0;
+    char[12] string;
     while (true) {
-        *(ssegs + 1) = 0b0111;
+        i = i + 1;
+        write("test ");
+        dtoa(i, (char*)&string);
+        write(string);
+        putc('\n');
     }
 }
 
