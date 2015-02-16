@@ -4,7 +4,7 @@ export TEXC = latexmk -pdflatex="lualatex %O %S" -pdf -dvi- -ps-
 
 .PHONY: FORCE
 
-ProjectCharter.pdf: ProjectCharter.tex Gantt.pdf
+ProjectCharter.pdf: ProjectCharter.tex titlepage.tex Gantt.pdf
 	$(TEXC) -latexoption=-shell-escape $<
 
 %.pdf: %.tex FORCE
