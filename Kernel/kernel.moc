@@ -12,7 +12,7 @@ asm("
 
 null_handler: reti
 start:
-    set 0x2000, %sp // stack at the end of the memory
+    set 0x1FFF, %sp // stack at the end of the memory
     ba f_main
 ")
 
@@ -264,7 +264,6 @@ export int task3() {
 export int task4() {
     int *ssegs = (int*) 0xA0000000;
     while (true) {
-        /*
         void* i = syscall_malloc(2);
         *((int*)i) = 7;
         *((int*)i+1) = 6;
@@ -276,7 +275,6 @@ export int task4() {
         void* k = syscall_malloc(5);
         syscall_free(j);
         syscall_free(k);
-        */
     }
 }
 
@@ -285,7 +283,7 @@ export int task4() {
 int main() {
     pwm_count = 0;
     // /!\ Should be big enough not to overwrite the code !
-    malloc_start = (void*)0x300;
+    malloc_start = (void*)0x500;
     *((int*)malloc_start) = 0;
 
     // process table
