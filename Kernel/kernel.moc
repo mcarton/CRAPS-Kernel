@@ -40,7 +40,7 @@ pwm_handler:
     inccc %r1
 
     // do we do a context switch, or nothing ?
-    cmp %r1, 100
+    cmp %r1, 10
     bge pwm_handler_do_it
 
     st %r1, $pwm_count
@@ -215,7 +215,7 @@ rs232_handler_read:
 export void rs232_handler_read() {
     rs232_read_buf[rs232_read_buf_end] = *((char*)0xD0000000);
 
-    rs232_read_buf_end = (rs232_read_buf_end+1) & 255;
+    rs232_read_buf_end = (rs232_read_buf_end+1) & 0xff;
 
     rs232_read_buf_begin = rs232_read_buf_begin
                          + (int)(rs232_read_buf_begin == rs232_read_buf_end);
@@ -227,32 +227,29 @@ char getc() {
     }
     else {
         char result = rs232_read_buf[rs232_read_buf_begin];
-        rs232_read_buf_begin = (rs232_read_buf_begin+1) & 255;
+        rs232_read_buf_begin = (rs232_read_buf_begin+1) & 0xff;
         return result;
     }
 }
 
-void putc(char c)
-{
+void putc(char c) {
     *((char*)0xD0000001) = c;
+
     int i;
-    for(i = 0; i < 10000; i=i+1)
-    {
+    for(i = 0; i < 500; i=i+1) {
+        // wait for the byte to be sent
     }
 }
 
-void write(char* string)
-{
+void write(char* string) {
     int i;
-    for(i = 0; (bool)string[i]; i=i+1)
-    {
+    for(i = 0; (bool)string[i]; i=i+1) {
         putc(string[i]);
     }
 }
 
 // convert an int to an hexadecimal string like 0xDEADBEEF
-void dtoa(int number, char* string)
-{
+void dtoa(int number, char* string) {
     string[0] = '0';
     string[1] = 'x';
     int i = 2;
