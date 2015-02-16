@@ -126,7 +126,7 @@ pwm_handler_afterreset:
     reti
 ")
 
-// MALOC {{{
+// MALLOC {{{
 
 // used internally by the malloc
 void *malloc_start;
