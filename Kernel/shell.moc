@@ -1,0 +1,25 @@
+void shell(char* line) {
+    int len = strlen(line);
+
+    if (len > 5
+    && line[0] == 'e'
+    && line[1] == 'c'
+    && line[2] == 'h'
+    && line[3] == 'o'
+    && line[4] == ' '
+    ) {
+        write(line+5);
+    }
+    else if (len == 6
+    && line[0] == 'h'
+    && line[1] == 'e'
+    && line[2] == 'l'
+    && line[3] == 'l'
+    && line[4] == 'o'
+    ) {
+        write("Hello world!");
+    }
+    else {
+        write("Uknown command\n");
+    }
+}

@@ -366,10 +366,12 @@ export int task2() {
     }
 }
 
+#include "shell.moc"
+
 export int task3() {
     while (true) {
         char* line = getline();
-        write(line);
+        shell(line);
         syscall_free((void*)line);
     }
 }
