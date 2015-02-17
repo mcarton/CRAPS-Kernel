@@ -462,7 +462,7 @@ export int task4() {
 int main() {
     pwm_count = 0;
     // /!\ Should be big enough not to overwrite the code !
-    malloc_start = (void*)0x500;
+    malloc_start = (void*)0x1000;
     *((int*)malloc_start) = 0;
 
     // process table
