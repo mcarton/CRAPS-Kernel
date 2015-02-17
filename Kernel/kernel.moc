@@ -158,6 +158,19 @@ void memcpy(void* source, void* destination, int size)
     }
 }
 
+bool memcmp(void* b1, void* b2, int size)
+{
+    int i;
+    for(i = 0; i < size; i=i+1)
+    {
+        if(*((int*)b1 + i) != *((int*)b2 + i))
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
 void* malloc(int size) {
     size = nbp2(size);
 
@@ -417,13 +430,25 @@ export int task3() {
 
 export int task4() {
     int *ssegs = (int*) 0xA0000000;
+    *(ssegs + 1) = 0b1111;
     while (true) {
         void* i = malloc(2);
+        void* old_i = i;
         *((int*)i) = 7;
         *((int*)i+1) = 6;
+        i = realloc(i, 6);
+        if(memcmp(i, old_i, 2))
+        {
+            *(ssegs + 1) = 0b1111;
+        }
+        else
+        {
+            *(ssegs + 1) = 0b0000;
+        }
         *ssegs = (int)i;
         free(i);
         i = malloc(10);
+        i = realloc(i, 5);
         void* j = malloc(10);
         free(i);
         void* k = malloc(5);
