@@ -135,15 +135,31 @@ void *malloc_start;
 // Very simple system : in block. Before each block we have a header.
 // The last bit tell if the block is allocated or not.
 // The rest is the size of the block (so we shift >> 1, and we have the size)
-void* syscall_malloc(int size) {
-    // get the nearest power of two that is bigger than the size.
-    int s = size - 1;
-    size = 1;
+
+// get the nearest power of two that is bigger than the parameter.
+int nbp2(int n)
+{
+    int s = n - 1;
+    n = 1;
     while((bool)s)
     {
         s = s >> 1;
-        size = size << 1;
+        n = n << 1;
     }
+    return n;
+}
+
+void memcpy(void* source, void* destination, int size)
+{
+    int i;
+    for(i = 0; i < size; i=i+1)
+    {
+        *((int*)destination + i) = *((int*)source + i);
+    }
+}
+
+void* malloc(int size) {
+    size = nbp2(size);
 
     int* c = (int*)malloc_start;
     while (
@@ -166,7 +182,7 @@ void* syscall_malloc(int size) {
     return (void*)c + 1;
 }
 
-int syscall_free(void* addr) {
+int free(void* addr) {
     int* c = (int*)malloc_start;
     while (c < addr - 1) {
         c = c + (*c >> 1) + 1;
@@ -187,6 +203,41 @@ int syscall_free(void* addr) {
 
     // We could merge with the next block if it is empty here
     return 0;
+}
+
+void* realloc(void* addr, int new_size)
+{
+    new_size = nbp2(new_size);
+
+    // taken from the free implementation
+    // ---
+    int* c = (int*)malloc_start;
+    while (c < addr - 1) {
+        c = c + (*c >> 1) + 1;
+        if(*c == 0) {
+            return (void*)-1; // the address is after the last allocated block...
+        }
+    }
+    // can't find block or already freed
+    if ((c != addr - 1) || ((*c & 1) == 0)) {
+        return (void*)-1;
+    }
+    // ---
+
+    // already the good size
+    if((*c >> 1) >= new_size)
+    {
+        return addr;
+    }
+    
+    // here we will need to allocate a new block and copy it.
+    void* new_addr = malloc(new_size);
+    memcpy(addr, new_addr, *c >> 1);
+    if(free(addr) == -1)
+    {
+        return (void*)-1;
+    }
+    return new_addr;
 }
 
 // MALLOC }}}
@@ -247,7 +298,7 @@ char* getline() {
     int i;
     char c = (char)-1;
     int size = 32;
-    char* buf = (char*)syscall_malloc(size);
+    char* buf = (char*)malloc(size);
     char* new_buf;
 
     for (i = 0; c != '\n' && c != '\0'; i = i+1) {
@@ -257,29 +308,17 @@ char* getline() {
             continue;
         }
 
-        // TODO: palkeo: realloc
         if (i == size) {
             size = size*2;
-
-            new_buf = (char*)syscall_malloc(size);
-            strcpy(new_buf, buf);
-
-            syscall_free((void*)buf);
-            buf = new_buf;
+            buf = (char*)realloc((void*)buf, size);
         }
 
         buf[i] = c;
     }
 
-    // TODO: palkeo: realloc
     if (i == size) {
         size = size*2;
-
-        new_buf = (char*)syscall_malloc(size);
-        strcpy(new_buf, buf);
-
-        syscall_free((void*)buf);
-        buf = new_buf;
+        buf = (char*)realloc((void*)buf, size);
     }
 
     buf[i] = '\0';
@@ -372,24 +411,24 @@ export int task3() {
     while (true) {
         char* line = getline();
         shell(line);
-        syscall_free((void*)line);
+        free((void*)line);
     }
 }
 
 export int task4() {
     int *ssegs = (int*) 0xA0000000;
     while (true) {
-        void* i = syscall_malloc(2);
+        void* i = malloc(2);
         *((int*)i) = 7;
         *((int*)i+1) = 6;
         *ssegs = (int)i;
-        syscall_free(i);
-        i = syscall_malloc(10);
-        void* j = syscall_malloc(10);
-        syscall_free(i);
-        void* k = syscall_malloc(5);
-        syscall_free(j);
-        syscall_free(k);
+        free(i);
+        i = malloc(10);
+        void* j = malloc(10);
+        free(i);
+        void* k = malloc(5);
+        free(j);
+        free(k);
     }
 }
 
@@ -402,7 +441,7 @@ int main() {
     *((int*)malloc_start) = 0;
 
     // process table
-    process_table = (struct process_table_t*)syscall_malloc(sizeof(struct process_table_t));
+    process_table = (struct process_table_t*)malloc(sizeof(struct process_table_t));
     process_table->process_count = PROCESS_COUNT;
     process_table->current_process = 0;
 
@@ -419,7 +458,7 @@ int main() {
 
     for (i=0; i < PROCESS_COUNT; i=i+1) {
         // we build the stack for the process i
-        void* stack = syscall_malloc(256) + 255;
+        void* stack = malloc(256) + 255;
 
         // as a convention, we put on the stack the address of the first
         // instruction of the task (for "bootstraping" the processes)
