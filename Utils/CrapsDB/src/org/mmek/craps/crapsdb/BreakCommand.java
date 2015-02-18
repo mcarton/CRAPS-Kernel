@@ -89,7 +89,7 @@ class BreakListener implements CommListener {
             try {
                 api.stop();
 
-                System.out.print("\rBreakpoint\n");
+                System.out.print(Colors.BOLD + "\rBreakpoint reached\n" + Colors.ALL_OFF);
                 sp.printAll();
                 System.out.print("> ");
             }

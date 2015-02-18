@@ -113,7 +113,7 @@ class ResetListener implements CommListener {
             try {
                 api.stop();
 
-                System.out.print("\rReset\n");
+                System.out.print(Colors.BOLD + "\rReset\n" + Colors.ALL_OFF);
                 sp.printAll();
                 System.out.print("> ");
             }
