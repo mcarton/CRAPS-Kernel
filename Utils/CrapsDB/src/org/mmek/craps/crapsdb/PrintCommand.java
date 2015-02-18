@@ -25,6 +25,7 @@ public class PrintCommand implements Command {
         return
             "prints the value of a register, of an address or a range of addresses\n"
           + "format:\n"
+          + "\tprint\n"
           + "\tprint %reg\n"
           + "\tprint 0xADDR\n"
           + "\tprint 0xBEGIN .. 0xEND"
@@ -74,6 +75,11 @@ public class PrintCommand implements Command {
 
             sp.printStack(first, last);
 
+            return true;
+        }
+
+        if(command.equals(name())) {
+            sp.printAll();
             return true;
         }
 
