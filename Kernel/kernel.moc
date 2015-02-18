@@ -143,10 +143,10 @@ int main() {
     process_table->current_process = 0;
 
     void*[PROCESS_COUNT] tasks;
-    tasks[0] = task1;
-    tasks[1] = task2;
-    tasks[2] = task3;
-    tasks[3] = task4;
+    tasks[0] = task_dummy;
+    tasks[1] = task_counter;
+    tasks[2] = task_shell;
+    tasks[3] = task_leds;
 
     // initialize all processes
     void*[] stack_pointers = process_table->stack_pointers;
