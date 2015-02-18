@@ -8,12 +8,10 @@ import org.mmek.craps.crapsusb.CrapsApi;
 public class StatePrinter {
     private CrapsApi api;
     private Disassembler dis;
-    private ObjModule objModule;
 
-    public StatePrinter(CrapsApi api, Disassembler dis, ObjModule objModule) {
+    public StatePrinter(CrapsApi api, Disassembler dis) {
         this.api = api;
         this.dis = dis;
-        this.objModule = objModule;
     }
 
     public void printRegisters() throws CommException {
@@ -82,12 +80,8 @@ public class StatePrinter {
         for(long addr = Math.max(0, first); addr <= last; addr++) {
             System.out.print(" 0x" + formatHexString(addr) + " | ");
 
-            if (
-                objModule != null
-            && objModule.getSym(addr) != null
-            && !objModule.getSym(addr).isEmpty()
-            ) {
-                String label = objModule.getSym(addr) + ":";
+            if (dis.getLabel(addr) != null) {
+                String label = dis.getLabel(addr) + ":";
                 if(label.length() > 15) {
                     label = label.substring(0, 13) + ":";
                 }

@@ -10,6 +10,20 @@ public class Disassembler {
         this.objModule = objModule;
     }
 
+    public String getLabel(long addr) {
+        if(objModule == null) {
+            return null;
+        }
+
+        String label = objModule.getSym(addr);
+
+        if(label != null && !label.isEmpty()) {
+            return label;
+        }
+
+        return null;
+    }
+
     public String disassemble(long addr, long instr) {
         long op = instr / 1073741824L; // 2^30
 
@@ -44,15 +58,9 @@ public class Disassembler {
                     String relDisp = disp24 + "";
                     if (disp24 >= 0) relDisp = "+" + relDisp;
 
-                    if (objModule == null) {
-                        return codeop + relDisp;
-                    }
-                    else {
-                        long brAddr = addr + disp24;
-                        String sym = objModule.getSym(brAddr);
-                        if (sym == null) return codeop + relDisp;
-                        return codeop + sym + " (" + relDisp + ")";
-                    }
+                    String sym = getLabel(addr + disp24);
+                    if (sym == null) return codeop + relDisp;
+                    return codeop + sym + " (" + relDisp + ")";
                 }
                 else {
                     // sethi
