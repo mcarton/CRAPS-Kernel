@@ -11,9 +11,17 @@ public class DisasmCommand implements Command {
     Disassembler dis;
     StatePrinter sp;
 
-    Pattern address      = Pattern.compile("disam +0x(\\p{XDigit}+)");
+    String labelPattern  = "\\p{Alpha}[\\p{Alnum}\\-_]+";
+    String hexPattern    = "0x\\p{XDigit}+";
+    String addrPattern   = "(" + hexPattern + ")|(" + labelPattern + ")";
+    Pattern address      = Pattern.compile(
+        "disam +(" + addrPattern + ")"
+    );
     Pattern addressRange = Pattern.compile(
-        "disam +0x(\\p{XDigit}+) *\\.* *0x(\\p{XDigit}+)"
+        "disam +(" + addrPattern + ") *\\.* *(" + addrPattern + ")"
+    );
+    Pattern addressIncr  = Pattern.compile(
+        "disam +(" + addrPattern + ") *\\+ *(\\p{Digit}+)"
     );
 
     DisasmCommand(CrapsApi api, Disassembler dis, StatePrinter sp) {
@@ -26,8 +34,9 @@ public class DisasmCommand implements Command {
         return
             "disasemble the value at an address or a range of addresses\n"
           + "format:\n"
-          + "\tdisam 0xADDR\n"
-          + "\tdisam 0xBEGIN .. 0xEND"
+          + "\tdisam [0xADDR|LABEL]\n"
+          + "\tdisam [0xBEGIN|LABEL] .. [0xEND|LABEL]\n"
+          + "\tdisam [0xBEGIN|LABEL] + INCR"
         ;
     }
 
@@ -46,24 +55,56 @@ public class DisasmCommand implements Command {
         }
     }
 
+    public Long parseAddress(String txt) {
+        if(txt.startsWith("0x")) {
+            return Long.parseLong(txt.substring(2, txt.length()), 16);
+        }
+        else {
+            Long addr = dis.getAddress(txt);
+
+            if(addr == null) {
+                System.out.println("Cannot find label " + txt);
+            }
+
+            return addr;
+        }
+    }
+
     public boolean impl(String command) throws CommException {
         Matcher mAddress = address.matcher(command);
         if (mAddress.matches()) {
-            long address = Long.parseLong(mAddress.group(1), 16);
-            long value = api.readMemory(address);
+            Long address = parseAddress(mAddress.group(1));
 
-            System.out.println(dis.disassemble(address, value));
+            if(address != null) {
+                long value = api.readMemory(address);
+                System.out.println(dis.disassemble(address, value));
+            }
 
             return true;
         }
 
         Matcher mRange = addressRange.matcher(command);
         if (mRange.matches()) {
-            long first = Long.parseLong(mRange.group(1), 16);
-            long last  = Long.parseLong(mRange.group(2), 16);
+            Long first = parseAddress(mRange.group(1));
+            Long last = parseAddress(mRange.group(4));
             long pc = api.readRegister(30);
 
-            sp.printAssembly(first, last, pc);
+            if(first != null && last != null) {
+                sp.printAssembly(first, last, pc);
+            }
+
+            return true;
+        }
+
+        Matcher mIncr = addressIncr.matcher(command);
+        if (mIncr.matches()) {
+            Long address = parseAddress(mIncr.group(1));
+            long incr = Long.parseLong(mIncr.group(4));
+            long pc = api.readRegister(30);
+
+            if(address != null) {
+                sp.printAssembly(address, address + incr, pc);
+            }
 
             return true;
         }
