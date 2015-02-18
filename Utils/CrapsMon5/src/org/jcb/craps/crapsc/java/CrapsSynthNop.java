@@ -28,22 +28,8 @@ public class CrapsSynthNop extends CrapsInstrDirecSynth {
 		return true;
 	}
 
-	private long getWord1(ObjModule localSymbols, ObjModule globalSymbols) {
-		return 4 * 4194304; // 2^22, codeop=100
-	}
-
 	public int getByte(int i, ObjModule localSymbols, ObjModule globalSymbols) {
-		long word = getWord1(localSymbols, globalSymbols);
-		int msb = (int) (word / 65536);
-		int lsb = (int) (word % 65536);
-		switch (i) {
-			case 0: return (msb / 256);
-			case 1: return (msb % 256);
-			case 2: return (lsb / 256);
-			case 3: return (lsb % 256);
-		}
-		return -1;
+		return 0; // sethi 0, %r0
 	}
-
 }
 
