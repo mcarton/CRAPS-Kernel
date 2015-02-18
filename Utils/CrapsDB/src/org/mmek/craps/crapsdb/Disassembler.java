@@ -90,8 +90,22 @@ public class Disassembler {
                     long rd = (instr / 16777216L) % 32; // 2^24
                     return "sethi  0x" + Long.toHexString(imm24) + ", " + registerNames[(int) rd];
                 }
-            case 1: // reti
-                return "reti";
+            case 1: // special instructions
+                long firstTwoBytes = instr / 65536L;
+
+                if(firstTwoBytes == 0x6000) {
+                    long reg = instr % 32;
+                    return "ts " + registerNames[(int) reg];
+                }
+                else if(firstTwoBytes == 0x6080) {
+                    return "int";
+                }
+                else if(firstTwoBytes == 0x4000) {
+                    return "reti";
+                }
+                else {
+                    return "unknown";
+                }
             case 2: // arithmetique & logique
             case 3: // acces memoire
                 long op3 = (instr / 524288L) % 64; // 2^19
