@@ -52,7 +52,7 @@ public class PrintCommand implements Command {
             int register = Integer.parseInt(mRegister.group(1));
             long value = api.readRegister(register);
 
-            System.out.println("%r" + mRegister.group(1) + " = " + value);
+            print("%r", mRegister.group(1), value);
 
             return true;
         }
@@ -62,7 +62,7 @@ public class PrintCommand implements Command {
             long address = Long.parseLong(mAddress.group(1), 16);
             long value = api.readMemory(address);
 
-            System.out.println("0x" + mAddress.group(1) + " = " + value);
+            print("0x", mRegister.group(1), value);
 
             return true;
         }
@@ -78,5 +78,15 @@ public class PrintCommand implements Command {
         }
 
         return false;
+    }
+
+    private void print(String prefix, String mem, long value) {
+        System.out.print(prefix);
+        System.out.print(mem);
+        System.out.print(" = ");
+        System.out.print(Long.toHexString(value));
+        System.out.print(" (");
+        System.out.print(value);
+        System.out.println(")");
     }
 }
