@@ -5,9 +5,23 @@ import org.jcb.craps.crapsc.java.ObjModule;
 
 public class Disassembler {
     private ObjModule objModule;
+    private String[] registerNames;
 
     public Disassembler(ObjModule objModule) {
         this.objModule = objModule;
+
+        registerNames = new String[32];
+        for(int i = 0; i < 32; i++) {
+            registerNames[i] = "%r" + i;
+        }
+
+        registerNames[25] = "%psr";
+        registerNames[26] = "%brk";
+        registerNames[27] = "%fp";
+        registerNames[28] = "%ret";
+        registerNames[29] = "%sp";
+        registerNames[30] = "%pc";
+        registerNames[31] = "%ir";
     }
 
     public String getLabel(long addr) {
@@ -66,7 +80,7 @@ public class Disassembler {
                     // sethi
                     long imm24 = instr % 16777216L; // 2^24
                     long rd = (instr / 16777216L) % 32; // 2^24
-                    return "sethi  0x" + Long.toHexString(imm24) + ", %r" + rd;
+                    return "sethi  0x" + Long.toHexString(imm24) + ", " + registerNames[(int) rd];
                 }
             case 1: // reti
                 return "reti";
@@ -104,15 +118,15 @@ public class Disassembler {
                 if (ir13 != 0) {
                     arg2 = "" + simm13;
                 } else {
-                    arg2 = "%r" + rs2;
+                    arg2 = registerNames[(int) rs2];
                 }
                 if (op == 2)
-                    return codeop + "%r" + rs1 + ", " + arg2 + ", %r" + rd;
+                    return codeop + registerNames[(int) rs1] + ", " + arg2 + ", " + registerNames[(int) rd];
                 else {
                     if (((op3 / 4) % 2) != 0)
-                        return "st    %r" + rd + ", [%r" + rs1 + "+" + arg2 + "]";
+                        return "st    " + registerNames[(int) rd] + ", [" + registerNames[(int) rs1] + "+" + arg2 + "]";
                     else
-                        return "ld    [%r" + rs1 + "+" + arg2 + "], %r" + rd;
+                        return "ld    [" + registerNames[(int) rs1] + "+" + arg2 + "], " + registerNames[(int) rd];
                 }
         }
 
