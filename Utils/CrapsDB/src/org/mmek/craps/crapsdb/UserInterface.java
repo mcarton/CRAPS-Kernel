@@ -26,7 +26,7 @@ public class UserInterface {
         this.commands.add(new BreakCommand(api, dis, sp));
         this.commands.add(new DisasmCommand(api, dis, sp));
         this.commands.add(new HelpCommand(commands));
-        this.commands.add(new PrintCommand(api, sp));
+        this.commands.add(new PrintCommand(api, dis, sp));
         this.commands.add(new RunCommand(api));
         this.commands.add(new SetCommand(api));
         this.commands.add(new StepCommand(api, sp));

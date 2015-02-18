@@ -8,16 +8,25 @@ import org.mmek.craps.crapsusb.CrapsApi;
 
 public class PrintCommand implements Command {
     CrapsApi api;
+    Disassembler dis;
     StatePrinter sp;
 
+    String labelPattern  = "\\p{Alpha}[\\p{Alnum}\\-_]+";
+    String hexPattern    = "0x\\p{XDigit}+";
+    String addrPattern   = "(" + hexPattern + ")|(" + labelPattern + ")";
+
     Pattern register     = Pattern.compile("print +%r(\\d+)");
-    Pattern address      = Pattern.compile("print +0x(\\p{XDigit}+)");
+    Pattern address      = Pattern.compile("print +(" + addrPattern + ")");
     Pattern addressRange = Pattern.compile(
-        "print +0x(\\p{XDigit}+) *\\.* *0x(\\p{XDigit}+)"
+        "print +(" + addrPattern + ") *\\.* *(" + addrPattern + ")"
+    );
+    Pattern addressIncr  = Pattern.compile(
+        "print +(" + addrPattern + ") *\\+ *(\\p{Digit}+)"
     );
 
-    PrintCommand(CrapsApi api, StatePrinter sp) {
+    PrintCommand(CrapsApi api, Disassembler dis, StatePrinter sp) {
         this.api = api;
+        this.dis = dis;
         this.sp = sp;
     }
 
@@ -27,8 +36,9 @@ public class PrintCommand implements Command {
           + "format:\n"
           + "\tprint\n"
           + "\tprint %reg\n"
-          + "\tprint 0xADDR\n"
-          + "\tprint 0xBEGIN .. 0xEND"
+          + "\tprint [0xADDR|LABEL]\n"
+          + "\tprint [0xBEGIN|LABEL] .. [0xEND|LABEL]\n"
+          + "\tprint [0xBEGIN|LABEL] + INCR"
         ;
     }
 
@@ -47,6 +57,21 @@ public class PrintCommand implements Command {
         }
     }
 
+    public Long parseAddress(String txt) {
+        if(txt.startsWith("0x")) {
+            return Long.parseLong(txt.substring(2, txt.length()), 16);
+        }
+        else {
+            Long addr = dis.getAddress(txt);
+
+            if(addr == null) {
+                System.out.println("Cannot find label " + txt);
+            }
+
+            return addr;
+        }
+    }
+
     public boolean impl(String command) throws CommException {
         Matcher mRegister = register.matcher(command);
         if (mRegister.matches()) {
@@ -60,20 +85,36 @@ public class PrintCommand implements Command {
 
         Matcher mAddress = address.matcher(command);
         if (mAddress.matches()) {
-            long address = Long.parseLong(mAddress.group(1), 16);
-            long value = api.readMemory(address);
+            Long address = parseAddress(mAddress.group(1));
 
-            print("0x", mRegister.group(1), value);
+            if(address != null) {
+                long value = api.readMemory(address);
+                print("0x", mRegister.group(1), value);
+            }
 
             return true;
         }
 
         Matcher mRange = addressRange.matcher(command);
         if (mRange.matches()) {
-            long first = Long.parseLong(mRange.group(1), 16);
-            long last  = Long.parseLong(mRange.group(2), 16);
+            Long first = parseAddress(mRange.group(1));
+            Long last = parseAddress(mRange.group(4));
 
-            sp.printStack(first, last);
+            if(first != null && last != null) {
+                sp.printStack(first, last);
+            }
+
+            return true;
+        }
+
+        Matcher mIncr = addressIncr.matcher(command);
+        if (mIncr.matches()) {
+            Long address = parseAddress(mIncr.group(1));
+            long incr = Long.parseLong(mIncr.group(4));
+
+            if(address != null) {
+                sp.printStack(address, address + incr);
+            }
 
             return true;
         }
