@@ -23,7 +23,7 @@ public class UserInterface {
         this.dis = new Disassembler(objModule);
         this.sp = new StatePrinter(api, dis);
 
-        this.commands.add(new BreakCommand(api, sp));
+        this.commands.add(new BreakCommand(api, dis, sp));
         this.commands.add(new DisasmCommand(api, dis, sp));
         this.commands.add(new HelpCommand(commands));
         this.commands.add(new PrintCommand(api, sp));
@@ -113,7 +113,7 @@ class ResetListener implements CommListener {
             try {
                 api.stop();
 
-                System.out.print("\rReset\n");
+                System.out.print(Colors.BOLD + "\rReset\n" + Colors.ALL_OFF);
                 sp.printAll();
                 System.out.print("> ");
             }

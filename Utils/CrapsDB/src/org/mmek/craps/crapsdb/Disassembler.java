@@ -38,6 +38,14 @@ public class Disassembler {
         return null;
     }
 
+    public Long getAddress(String label) {
+        if(objModule == null || !objModule.isDefined(label)) {
+            return null;
+        }
+
+        return objModule.getIntVal(label);
+    }
+
     public String disassemble(long addr, long instr) {
         long op = instr / 1073741824L; // 2^30
 
