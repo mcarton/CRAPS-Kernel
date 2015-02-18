@@ -3,7 +3,7 @@
 UTILS_DIR=$(dirname "${BASH_SOURCE[0]}")
 CRAPSDB_DIR="$UTILS_DIR"/CrapsDB
 
-exec java \
+exec java -ea \
     -Djava.library.path="$CRAPSDB_DIR"/crapsusb \
     -classpath "$CRAPSDB_DIR/build" \
     org.mmek.craps.crapsdb.CrapsDB $*

@@ -15,10 +15,9 @@ public class BreakCommand implements Command {
     Pattern address = Pattern.compile("break +0x(\\p{XDigit}+)");
     Pattern label = Pattern.compile("break +(\\p{Graph}+)");
 
-    BreakCommand(CrapsApi api, Disassembler dis, StatePrinter sp) {
+    BreakCommand(CrapsApi api, Disassembler dis) {
         this.api = api;
         this.dis = dis;
-        this.api.addCommListener(new BreakListener(api, sp));
     }
 
     public String help() {
@@ -69,32 +68,5 @@ public class BreakCommand implements Command {
         }
 
         return false;
-    }
-}
-
-class BreakListener implements CommListener {
-    private CrapsApi api;
-    private StatePrinter sp;
-    private int previousBrk = 1;
-
-    BreakListener(CrapsApi api, StatePrinter sp) {
-        this.api = api;
-        this.sp = sp;
-    }
-
-    public void valueChanged(CommEvent ev) {
-        int brk = ev.getBitVector()[62];
-
-        if (brk == 1 && previousBrk == 0) {
-            try {
-                api.stop();
-
-                System.out.print(Colors.BOLD + "\rBreakpoint reached\n" + Colors.ALL_OFF);
-                sp.printAll();
-                System.out.print("> ");
-            }
-            catch (CommException ce) {}
-        }
-        previousBrk = brk;
     }
 }
