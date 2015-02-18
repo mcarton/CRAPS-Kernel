@@ -30,6 +30,7 @@ public class UserInterface {
         this.commands.add(new RunCommand(api));
         this.commands.add(new SetCommand(api));
         this.commands.add(new StepCommand(api, sp));
+        this.commands.add(new StopCommand(api, sp));
 
         this.api.addCommListener(new ResetListener(api, sp));
     }
