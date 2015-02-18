@@ -19,6 +19,7 @@ void shell(char* line) {
     if(strcmp(line, "echo"))
     {
         write(parameters);
+        putc('\n');
     }
     else if(strcmp(line, "help"))
     {
