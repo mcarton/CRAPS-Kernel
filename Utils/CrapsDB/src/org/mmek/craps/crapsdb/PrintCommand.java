@@ -89,7 +89,7 @@ public class PrintCommand implements Command {
 
             if(address != null) {
                 long value = api.readMemory(address);
-                print("0x", mRegister.group(1), value);
+                print("0x", address + "", value);
             }
 
             return true;
