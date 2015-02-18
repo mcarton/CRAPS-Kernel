@@ -1234,7 +1234,23 @@ public class CrapsEmu extends JFrame {
 		}
 	}
 
-	
+	public static String[] registerNames;
+
+	static {
+		registerNames = new String[32];
+		for(int i = 0; i < 32; i++) {
+			registerNames[i] = "%r" + i;
+		}
+
+		registerNames[25] = "%psr";
+		registerNames[26] = "%brk";
+		registerNames[27] = "%fp";
+		registerNames[28] = "%ret";
+		registerNames[29] = "%sp";
+		registerNames[30] = "%pc";
+		registerNames[31] = "%ir";
+	}
+
 	public String disassemble(long addr, long instr) {
 		long op = instr / 1073741824L; // 2^30
 		switch ((int) op) {
@@ -1278,10 +1294,24 @@ public class CrapsEmu extends JFrame {
 					// sethi
 					long imm24 = instr % 16777216L; // 2^24
 					long rd = (instr / 16777216L) % 32; // 2^24
-					return "sethi  0x" + HexNum.formatUnsignedHexa(imm24) + ", %r" + rd;
+                    return "sethi  0x" + HexNum.formatUnsignedHexa(imm24) + ", " + registerNames[(int) rd];
 				}
-			case 1:	// reti
-				return "reti";
+            case 1: // special instructions
+                long firstTwoBytes = instr / 65536L;
+
+                if(firstTwoBytes == 0x6000) {
+                    long reg = instr % 32;
+                    return "ts " + registerNames[(int) reg];
+                }
+                else if(firstTwoBytes == 0x6080) {
+                    return "int";
+                }
+                else if(firstTwoBytes == 0x4000) {
+                    return "reti";
+                }
+                else {
+                    return "unknown";
+                }
 			case 2:	// arithmetique & logique
 			case 3:	// acces memoire
 				long op3 = (instr / 524288L) % 64; // 2^19
@@ -1314,15 +1344,15 @@ public class CrapsEmu extends JFrame {
 				if (ir13 != 0) {
 					arg2 = "" + simm13;
 				} else {
-					arg2 = "%r" + rs2;
+                    arg2 = registerNames[(int) rs2];
 				}
 				if (op == 2)
-					return codeop + "%r" + rs1 + ", " + arg2 + ", %r" + rd;
+                    return codeop + registerNames[(int) rs1] + ", " + arg2 + ", " + registerNames[(int) rd];
 				else {
 					if (((op3 / 4) % 2) != 0)
-						return "st    %r" + rd + ", [%r" + rs1 + "+" + arg2 + "]";
+                        return "st    " + registerNames[(int) rd] + ", [" + registerNames[(int) rs1] + "+" + arg2 + "]";
 					else
-						return "ld    [%r" + rs1 + "+" + arg2 + "], %r" + rd;
+                        return "ld    [" + registerNames[(int) rs1] + "+" + arg2 + "], " + registerNames[(int) rd];
 				}
 		}
 		return "---";
