@@ -126,10 +126,10 @@ pwm_handler_afterreset:
     reti
 ")
 
-#include "memory.c"
-#include "strings.c"
-#include "rs232.c"
-#include "tasks.c"
+#include "memory.moc"
+#include "strings.moc"
+#include "rs232.moc"
+#include "tasks.moc"
 
 int main() {
     pwm_count = 0;
