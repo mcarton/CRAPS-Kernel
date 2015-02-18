@@ -15,7 +15,11 @@ char* parseline(char* line) {
 void shell(char* line) {
     char* parameters = parseline(line);
 
-    if (strcmp(line, "echo")) {
+    if (line[0] == (char)3 /* ^C */ || strcmp(line, "quit")) {
+        putc((char)4); // ^D
+        putc('\n');
+    }
+    else if (strcmp(line, "echo")) {
         write(parameters);
         putc('\n');
     }
