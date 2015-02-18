@@ -61,7 +61,7 @@ public class StatePrinter {
 
     private String formatFlag(int psr, char name, int number) {
         return
-            (psr & number) > 0 ? Colors.GREEN : Colors.RED
+            ((psr & number) > 0 ? Colors.GREEN : Colors.RED)
           + name + ' '
           + Colors.ALL_OFF;
     }
