@@ -10,7 +10,7 @@ public class StatePrinter {
     private Disassembler dis;
     private ObjModule objModule;
 
-    public StatePrinter(CrapsApi api, Disassembler dis, ObjModule module) {
+    public StatePrinter(CrapsApi api, Disassembler dis, ObjModule objModule) {
         this.api = api;
         this.dis = dis;
         this.objModule = objModule;
