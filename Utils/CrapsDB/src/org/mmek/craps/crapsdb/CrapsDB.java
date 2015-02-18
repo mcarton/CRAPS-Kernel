@@ -37,7 +37,7 @@ public class CrapsDB {
             if(opt.equals("-h") || opt.equals("--help")) { /* -h, --help */
                 help();
             }
-            else if(objFile == null) { /* FILE.asm */
+            else if(objFile == null) { /* FILE.obj */
                 if (!opt.endsWith(".obj")) {
                     error("The file extension must be .obj");
                 }
