@@ -44,7 +44,7 @@ char* getline() {
     char* buf = (char*)malloc(size);
     char* new_buf;
 
-    for (i = 0; c != '\n' && c != '\0'; i = i+1) {
+    for (i = 0; c != '\n' && c != '\0'; i=i+1) {
         c = getc();
 
         if ((int)c == -1) {
@@ -59,12 +59,7 @@ char* getline() {
         buf[i] = c;
     }
 
-    if (i == size) {
-        size = size*2;
-        buf = (char*)realloc((void*)buf, size);
-    }
-
-    buf[i] = '\0';
+    buf[i-1] = '\0';
 
     return buf;
 }
