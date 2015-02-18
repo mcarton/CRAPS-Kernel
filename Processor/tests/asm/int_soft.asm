@@ -6,6 +6,7 @@ ba start
 .word null_handler
 .word null_handler
 .word null_handler
+.word null_handler
 .word soft_handler
 
 null_handler: reti
@@ -26,6 +27,6 @@ start:
     set 0x1fff, %sp
     setq 1, %r1
     setq 2, %r2
-    .word 0x60800000 // soft int
+    syscall
     setq 3, %r3
     setq 4, %r4
