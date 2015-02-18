@@ -62,7 +62,7 @@
     scheduler running a few tasks. It will also provide functions to display
     text to the user, do input/output to a permanent storage\dots
 
-    For now, having the OS loading programs dynamically is out-of-scope : the
+    For now, having the OS loading programs dynamically is out-of-scope: the
     goal is to have a very simple functional OS.  We will also have to improve
     the CPU to make it support our OS. Specifically we know we will have to
     support the RAM chips that are on the FPGA: currently, we have \SI{2}{kB}
@@ -103,11 +103,6 @@
       \item Étienne Lebrun as \textit{quality manager}
     \end{itemize}
 
-  \section{Project Monitoring and Controls}
-    A Gantt diagram for the project is available on page \pageref{fig:gantt}.
-
-    Controls: meetings?
-
   \section{Meetings and Reporting}
     Two kinds of meetings are planned:
     \begin{itemize}
@@ -122,8 +117,9 @@
     A file with the actions (listing who did what and when) has been created.
 
   \section{Management of Risks}
-
-    For each risk, we do the product $probability \times impact$.
+    For each risk, the product $\text{probability} \times \text{gravity}$ is
+    shown in the top-right cell. If the product is above 6, the risk is
+    considered critical.
 
     \risk{3 \times 3 = 9}{
       A FPGA can be damaged, making any test impossible.
@@ -140,8 +136,8 @@
     }{
       We can also use the BRAM integrated to the FPGA, but it is way smaller.
     }{
-      In case of memory limitations, we can try to optimize for size the code we
-      generate.
+      In case of memory limitations, we can try to optimize the size of the code
+      we generate.
     }
 
     \risk{3 \times 1 = 3}{

@@ -29,12 +29,21 @@
 
       \subsection{Improvement of the Processor}
         \begin{enumerate}
-          \item The processor shall have access to at least \SI{32}{kB} of RAM.
+          \item The processor shall have access to at least \SI{8}{kB} of RAM.
           \item The RAM shall be accessed in less than 10 cycles.
-          \item The processor shall handle several interruptions sources, with
-            a priority system. An interruption handler can only be interrupted
-            by an interruption of a strictly higher priority.
-          \item Several registers shall be added.
+          \item The processor shall handle several interrupts sources, with a
+            priority system. An interrupt handler can only be interrupted by an
+            interrupt of a strictly higher priority. The list of interrupts we
+            need to support is (last has higher priority):
+            \begin{enumerate}
+              \item clock interrupt;
+              \item the 3 buttons on the board (each button shall have its own
+                interrupt);
+              \item RS-232 interrupt;
+              \item software interrupt;
+            \end{enumerate}
+          \item The processor shall support 19 registers to be used by the
+            compiler.
         \end{enumerate}
 
       \subsection{Compiler}
@@ -49,14 +58,14 @@
 
       \subsection{Development of the OS}
         \begin{enumerate}
-          \item The OS shall have a scheduler. There are no real-time
-          constraint (but it shall switch regularly, at least 10 times per
-          second). It shall support at least 10 hard-coded tasks.
+          \item The OS shall have a scheduler. There are no real-time constraint
+            (but it shall switch at least 10 times per second). It shall support
+            at least 10 hard-coded tasks.
           \item The OS shall provide a basic library available to any program:
             \begin{itemize}
               \item a \verb+malloc+ to allocate dynamic memory;
               \item functions to write on the LEDs and seven-segment display,
-                and read the switches;
+                and read the switches on the board;
               \item division and modulus operations.
              \end{itemize}
         \end{enumerate}
