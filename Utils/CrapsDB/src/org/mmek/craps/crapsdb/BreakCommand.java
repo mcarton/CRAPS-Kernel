@@ -75,7 +75,7 @@ public class BreakCommand implements Command {
 class BreakListener implements CommListener {
     private CrapsApi api;
     private StatePrinter sp;
-    private int previousBrk = 0;
+    private int previousBrk = 1;
 
     BreakListener(CrapsApi api, StatePrinter sp) {
         this.api = api;
