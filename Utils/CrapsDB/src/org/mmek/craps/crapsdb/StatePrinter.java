@@ -77,6 +77,8 @@ public class StatePrinter {
     public void printAssembly(
         long first, long last, long pc
     ) throws CommException {
+        long brk = api.readRegister(26);
+
         for(long addr = Math.max(0, first); addr <= last; addr++) {
             System.out.print(" 0x" + formatHexString(addr) + " | ");
 
@@ -93,6 +95,9 @@ public class StatePrinter {
 
             if(addr == pc) {
                 System.out.print(Colors.GREEN);
+            }
+            else if(addr == brk) {
+                System.out.print(Colors.RED);
             }
             System.out.print(dis.disassemble(addr, api.readMemory(addr)));
             System.out.println(Colors.ALL_OFF);
