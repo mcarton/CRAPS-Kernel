@@ -23,7 +23,8 @@ For now, we have only 4 types of interruptions:
   3 | btn[2] | The button 2 is pressed
   4 | btn[3] | The button 3 is pressed
   5 | RS-232 | TODO
-  6 |   soft | A software interruption
+  6 | RS-232 | TODO
+  7 |   soft | A software interruption
 
 Note: button 0 is used for the reset.
 
