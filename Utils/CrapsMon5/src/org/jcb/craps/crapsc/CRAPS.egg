@@ -58,6 +58,8 @@ sugar	sethi	is	"sethi" ;
 
 sugar	reti	is	"reti" ;
 sugar	ts		is	"ts" ; -- test and set
+sugar	int		is	"int" ;
+sugar	syscall		is	"syscall" ;
 
 macro	add		is	"add" ;
 macro	addcc	is	"addcc" ;
@@ -347,6 +349,20 @@ INSTR_BODY -> ts REGISTER #create ;
 	local
 	do
 		call INSTR_BODY^hline.setInstr(new CrapsSynthTestAndSet(REGISTER^val));
+	end
+}
+INSTR_BODY -> int #create ;
+#create {
+	local
+	do
+		call INSTR_BODY^hline.setInstr(new CrapsSynthInt());
+	end
+}
+INSTR_BODY -> syscall #create ;
+#create {
+	local
+	do
+		call INSTR_BODY^hline.setInstr(new CrapsSynthInt());
 	end
 }
 INSTR_BODY -> branch NUMEXPR #create ;
