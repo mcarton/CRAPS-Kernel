@@ -1,22 +1,20 @@
-void memcpy(void* source, void* destination, int size)
-{
+void memcpy(void* source, void* destination, int size) {
     int i;
-    for(i = 0; i < size; i=i+1)
-    {
+
+    for(i = 0; i < size; i=i+1) {
         *((int*)destination + i) = *((int*)source + i);
     }
 }
 
-bool memcmp(void* b1, void* b2, int size)
-{
+bool memcmp(void* b1, void* b2, int size) {
     int i;
-    for(i = 0; i < size; i=i+1)
-    {
-        if(*((int*)b1 + i) != *((int*)b2 + i))
-        {
+
+    for(i = 0; i < size; i=i+1) {
+        if(*((int*)b1 + i) != *((int*)b2 + i)) {
             return false;
         }
     }
+
     return true;
 }
 
@@ -29,15 +27,15 @@ void *malloc_start;
 // The rest is the size of the block (so we shift >> 1, and we have the size)
 
 // get the nearest power of two that is bigger than the parameter.
-int nbp2(int n)
-{
+int nbp2(int n) {
     int s = n - 1;
     n = 1;
-    while((bool)s)
-    {
+
+    while((bool)s) {
         s = s >> 1;
         n = n << 1;
     }
+
     return n;
 }
 
@@ -88,8 +86,7 @@ int free(void* addr) {
     return 0;
 }
 
-void* realloc(void* addr, int new_size)
-{
+void* realloc(void* addr, int new_size) {
     new_size = nbp2(new_size);
 
     // taken from the free implementation
@@ -108,16 +105,14 @@ void* realloc(void* addr, int new_size)
     // ---
 
     // already the good size
-    if((*c >> 1) >= new_size)
-    {
+    if((*c >> 1) >= new_size) {
         return addr;
     }
     
     // here we will need to allocate a new block and copy it.
     void* new_addr = malloc(new_size);
     memcpy(addr, new_addr, *c >> 1);
-    if(free(addr) == -1)
-    {
+    if(free(addr) == -1) {
         return (void*)-1;
     }
     return new_addr;
