@@ -1,23 +1,3 @@
-asm("
-    ba start
-
-    // interrupt table
-    .word pwm_handler
-    .word null_handler
-    .word null_handler
-    .word null_handler
-    .word rs232_handler_read
-    .word null_handler
-    .word null_handler
-
-null_handler: reti
-start:
-    set 0x1FFF, %sp // stack at the end of the memory
-    ba f_main
-")
-
-// global variables
-
 // every N PWM-interruptions we do a context switch, this is the counter
 int pwm_count;
 
@@ -126,48 +106,46 @@ pwm_handler_afterreset:
     reti
 ")
 
-#include "memory.moc"
-#include "strings.moc"
-#include "rs232.moc"
-#include "tasks.moc"
-
-int main() {
-    pwm_count = 0;
-    // /!\ Should be big enough not to overwrite the code !
-    malloc_start = (void*)0x1000;
-    *((int*)malloc_start) = 0;
-
-    // process table
-    process_table = (struct process_table_t*)malloc(sizeof(struct process_table_t));
-    process_table->process_count = 0;
-    process_table->current_process = 0;
-
-    void*[PROCESS_COUNT] tasks;
-    tasks[0] = task_counter;
-    tasks[1] = task_dummy;
-    tasks[2] = task_shell;
-    tasks[3] = task_leds;
-
-    // initialize all processes
-    int i;
-
-    for (i=0; i < PROCESS_COUNT; i=i+1) {
-        start_process(tasks[i]);
+void kill_process(int pid)
+{
+    // Hack to wait for the current process not to be active.
+    while(process_table->current_process == pid)
+    {
     }
 
-    // first task: loads its stack...
-    int* stack_pointer = (int*)process_table->stack_pointers;
-    *stack_pointer = *stack_pointer + 22;
-    int sp = *stack_pointer;
+    // if we kill the process and it has malloc()'ed memory, it will be leaked :(
+    // moreover, the current malloc implementation allow only to call free() with the base pointer.
+    //free(process_table->stack_pointers[pid]);
 
-    // PWM rising edge every milliseconds
-    *((int*)0xC0000000) = 195; // P
-    *((int*)0xC0000001) = 98; // N
+    process_table->process_count = process_table->process_count - 1;
 
-    // and run the first task
-    asm("
-        ld $sp, %sp
-        ld [%sp], %pc
-    ");
+    int i;
+    for(i = pid; i < process_table->process_count; i=i+1)
+    {
+        *((int*)process_table->stack_pointers + i) = *((int*)process_table->stack_pointers + i + 1);
+    }
 }
 
+void start_process(void* start_addr)
+{
+    if(process_table->process_count >= PROCESS_COUNT)
+    {
+        // kernel panic
+    }
+
+    void* stack = malloc(256) + 255;
+
+    // as a convention, we put on the stack the address of the first
+    // instruction of the task (for "bootstraping" the processes)
+    *((int*) stack) = (int)start_addr;
+
+    int j;
+    for(j=0; j < 22; j=j+1)
+    {
+        stack = stack - 1;
+        *((int*) stack) = 0;
+    }
+
+    *((void**)process_table->stack_pointers + process_table->process_count) = stack;
+    process_table->process_count = process_table->process_count + 1;
+}
