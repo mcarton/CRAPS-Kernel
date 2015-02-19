@@ -110,6 +110,11 @@ pwm_handler_afterreset:
 
 void kill_process(int pid)
 {
+    if(process_table->process_count < 2)
+    {
+        panic(4);
+    }
+
     // Hack to wait for the current process not to be active.
     while(process_table->current_process == pid)
     {
@@ -118,6 +123,11 @@ void kill_process(int pid)
     // if we kill the process and it has malloc()'ed memory, it will be leaked :(
     // moreover, the current malloc implementation allow only to call free() with the base pointer.
     //free(process_table->stack_pointers[pid]);
+
+    if(process_table->current_process > pid)
+    {
+        process_table->current_process = process_table->current_process - 1;
+    }
 
     process_table->process_count = process_table->process_count - 1;
 
