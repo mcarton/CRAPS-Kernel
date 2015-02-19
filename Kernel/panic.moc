@@ -1,0 +1,25 @@
+void panic(int error_code)
+{
+    *((int*)0xC0000000) = 0; // P
+    *((int*)0xC0000001) = 0; // N
+
+    int *ssegs = (int*) 0xA0000000;
+    int *leds = (int*) 0xB0000000;
+    *(ssegs + 1) = 0b1111;
+    *ssegs = error_code;
+
+    int i;
+    int j;
+    while(true)
+    {
+        j = j >> 1;
+        for(i = 0; i < 10000; i=i+1)
+        {
+        }
+        if(j == 0)
+        {
+            j = 256;
+        }
+        *leds = j;
+    }
+}

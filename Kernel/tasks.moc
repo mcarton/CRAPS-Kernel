@@ -23,7 +23,10 @@ export int task_shell() {
     while (true) {
         char* line = getline();
         shell(line);
-        free((void*)line);
+        if(free((void*)line) == -1)
+        {
+            panic(3);
+        }
     }
 }
 

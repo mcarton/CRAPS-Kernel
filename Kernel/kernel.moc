@@ -16,6 +16,7 @@ start:
     ba f_main
 ")
 
+#include "panic.moc"
 #include "memory.moc"
 #include "scheduler.moc"
 #include "strings.moc"

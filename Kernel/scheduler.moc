@@ -130,7 +130,7 @@ void start_process(void* start_addr)
 {
     if(process_table->process_count >= PROCESS_COUNT)
     {
-        // kernel panic
+        panic(1);
     }
 
     void* stack = malloc(256) + 255;
