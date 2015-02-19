@@ -49,7 +49,7 @@ int main() {
 
     // first task: loads its stack...
     int* stack_pointer = (int*)process_table->stack_pointers;
-    *stack_pointer = *stack_pointer + 22;
+    *stack_pointer = *stack_pointer + NB_SAVED_REGISTERS;
     int sp = *stack_pointer;
 
     // PWM rising edge every milliseconds

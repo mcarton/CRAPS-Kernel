@@ -11,6 +11,8 @@ struct process_table_t {
 
 struct process_table_t* process_table;
 
+#define NB_SAVED_REGISTERS 22
+
 // implementation of the context switch
 asm("
 pwm_handler:
@@ -140,7 +142,7 @@ void start_process(void* start_addr)
     *((int*) stack) = (int)start_addr;
 
     int j;
-    for(j=0; j < 22; j=j+1)
+    for(j=0; j < NB_SAVED_REGISTERS; j=j+1)
     {
         stack = stack - 1;
         *((int*) stack) = 0;
