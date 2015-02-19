@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import serial
 
 s = serial.Serial('/dev/ttyUSB0', 9600, parity=serial.PARITY_ODD)
