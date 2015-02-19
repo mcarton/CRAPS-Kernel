@@ -108,40 +108,32 @@ pwm_handler_afterreset:
     reti
 ")
 
-void kill_process(int pid)
-{
-    if(process_table->process_count < 2)
-    {
+void kill_process(int pid) {
+    if(process_table->process_count < 2) {
         panic(4);
     }
 
     // Hack to wait for the current process not to be active.
-    while(process_table->current_process == pid)
-    {
-    }
+    while(process_table->current_process == pid) {}
 
     // if we kill the process and it has malloc()'ed memory, it will be leaked :(
     // moreover, the current malloc implementation allow only to call free() with the base pointer.
     //free(process_table->stack_pointers[pid]);
 
-    if(process_table->current_process > pid)
-    {
+    if(process_table->current_process > pid) {
         process_table->current_process = process_table->current_process - 1;
     }
 
     process_table->process_count = process_table->process_count - 1;
 
     int i;
-    for(i = pid; i < process_table->process_count; i=i+1)
-    {
+    for(i = pid; i < process_table->process_count; i=i+1) {
         *((int*)process_table->stack_pointers + i) = *((int*)process_table->stack_pointers + i + 1);
     }
 }
 
-void start_process(void* start_addr)
-{
-    if(process_table->process_count >= PROCESS_COUNT)
-    {
+void start_process(void* start_addr) {
+    if(process_table->process_count >= PROCESS_COUNT) {
         panic(1);
     }
 
@@ -152,8 +144,7 @@ void start_process(void* start_addr)
     *((int*) stack) = (int)start_addr;
 
     int j;
-    for(j=0; j < NB_SAVED_REGISTERS; j=j+1)
-    {
+    for(j=0; j < NB_SAVED_REGISTERS; j=j+1) {
         stack = stack - 1;
         *((int*) stack) = 0;
     }

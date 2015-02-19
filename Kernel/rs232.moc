@@ -54,8 +54,8 @@ char* getline() {
         if (i == size) {
             size = size*2;
             buf = (char*)realloc((void*)buf, size);
-            if((int)buf == -1)
-            {
+
+            if((int)buf == -1) {
                 panic(2);
             }
         }

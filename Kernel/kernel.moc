@@ -34,18 +34,11 @@ int main() {
     process_table->process_count = 0;
     process_table->current_process = 0;
 
-    void*[PROCESS_COUNT] tasks;
-    tasks[0] = task_counter;
-    tasks[1] = task_dummy;
-    tasks[2] = task_shell;
-    tasks[3] = task_leds;
-
     // initialize all processes
-    int i;
-
-    for (i=0; i < PROCESS_COUNT; i=i+1) {
-        start_process(tasks[i]);
-    }
+    start_process(task_counter);
+    start_process(task_dummy);
+    start_process(task_shell);
+    start_process(task_leds);
 
     // first task: loads its stack...
     int* stack_pointer = (int*)process_table->stack_pointers;
