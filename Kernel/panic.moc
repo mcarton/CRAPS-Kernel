@@ -8,7 +8,7 @@ void panic(int error_code) {
     *ssegs = error_code;
 
     int i;
-    int j;
+    int j = 0;
     while(true) {
         j = j >> 1;
 
