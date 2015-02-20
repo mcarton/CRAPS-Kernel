@@ -1,20 +1,20 @@
 ----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
--- Create Date:    12:27:20 02/19/2015 
--- Design Name: 
--- Module Name:    MemoryManager - Behavioral 
--- Project Name: 
--- Target Devices: 
--- Tool versions: 
--- Description: 
+-- Company:
+-- Engineer:
 --
--- Dependencies: 
+-- Create Date:    12:27:20 02/19/2015
+-- Design Name:
+-- Module Name:    MemoryManager - Behavioral
+-- Project Name:
+-- Target Devices:
+-- Tool versions:
+-- Description:
 --
--- Revision: 
+-- Dependencies:
+--
+-- Revision:
 -- Revision 0.01 - File Created
--- Additional Comments: 
+-- Additional Comments:
 --
 ----------------------------------------------------------------------------------
 library IEEE;
@@ -31,54 +31,54 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity MemoryManager is
     Port ( clk : in  STD_LOGIC;
-		 Rst : in STD_LOGIC;
+       Rst : in STD_LOGIC;
        ABus : in  STD_LOGIC_VECTOR (19 downto 0);
        Din : in  STD_LOGIC_VECTOR (31 downto 0);
        Dout : out  STD_LOGIC_VECTOR (31 downto 0);
        WriteCmd : in  STD_LOGIC;
        ReadCmd : in  STD_LOGIC;
        WaitMem : out  STD_LOGIC;
-	 
+
        MemDB: inout std_logic_vector(15 downto 0);-- Memory data bus
        MemAdr: out std_logic_vector(23 downto 1); -- Memory Address bus
-		 FlashByte: out std_logic; -- Byte enable('0') or word enable('1')
+       FlashByte: out std_logic; -- Byte enable('0') or word enable('1')
        RamCS: out std_logic;     -- RAM CS
        FlashCS: out std_logic;   -- Flash CS
-       MemWR: out std_logic;     -- memory write 
-       MemOE: out std_logic;     -- memory read (Output Enable), 
-		                           -- also controls the MemDB direction
-       RamUB: out std_logic;     -- RAM Upper byte enable 
-       RamLB: out std_logic;     -- RAM Lower byte enable 
-       RamCre: out std_logic;    -- Cfg Register enable 
+       MemWR: out std_logic;     -- memory write
+       MemOE: out std_logic;     -- memory read (Output Enable),
+                                 -- also controls the MemDB direction
+       RamUB: out std_logic;     -- RAM Upper byte enable
+       RamLB: out std_logic;     -- RAM Lower byte enable
+       RamCre: out std_logic;    -- Cfg Register enable
        RamAdv: out std_logic;    -- RAM Address Valid pin
-       RamClk: out std_logic;    -- RAM Clock 
-       RamWait: in std_logic;    -- RAM Wait pin 
-       FlashRp: out std_logic;   -- Flash RP pin 
-       FlashStSts: in std_logic; -- Flash ST-STS pin 
-		  
-       MemCtrlEnabled: out std_logic; -- MemCtrl takes bus control 
-		 
-		 			  StateMain: out Std_logic_vector(4 downto 0);
-			  StateWriter:out Std_logic_vector(1 downto 0)
-	 );
+       RamClk: out std_logic;    -- RAM Clock
+       RamWait: in std_logic;    -- RAM Wait pin
+       FlashRp: out std_logic;   -- Flash RP pin
+       FlashStSts: in std_logic; -- Flash ST-STS pin
+
+       MemCtrlEnabled: out std_logic; -- MemCtrl takes bus control
+
+       StateMain: out Std_logic_vector(4 downto 0);
+       StateWriter:out Std_logic_vector(1 downto 0)
+    );
 end MemoryManager;
 
 architecture Behavioral of MemoryManager is
 
-component NexysOnBoardMemCtrl is
-  Port(
+    component NexysOnBoardMemCtrl is
+    Port(
        clk  : in std_logic;       -- system clock (50MHz)
 -- Epp interface signals
        HandShakeReqOut: out std_logic;    -- User Handshake Request
-       ctlMsmStartIn: in std_logic;       -- Automatic process Start 
-       ctlMsmDoneOut: out std_logic;      -- Automatic process Done 
+       ctlMsmStartIn: in std_logic;       -- Automatic process Start
+       ctlMsmDoneOut: out std_logic;      -- Automatic process Done
        ctlMsmDwrIn: in std_logic;         -- Data Write pulse
        ctlEppRdCycleIn: in std_logic;     -- Indicates a READ Epp cycle
        EppRdDataOut: out std_logic_vector(7 downto 0);-- Data Input bus
        EppWrDataIn: in std_logic_vector(7 downto 0); -- Data Output bus
-       regEppAdrIn: in std_logic_vector(7 downto 0); 
+       regEppAdrIn: in std_logic_vector(7 downto 0);
 		                -- Epp Address Register content (bits 7:3 ignored)
-       ComponentSelect : in std_logic;    
+       ComponentSelect : in std_logic;
 		              -- active HIGH, selects the current MemCtrl instance
 -- Memory bus signals
        MemDB: inout std_logic_vector(15 downto 0);-- Memory data bus
@@ -86,26 +86,25 @@ component NexysOnBoardMemCtrl is
 		 FlashByte: out std_logic; -- Byte enable('0') or word enable('1')
        RamCS: out std_logic;     -- RAM CS
        FlashCS: out std_logic;   -- Flash CS
-       MemWR: out std_logic;     -- memory write 
-       MemOE: out std_logic;     -- memory read (Output Enable), 
+       MemWR: out std_logic;     -- memory write
+       MemOE: out std_logic;     -- memory read (Output Enable),
 		                           -- also controls the MemDB direction
-       RamUB: out std_logic;     -- RAM Upper byte enable 
-       RamLB: out std_logic;     -- RAM Lower byte enable 
-       RamCre: out std_logic;    -- Cfg Register enable 
+       RamUB: out std_logic;     -- RAM Upper byte enable
+       RamLB: out std_logic;     -- RAM Lower byte enable
+       RamCre: out std_logic;    -- Cfg Register enable
        RamAdv: out std_logic;    -- RAM Address Valid pin
-       RamClk: out std_logic;    -- RAM Clock 
-       RamWait: in std_logic;    -- RAM Wait pin 
-       FlashRp: out std_logic;   -- Flash RP pin 
-       FlashStSts: in std_logic; -- Flash ST-STS pin 
-		  
-       MemCtrlEnabled: out std_logic -- MemCtrl takes bus control 
+       RamClk: out std_logic;    -- RAM Clock
+       RamWait: in std_logic;    -- RAM Wait pin
+       FlashRp: out std_logic;   -- Flash RP pin
+       FlashStSts: in std_logic; -- Flash ST-STS pin
 
+       MemCtrlEnabled: out std_logic -- MemCtrl takes bus control
        );
     end component;
-	 
-	 	COMPONENT MemInterface is
+
+    component MemInterface is
     Port ( clk : in  STD_LOGIC;
-			  Rst : in STD_LOGIC;
+           Rst : in STD_LOGIC;
            ABus : in  STD_LOGIC_VECTOR (19 downto 0);
            Din : in  STD_LOGIC_VECTOR (31 downto 0);
            Dout : out  STD_LOGIC_VECTOR (31 downto 0);
@@ -117,16 +116,14 @@ component NexysOnBoardMemCtrl is
            EppWrite : out  STD_LOGIC;
            EppDb : inout  STD_LOGIC_VECTOR (7 downto 0);
            EppWait : in  STD_LOGIC;
-			  			  StateMain: out Std_logic_vector(4 downto 0);
-			  StateWriter:out Std_logic_vector(1 downto 0)
-			  );
-			  
-end COMPONENT;
-	
-		COMPONENT EppCtrl is
-    Port (
+           StateMain: out Std_logic_vector(4 downto 0);
+           StateWriter:out Std_logic_vector(1 downto 0)
+          );
+    end component;
 
--- Epp-like bus signals
+    component EppCtrl is
+    Port (
+      -- Epp-like bus signals
       clk    : in std_logic;        -- system clock (50MHz)
       EppAstb: in std_logic;        -- Address strobe
       EppDstb: in std_logic;        -- Data strobe
@@ -139,29 +136,29 @@ end COMPONENT;
       busEppIn: in std_logic_vector(7 downto 0);   -- Data Input bus
       ctlEppDwrOut: out std_logic;         -- Data Write pulse
       ctlEppRdCycleOut: inout std_logic;   -- Indicates a READ Epp cycle
-      regEppAdrOut: inout std_logic_vector(7 downto 0) := "00000000"; 
+      regEppAdrOut: inout std_logic_vector(7 downto 0) := "00000000";
                                          -- Epp Address Register content
       HandShakeReqIn: in std_logic;      -- User Handshake Request
-      ctlEppStartOut: out std_logic;     -- Automatic process Start   
-      ctlEppDoneIn: in std_logic         -- Automatic process Done 
-         );
-end component;
-signal EppAstb:std_logic;
-signal EppDstb:std_logic;
-signal EppWrite:std_logic;
-signal EppDb:std_logic_vector(7 downto 0);
-signal EppWait:std_logic;
+      ctlEppStartOut: out std_logic;     -- Automatic process Start
+      ctlEppDoneIn: in std_logic         -- Automatic process Done
+    );
+    end component;
 
-signal busEppOut:std_logic_vector(7 downto 0);
-signal busEppIn:std_logic_vector(7 downto 0);
-signal ctlEppDwrOut:std_logic;
-signal ctlEppRdCycleOut:std_logic;
-signal regEppAdrOut:std_logic_vector(7 downto 0);
-signal HandShakeReqIn:std_logic;
-signal ctlEppStartOut:std_logic;
-signal ctlEppDoneIn:std_logic; 
+    signal EppAstb:std_logic;
+    signal EppDstb:std_logic;
+    signal EppWrite:std_logic;
+    signal EppDb:std_logic_vector(7 downto 0);
+    signal EppWait:std_logic;
+
+    signal busEppOut:std_logic_vector(7 downto 0);
+    signal busEppIn:std_logic_vector(7 downto 0);
+    signal ctlEppDwrOut:std_logic;
+    signal ctlEppRdCycleOut:std_logic;
+    signal regEppAdrOut:std_logic_vector(7 downto 0);
+    signal HandShakeReqIn:std_logic;
+    signal ctlEppStartOut:std_logic;
+    signal ctlEppDoneIn:std_logic;
 begin
-
 	Inst_MemInterface: MemInterface PORT MAP(
 		clk => clk,
 		Rst => Rst,
@@ -178,9 +175,9 @@ begin
 		EppWait => EppWait,
 		StateMain => StateMain,
 		StateWriter => StateWriter
-		
+
 	);
-	
+
 		Inst_EppCtrl: EppCtrl PORT MAP(
 		clk => clk,
 		EppAstb => EppAstb,
@@ -198,7 +195,7 @@ begin
 		ctlEppStartOut => ctlEppStartOut,
 		ctlEppDoneIn => ctlEppDoneIn
 	);
-	
+
 	Inst_NexysOnBoardMemCtrl: NexysOnBoardMemCtrl PORT MAP(
 		clk => clk,
 		HandShakeReqOut => HandShakeReqIn,

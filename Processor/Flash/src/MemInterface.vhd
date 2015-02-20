@@ -1,20 +1,20 @@
 ----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
--- Create Date:    08:37:31 02/19/2015 
--- Design Name: 
--- Module Name:    MemInterface - Behavioral 
--- Project Name: 
--- Target Devices: 
--- Tool versions: 
--- Description: 
+-- Company:
+-- Engineer:
 --
--- Dependencies: 
+-- Create Date:    08:37:31 02/19/2015
+-- Design Name:
+-- Module Name:    MemInterface - Behavioral
+-- Project Name:
+-- Target Devices:
+-- Tool versions:
+-- Description:
 --
--- Revision: 
+-- Dependencies:
+--
+-- Revision:
 -- Revision 0.01 - File Created
--- Additional Comments: 
+-- Additional Comments:
 --
 ----------------------------------------------------------------------------------
 library IEEE;
@@ -31,7 +31,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity MemInterface is
     Port ( clk : in  STD_LOGIC;
-			  Rst : in STD_LOGIC;
+           Rst : in STD_LOGIC;
            ABus : in  STD_LOGIC_VECTOR (19 downto 0);
            Din : in  STD_LOGIC_VECTOR (31 downto 0);
            Dout : out  STD_LOGIC_VECTOR (31 downto 0);
@@ -56,7 +56,7 @@ architecture Behavioral of MemInterface is
     constant writeAddr1:std_logic_vector(4 downto 0):= "00001";
     constant writeAddr2:std_logic_vector(4 downto 0):= "00010";
     constant writeAddr3:std_logic_vector(4 downto 0):= "00011";
-	 constant writeAddr1_wait:std_logic_vector(4 downto 0):= "00100";
+    constant writeAddr1_wait:std_logic_vector(4 downto 0):= "00100";
     constant writeAddr2_wait:std_logic_vector(4 downto 0):= "00101";
     constant writeAddr3_wait:std_logic_vector(4 downto 0):= "00110";
     constant ReadReg7_1:std_logic_vector(4 downto 0):= "00111";
@@ -76,30 +76,30 @@ architecture Behavioral of MemInterface is
     constant WriteReg7_4:std_logic_vector(4 downto 0):= "10101";
     constant WriteReg7_4_wait:std_logic_vector(4 downto 0):= "10110";
     constant Done:std_logic_vector(4 downto 0):= "10111";
-	 
-	 constant Writer_Idle:std_logic_vector(1 downto 0):= "00";
-	 constant Writer_Addr:std_logic_vector(1 downto 0):= "01";
-	 constant Writer_AddrDone:std_logic_vector(1 downto 0):= "11";
-	 constant Writer_Data:std_logic_vector(1 downto 0):= "10";
-	-- state machines state signals
+
+    constant Writer_Idle:std_logic_vector(1 downto 0):= "00";
+    constant Writer_Addr:std_logic_vector(1 downto 0):= "01";
+    constant Writer_AddrDone:std_logic_vector(1 downto 0):= "11";
+    constant Writer_Data:std_logic_vector(1 downto 0):= "10";
+
+    -- state machines state signals
     signal CurState :std_logic_vector(4 downto 0):=IdleState;
     signal NextState:std_logic_vector(4 downto 0);
-	 
-	 signal Writer_curState:std_logic_vector(1 downto 0):=Writer_Idle;
-	 signal Writer_nextState:std_logic_vector(1 downto 0);
-	 
-	 -- communication between state machines:
-	 
-	 signal Writer_start:std_logic;
-	 signal Writer_done:std_logic;
-	 
-	 signal EppAddrBuf:std_logic_vector(7 downto 0);
-	 signal EppDataBuf:std_logic_vector(7 downto 0);
-	 
-	 -- buffers
-	 
-	 signal ReadDataBuf: std_logic_vector(31 downto 0) :=(others => '0');
-	 
+
+    signal Writer_curState:std_logic_vector(1 downto 0):=Writer_Idle;
+    signal Writer_nextState:std_logic_vector(1 downto 0);
+
+    -- communication between state machines:
+
+    signal Writer_start:std_logic;
+    signal Writer_done:std_logic;
+
+    signal EppAddrBuf:std_logic_vector(7 downto 0);
+    signal EppDataBuf:std_logic_vector(7 downto 0);
+
+    -- buffers
+
+    signal ReadDataBuf: std_logic_vector(31 downto 0) :=(others => '0');
 begin
 
 -- debug
@@ -109,7 +109,7 @@ StateWriter <= Writer_CurState;
      process (clk)
       begin
          if clk = '1' and clk'Event then
-            if Rst = '0' then 
+            if Rst = '0' then
                CurState <= IdleState;
 					Writer_curState <=Writer_Idle;
             else
@@ -121,7 +121,7 @@ StateWriter <= Writer_CurState;
 		WaitMem <= '0' when CurState =  IdleState else
 						'1';
 		Dout <= ReadDataBuf;
-		
+
 		Writer_start <= '1' when CurState = WriteAddr1 or CurState = WriteAddr2 or
 										CurState = WriteAddr3 or
 										CurState = ReadReg7_1 or CurState = ReadReg7_2 or
@@ -129,7 +129,7 @@ StateWriter <= Writer_CurState;
 										CurState = WriteReg7_1 or CurState = WriteReg7_2 or
 										CurState = WriteReg7_3 or CurState = WriteReg7_4 else
 							'0';
-							
+
 		ReadDataBuf(7 downto 0) <= EppDB when CurState = ReadReg7_1_wait else
 												ReadDataBuf(7 downto 0);
 		ReadDataBuf(15 downto 8) <= EppDB when CurState = ReadReg7_2_wait else
@@ -140,7 +140,7 @@ StateWriter <= Writer_CurState;
 												ReadDataBuf(31 downto 24);
 
 		EppAddrBuf(7 downto 3) <= "00000";
-		
+
 		EppAddrBuf(2 downto 0) <= "001" when CurState = WriteAddr1 or CurState = WriteAddr1_wait else
 										  "010" when CurState = WriteAddr2 or CurState = WriteAddr2_wait else
 										  "011" when CurState = WriteAddr3 or CurState = WriteAddr3_wait else
@@ -161,7 +161,7 @@ StateWriter <= Writer_CurState;
 							Din(23 downto 16) when CurState = WriteReg7_3 or CurState = WriteReg7_3_wait else
 							Din(31 downto 24) when CurState = WriteReg7_4 or CurState = WriteReg7_4_wait else
 							"00000000";
-							
+
 
 		-- Main state machine
 		process(CurState)
@@ -173,30 +173,30 @@ StateWriter <= Writer_CurState;
 					else
 						NextState <= IdleState;
 					end if;
-					
+
 				when writeAddr1 =>
 					NextState <= WriteAddr1_wait;
-					
+
 				when writeAddr2 =>
 					NextState <= WriteAddr1_wait;
-					
+
 				when writeAddr3 =>
 					NextState <= WriteAddr1_wait;
-					
+
 				when writeAddr1_wait =>
 					if Writer_done = '1' then
 						NextState <= WriteAddr2;
 					else
 						NextState <= writeAddr1_wait;
 					end if;
-					
+
 				when writeAddr2_wait =>
 					if Writer_done = '1' then
 						NextState <= WriteAddr3;
 					else
 						NextState <= writeAddr2_wait;
 					end if;
-					
+
 				when writeAddr3_wait =>
 					if Writer_done = '1' then
 						if writecmd = '1' then
@@ -220,7 +220,7 @@ StateWriter <= Writer_CurState;
 
 				when ReadReg7_2 =>
 					NextState <= ReadReg7_2_wait;
-					
+
 				when ReadReg7_2_wait =>
 					if Writer_done = '1' then
 						NextState <= ReadReg7_2;
@@ -236,10 +236,10 @@ StateWriter <= Writer_CurState;
 					else
 						NextState <= ReadReg7_1_wait;
 					end if;
-					
+
 				when ReadReg7_4 =>
 					NextState <= ReadReg7_4_wait;
-					
+
 				when ReadReg7_4_wait =>
 					if Writer_done = '1' then
 						NextState <= Done;
@@ -249,55 +249,55 @@ StateWriter <= Writer_CurState;
 
 				when WriteReg7_1 =>
 					NextState <= WriteReg7_1_wait;
-					
+
 				when WriteReg7_1_wait =>
 					if Writer_done = '1' then
 						NextState <= WriteReg7_2;
 					else
 						NextState <= WriteReg7_1_wait;
 					end if;
-					
+
 				when WriteReg7_2 =>
 					NextState <= WriteReg7_2_wait;
-					
+
 				when WriteReg7_2_wait =>
 					if Writer_done = '1' then
 						NextState <= WriteReg7_3;
 					else
 						NextState <= WriteReg7_2_wait;
 					end if;
-					
+
 				when WriteReg7_3 =>
 					NextState <= WriteReg7_3_wait;
-					
+
 				when WriteReg7_3_wait =>
 					if Writer_done = '1' then
 						NextState <= WriteReg7_4;
 					else
 						NextState <= WriteReg7_3_wait;
 					end if;
-					
+
 				when WriteReg7_4 =>
 					NextState <= WriteReg7_4_wait;
-					
+
 				when WriteReg7_4_wait =>
 					if Writer_done = '1' then
 						NextState <= Done;
 					else
 						NextState <= WriteReg7_4_wait;
 					end if;
-					
+
 				when Done =>
 					NextState <= IdleState;
 				when Others =>
 					NextState <= IdleState;
 			end case;
 		end process;
-		
-		
-		
+
+
+
 		--Writer related signals
-		
+
 		Writer_done <= '1' when Writer_CurState = Writer_Idle else
 							'0';
 		EppDB <= EppAddrBuf when Writer_Curstate = Writer_Addr else
@@ -321,7 +321,7 @@ StateWriter <= Writer_CurState;
 						else
 							Writer_nextState <= Writer_Idle;
 						end if;
-						
+
 				  when Writer_Addr =>
 						if EppWait ='1' then
 							Writer_nextState <= Writer_AddrDone;
@@ -335,10 +335,10 @@ StateWriter <= Writer_CurState;
 							Writer_nextState <= Writer_Idle;
 						else
 							Writer_nextState <= Writer_Data;
-						end if;	
+						end if;
 				 when others =>
 						Writer_nextState <= Writer_Idle;
-				  
+
 			end case;
       end process;
 

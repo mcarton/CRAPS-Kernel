@@ -3,7 +3,7 @@
 ## - remove or comment the lines corresponding to unused pins
 ## - rename the used signals according to the project
 
-## Signals Led<7>…Led<4> are assigned to pins which change type from s3e500 to other dies using the same package
+## Signals Led<7>Â…Led<4> are assigned to pins which change type from s3e500 to other dies using the same package
 ## Both versions are provided in this file.
 ## Keep only the appropriate one, and remove or comment the other one.
 
@@ -147,7 +147,7 @@ NET "buttons<1>"      LOC = "D18";     # Bank = 1, Pin name = IP/VREF_1, Type = 
 NET "buttons<2>"      LOC = "E18";     # Bank = 1, Pin name = IP, Type = INPUT,                              Sch name = BTN2
 NET "buttons<3>"      LOC = "H13";     # Bank = 1, Pin name = IP, Type = INPUT,                              Sch name = BTN3
 
-## VGA Connector 
+## VGA Connector
 #NET "vgaRed<1>"   LOC = "R9";      # Bank = 2, Pin name = IO/D5, Type = DUAL,                            Sch name = RED0
 #NET "vgaRed<2>"   LOC = "T8";      # Bank = 2, Pin name = IO_L10N_2, Type = I/O,                         Sch name = RED1
 #NET "vgaRed<3>"   LOC = "R8";      # Bank = 2, Pin name = IO_L10P_2, Type = I/O,                         Sch name = RED2
