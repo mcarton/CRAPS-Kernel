@@ -63,13 +63,13 @@ public class ObjModule {
                 // load word contents
                 String saddr = line.substring(sp1 + 1, sp2);
                 String word = line.substring(sp2 + 1);
-                objModule.add(objModule, Integer.parseInt(saddr), word, null);
+                objModule.add(objModule, Long.parseLong(saddr), word, null);
             }
             else if (type.equals("sym")) {
                 // load global symbol
                 String sym = line.substring(sp1 + 1, sp2);
                 String val = line.substring(sp2 + 1);
-                objModule.set(sym, Integer.parseInt(val), -1);
+                objModule.set(sym, Long.parseLong(val), -1);
                 objModule.addGlobalSymbol(sym);
             }
         }
