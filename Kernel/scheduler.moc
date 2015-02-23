@@ -108,13 +108,27 @@ pwm_handler_afterreset:
     reti
 ")
 
-void kill_process(int pid) {
-    if(process_table->process_count < 2) {
-        panic(4);
-    }
+void kill_process(int pid)
+{
+    asm("
+    set 2, %r1
+    ld $pid, %r2
+    syscall");
+}
 
-    // Hack to wait for the current process not to be active.
-    while(process_table->current_process == pid) {}
+void start_process(void* start_addr)
+{
+    asm("
+    set 1, %r1
+    ld $start_addr, %r2
+    syscall");
+}
+
+void _kill_process(int pid) {
+    if(process_table->process_count < 2) {
+        // if we only have one process, we can't kill anything...
+        _panic(4);
+    }
 
     // if we kill the process and it has malloc()'ed memory, it will be leaked :(
     // moreover, the current malloc implementation allow only to call free() with the base pointer.
@@ -122,6 +136,11 @@ void kill_process(int pid) {
 
     if(process_table->current_process > pid) {
         process_table->current_process = process_table->current_process - 1;
+    }
+    else if(process_table->current_process == pid)
+    {
+        // FIXME: for now, we don't support suicide
+        _panic(5);
     }
 
     process_table->process_count = process_table->process_count - 1;
@@ -132,9 +151,9 @@ void kill_process(int pid) {
     }
 }
 
-void start_process(void* start_addr) {
+void _start_process(void* start_addr) {
     if(process_table->process_count >= PROCESS_COUNT) {
-        panic(1);
+        _panic(1);
     }
 
     void* stack = malloc(256) + 255;

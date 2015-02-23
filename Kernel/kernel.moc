@@ -8,7 +8,7 @@ asm("
     .word null_handler
     .word rs232_handler_read
     .word null_handler
-    .word null_handler
+    .word softint_handler
 
 null_handler: reti
 start:
@@ -22,6 +22,7 @@ start:
 #include "strings.moc"
 #include "rs232.moc"
 #include "tasks.moc"
+#include "softint.moc"
 
 int main() {
     pwm_count = 0;

@@ -1,4 +1,14 @@
-void panic(int error_code) {
+void panic(int error_code)
+{
+    asm("
+    set 0, %r1
+    ld $error_code, %r2
+    syscall
+    ");
+}
+
+// used from the kernel
+void _panic(int error_code) {
     *((int*)0xC0000000) = 0; // P
     *((int*)0xC0000001) = 0; // N
 
