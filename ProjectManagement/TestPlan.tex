@@ -25,7 +25,7 @@
 \newcommand{\testok}[3]{%
   \noindent
   \begin{center}
-    \begin{tabular}{|p{0.1\textwidth}|p{0.75\textwidth}|c|}
+    \begin{tabular}{|p{0.1\textwidth}|p{0.75\textwidth}|p{0.02\textwidth}|}
       \hline
       #1 & #2 & $\checked$
     \\\hline
@@ -35,11 +35,25 @@
   \end{center}
 }
 
+\newcommand{\testnop}[3]{%
+  \noindent
+  \begin{center}
+    \begin{tabular}{|p{0.1\textwidth}|p{0.75\textwidth}|p{0.02\textwidth}|}
+      \hline
+      #1 & #2 & --
+    \\\hline
+      \multicolumn{3}{|p{0.9\textwidth}|}{#3}
+    \\\hline
+    \end{tabular}
+  \end{center}
+}
+
+
 % \testko{id}{title}{what does the test tests}{why does the test fails}
 \newcommand{\testko}[4]{%
   \noindent
   \begin{center}
-    \begin{tabular}{|p{0.1\textwidth}|p{0.75\textwidth}|c|}
+    \begin{tabular}{|p{0.1\textwidth}|p{0.75\textwidth}|p{0.02\textwidth}|}
       \hline
       #1 & #2 & $\times$
     \\\hline
@@ -103,6 +117,11 @@
 
       \testok{2.1.1}{The processor shall be connected to a serial port}{%
         No specific test but other tests use it.
+      }
+
+      \testnop{2.1.1}{The serial port communication shall not lose data}{%
+        A stress test should check if we lose any data. This is not done
+        currently.
       }
 
     \subsection{Compiler}
