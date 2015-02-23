@@ -24,7 +24,38 @@ void shell(char* line) {
         putc('\n');
     }
     else if (strcmp(line, "help")) {
-        write("Commands: help, echo.\n");
+        write("Commands: help, echo, run, kill.\n");
+    }
+    else if(strcmp(line, "run"))
+    {
+        if(strcmp(parameters, "dummy"))
+        {
+            start_process(task_dummy);
+        }
+        else if(strcmp(parameters, "leds"))
+        {
+            start_process(task_leds);
+        }
+        else if(strcmp(parameters, "counter"))
+        {
+            start_process(task_counter);
+        }
+        else
+        {
+            write("Usage: run dummy|leds|counter\n");
+        }
+    }
+    else if(strcmp(line, "kill"))
+    {
+        if(parameters[1] == '\0')
+        {
+            int pid = (int)parameters[0] - (int)'0';
+            kill_process(pid);
+        }
+        else
+        {
+            write("Usage: kill pid\n");
+        }
     }
     else {
         write("Unknown command, try help.\n");

@@ -36,10 +36,9 @@ int main() {
     process_table->current_process = 0;
 
     // initialize all processes
-    start_process(task_counter);
-    start_process(task_dummy);
     start_process(task_shell);
     start_process(task_leds);
+    start_process(task_counter);
 
     // first task: loads its stack...
     int* stack_pointer = (int*)process_table->stack_pointers;

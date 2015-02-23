@@ -1,7 +1,7 @@
 // every N PWM-interruptions we do a context switch, this is the counter
 int pwm_count;
 
-#define PROCESS_COUNT 4
+#define PROCESS_COUNT 10
 
 struct process_table_t {
     int process_count;

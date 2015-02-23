@@ -17,23 +17,25 @@ export int task_counter() {
     }
 }
 
-#include "shell.moc"
-
-export int task_shell() {
-    while (true) {
-        char* line = getline();
-        shell(line);
-
-        if(free((void*)line) == -1) {
-            panic(3);
-        }
-    }
-}
-
 export int task_leds() {
     int *leds = (int*) 0xB0000000;
     int *switches = (int*) 0x90000000;
     while (true) {
         *leds = *switches;
+    }
+}
+
+#include "shell.moc"
+
+export int task_shell() {
+    while (true) {
+        char* line = getline();
+        if((bool)*line)
+        {
+            shell(line);
+        }
+        if(free((void*)line) == -1) {
+            panic(3);
+        }
     }
 }
