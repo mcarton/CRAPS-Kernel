@@ -41,7 +41,7 @@ public class SHDLPredefinedRamCtrl extends SHDLPredefinedOccurence {
             case 4: return 16;
             case 7: return 16;
             case 10: return 16;
-            case 11: return 24;
+            case 11: return 22;
             default: return 1;
         }
     }
