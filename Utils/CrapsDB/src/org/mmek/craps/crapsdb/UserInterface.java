@@ -92,7 +92,12 @@ public class UserInterface {
         }
 
         public void run(String command) throws CommException {
-            api.run();
+            try {
+                api.run();
+            }
+            catch (IllegalStateException e) {
+                System.out.println("Already running");
+            }
         }
     }
 }

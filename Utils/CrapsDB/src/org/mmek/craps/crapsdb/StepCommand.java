@@ -26,7 +26,13 @@ class StepCommand implements Command {
     }
 
     public void run(String command) throws CommException {
-        api.step();
+        try {
+            api.step();
+        }
+        catch (IllegalStateException e) {
+            System.out.println("Already running");
+            return;
+        }
 
         if (!command.endsWith("silent") && !command.endsWith("!")) {
             sp.printAll();

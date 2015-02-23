@@ -44,7 +44,9 @@ public class CrapsApi {
     }
 
     public synchronized void step() throws CommException {
-        assert(!running);
+        if (running) {
+            throw new IllegalStateException("Already running");
+        }
 
         setBits(60, 63, 4); // mon_cmd = "0100" (step)
         outs[59] = 1; // mon_req = 1
@@ -57,7 +59,10 @@ public class CrapsApi {
     }
 
     public synchronized void run() throws CommException {
-        assert(!running);
+        if (running) {
+            throw new IllegalStateException("Already running");
+        }
+
         running = true;
 
         outs[55] = 1; // run = 1
