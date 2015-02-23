@@ -8,6 +8,7 @@
 \usepackage{paralist}
 \usepackage{siunitx}
 \usepackage{titling}
+\usepackage{wasysym}
 
 \newcommand*{\subtitle}[1]{\gdef\thesubtitle{#1}}
 
@@ -19,6 +20,37 @@
   \and Martin Carton
   \and Étienne Lebrun
 }
+
+% \testok{id}{title}{what does the test tests}
+\newcommand{\testok}[3]{%
+  \noindent
+  \begin{center}
+    \begin{tabular}{|p{0.1\textwidth}|p{0.75\textwidth}|c|}
+      \hline
+      #1 & #2 & $\checked$
+    \\\hline
+      \multicolumn{3}{|p{0.9\textwidth}|}{#3}
+    \\\hline
+    \end{tabular}
+  \end{center}
+}
+
+% \testko{id}{title}{what does the test tests}{why does the test fails}
+\newcommand{\testko}[4]{%
+  \noindent
+  \begin{center}
+    \begin{tabular}{|p{0.1\textwidth}|p{0.75\textwidth}|c|}
+      \hline
+      #1 & #2 & $\times$
+    \\\hline
+      \multicolumn{3}{|p{0.9\textwidth}|}{#3}
+    \\\hline
+      \multicolumn{3}{|p{0.9\textwidth}|}{#4}
+    \\\hline
+    \end{tabular}
+  \end{center}
+}
+
 
 \begin{document}
   \include{titlepage}
@@ -53,4 +85,7 @@
 
     \subsection{Kernel Tests}
       The goals of these tests is to prove the kernel is correct.
+
+  \section{Tests}
+
 \end{document}
