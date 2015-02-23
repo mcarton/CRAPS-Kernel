@@ -1,2 +1,2 @@
 #!/bin/sh
-exec java -jar shdl2vhdl2.1.9.jar 
+exec java -jar shdl2vhdl2.1.10.jar
