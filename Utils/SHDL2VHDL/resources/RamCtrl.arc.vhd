@@ -7,7 +7,7 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 entity RamCtrl is
     Port(
         clk: in std_logic;
-        rst: in std_logic; -- active '0'
+        rst: in std_logic; -- active '1'
         address: in std_logic_vector(22 downto 0); -- read/write address (word addressed)
         read: in std_logic; -- read mode
         readData: out std_logic_vector(15 downto 0);
@@ -70,7 +70,7 @@ begin
     RamClk <= '0';
     RamCRE <= '0';
     RamAdv <= '0';
-    FlashRp	<= rst;
+    FlashRp <= not rst;
 
     -- Signal
     readDone <= '1' when state = stReadDone else '0';
@@ -82,51 +82,53 @@ begin
 
     process (clk, rst)
     begin
-        if rst = '0' then
-            state <= stIdle;
-        elsif clk'event and clk = '1' then
-            case state is
-                when stIdle =>
-                    if read = '1' then
-                        state <= stRead1;
-                    elsif write = '1' then
-                        state <= stWrite1;
-                    else
-                        state <= state;
-                    end if;
+        if clk'event and clk = '1' then
+            if rst = '1' then
+                state <= stIdle;
+            else
+                case state is
+                    when stIdle =>
+                        if read = '1' then
+                            state <= stRead1;
+                        elsif write = '1' then
+                            state <= stWrite1;
+                        else
+                            state <= state;
+                        end if;
 
-                when stRead1 => state <= stRead2;
-                when stRead2 =>
-                   if DelayCnt = "--000" then
-                     state <= stRead3;
-                   else
-                     state <= state;
-                   end if;
-                when stRead3 => state <= stReadDone;
+                    when stRead1 => state <= stRead2;
+                    when stRead2 =>
+                       if DelayCnt = "--000" then
+                         state <= stRead3;
+                       else
+                         state <= state;
+                       end if;
+                    when stRead3 => state <= stReadDone;
 
-                when stWrite1 => state <= stWrite2;
-                when stWrite2 =>
-                    if DelayCnt = "--000" then
-                        state <= stWrite3;
-                    else
-                        state <= state;
-                    end if;
-                when stWrite3 => state <= stWriteDone;
+                    when stWrite1 => state <= stWrite2;
+                    when stWrite2 =>
+                        if DelayCnt = "--000" then
+                            state <= stWrite3;
+                        else
+                            state <= state;
+                        end if;
+                    when stWrite3 => state <= stWriteDone;
 
-                when stReadDone =>
-                    if DelayCnt = "--011" then
-                        state <= stIdle;
-                    else
-                        state <= state;
-                    end if;
-                when stWriteDone =>
-                    if DelayCnt = "--011" then
-                        state <= stIdle;
-                    else
-                        state <= state;
-                    end if;
-                when others => state <= stIdle;
-            end case;
+                    when stReadDone =>
+                        if DelayCnt = "--011" then
+                            state <= stIdle;
+                        else
+                            state <= state;
+                        end if;
+                    when stWriteDone =>
+                        if DelayCnt = "--011" then
+                            state <= stIdle;
+                        else
+                            state <= state;
+                        end if;
+                    when others => state <= stIdle;
+                end case;
+            end if;
         end if;
     end process;
 

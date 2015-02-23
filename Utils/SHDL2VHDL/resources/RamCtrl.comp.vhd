@@ -1,7 +1,7 @@
 component RamCtrl is
     port(
         clk        : in std_logic;
-        rst        : in std_logic;                      -- active '0'
+        rst        : in std_logic;                      -- active '1'
         address    : in std_logic_vector(22 downto 0);  -- read/write address (word addressed)
         read       : in std_logic;                      -- read mode
         readData   : out std_logic_vector(15 downto 0);
