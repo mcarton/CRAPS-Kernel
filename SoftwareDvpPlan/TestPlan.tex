@@ -87,5 +87,71 @@
       The goals of these tests is to prove the kernel is correct.
 
   \section{Tests}
+    \subsection{Processor tests}
+      \testok{1.1.1}{The processor shall have access to at least 8 kB of RAM}{%
+        We write and read at all positions on the available RAM. The 7-segment
+        is used to know if there is an error (9999 is an error, 1111 is ok).
+      }
+
+      \testok{1.1.3}{The processor shall handle several interrupts sources}{%
+        A test per different interrupt has been created. Another test case
+        tests the priority of different interrupts.
+
+        They use the 7-segment as an output and they cannot be fully automated
+        (some interrupts require the user to push buttons).
+      }
+
+      \testok{2.1.1}{The processor shall be connected to a serial port}{%
+        No specific test but other tests use it.
+      }
+
+    \subsection{Compiler}
+      \testko{1.2.2}{The compiler shall generate valid CRAPS assembly}{%
+        We have made a lot of tests. We try to test as many features as
+        possible.
+      }{%
+        We cannot test all possible programs, so the test cannot be validated.
+      }
+
+      \testok{2.2.2}{The assembly generated shall be more optimized}{%
+        We managed to reduce the number of instructions generated. We had up to
+        25\% less instructions for a typical sample of code.
+      }
+
+    \subsection{Kernel}
+      \testok{1.3.1}{The OS shall have a scheduler}{%
+        The scheduler has been tested with various tasks displaying different
+        number on the 7-segment to show it schedules.
+
+        The tasks use registers and memory to check if the scheduler saves
+        them correctly at context switch.
+      }
+
+      \testok{1.3.1}{It shall support at least 10 hard-coded tasks}{%
+        There can be any number of (hard-coded) tasks, we have tested with 2 to
+        10 tasks.
+      }
+
+    \subsection{Other tools}
+      \testok{2.4.1}{The monitor shall be available in Linux}{%
+        We use Linux as our main working environment and are able to use the
+        monitor without any problem.
+      }
+
+      \testok{2.4.2}{The monitor shall display all the RAM}{%
+        The same test as \textit{1.1.1} can be used.
+      }
+
+      \testok{2.4.3}{%
+        The CRAPS assembler tool shall be available without a FPGA
+        connected to the computer
+      }{%
+        A new tool \textit{crapsc} does that and is the main tool we use.
+      }
+
+      \testok{2.4.4}{Adapt the tools to make them work on Linux}{%
+        All tools but \textit{shdl2vhdl} have been ported on Linux
+        (\textit{shdl2vhdl} use Windows-specific tools).
+      }
 
 \end{document}
