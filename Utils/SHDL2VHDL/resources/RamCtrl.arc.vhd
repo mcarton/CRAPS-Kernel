@@ -6,8 +6,8 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity RamCtrl is
     Port(
-        clk: in std_logic;
         rst: in std_logic; -- active '1'
+        clk: in std_logic;
         address: in std_logic_vector(22 downto 0); -- read/write address (word addressed)
         read: in std_logic; -- read mode
         readData: out std_logic_vector(15 downto 0);
