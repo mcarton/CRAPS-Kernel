@@ -23,10 +23,8 @@ public class SHDLDigilentNexysBoard extends SHDLBoard {
 	public String[] getBoardPrefixes() {
 		return new String[] { "mclk", "btn", "sw", "ld", "an", "ssg", "rxd", "txd",
 			"pdb", "astb", "dstb", "pwr", "pwait",
-			/*
-			"mem-addr", "mem-data", "mem_oe", "mem-we",
-			"mt-adv", "mt-clk", "mt-ub", "mt-lb", "mt-cf", "mt-cre", "mt-wait",
-			*/
+			"memdb", "memaddr", "ramcs", "flashcs", "memwr", "memoe", "ramub",
+			"ramlb", "ramcre", "ramadv", "ramclk", "ramwait", "flashrp", "flashststs",
 			"red", "grn", "blue", "hs", "vs",
 			"ja1", "ja2", "ja3", "ja4" ,"ja7", "ja8", "ja9", "ja10",
 			"jb1", "jb2", "jb3", "jb4" ,"jb7", "jb8", "jb9", "jb10",
@@ -37,10 +35,8 @@ public class SHDLDigilentNexysBoard extends SHDLBoard {
 	public String[] getBoardIOStatus() {
 		return new String[] { "in", "in", "in", "out", "out", "out", "in", "out",
 			"inout", "in", "in", "in", "out",
-			/*
-			"out", "inout", "out", "out",
-			"out", "out", "out", "out", "out", "out", "out",
-			*/
+			"inout", "out", "out", "out", "out", "out", "out",
+			"out", "out", "out", "out", "in", "out", "in",
 			"out", "out", "out", "out", "out",
 			"inout", "inout", "inout", "inout", "inout", "inout", "inout", "inout",
 			"inout", "inout", "inout", "inout", "inout", "inout", "inout", "inout",
@@ -51,10 +47,8 @@ public class SHDLDigilentNexysBoard extends SHDLBoard {
 	public int[] getBoardN1() {
 		return new int[] { 0, 3, 7, 7, 3, 7, 0, 0,
 			7, 0, 0, 0, 0,
-			/*
-			23, 15, 0, 0,
+			15, 23, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0,
-			*/
 			2, 2, 1, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0,
@@ -65,10 +59,8 @@ public class SHDLDigilentNexysBoard extends SHDLBoard {
 	public int[] getBoardN2() {
 		return new int[] { 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0,
-			/*
-			0, 0, 0, 0,
+			0, 1, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0,
-			*/
 			0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0,
@@ -80,10 +72,8 @@ public class SHDLDigilentNexysBoard extends SHDLBoard {
 	public String[] getBoardDefaultValues() {
 		return new String[] { "in", "in", "in", "00000000", "1111", "11111111", "in", "0",
 			"inout", "in", "in", "in", "0", 
-			/*
-			"0000000000000000", "inout", "1", "1",
-			"1", "1", "1", "1", "1", "1", "1",
-			*/
+			"inout", "00000000000000000000000", "1", "1", "1", "1", "0",
+			"0", "0", "0", "0", "in", "1", "in",
 			"000", "000", "00", "0", "0",
 			"inout", "inout", "inout", "inout", "inout", "inout", "inout", "inout",
 			"inout", "inout", "inout", "inout", "inout", "inout", "inout", "inout",
