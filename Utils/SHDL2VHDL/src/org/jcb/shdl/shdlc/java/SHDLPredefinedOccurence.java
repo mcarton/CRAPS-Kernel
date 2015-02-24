@@ -19,6 +19,7 @@ public abstract class SHDLPredefinedOccurence {
 	protected static Pattern ramsDualAsynReadPattern = Pattern.compile("rams_dual_asyn_read([0-9]+)([km]?)x([0-9]+)");
 	protected static Pattern ram = Pattern.compile("rams_dual_asyn_read([0-9]+)([km]?)x([0-9]+)");
 	protected static Pattern rs232Pattern = Pattern.compile("rs232refcomp");
+	protected static Pattern ramCtrlPattern = Pattern.compile("ramctrl");
 
 
 	public SHDLPredefinedOccurence(SHDLModuleOccurence moduleOccurence, Pattern namePattern) {
@@ -49,6 +50,8 @@ public abstract class SHDLPredefinedOccurence {
 			return new SHDLPredefinedRamsDualAsynRead(moduleOccurence, ramsDualAsynReadPattern);
 		} else if (rs232Pattern.matcher(name.toLowerCase()).matches()) {
 			return new SHDLPredefinedRs232RefComp(moduleOccurence, rs232Pattern);
+		} else if (ramCtrlPattern.matcher(name.toLowerCase()).matches()) {
+			return new SHDLPredefinedRamCtrl(moduleOccurence, ramCtrlPattern);
 		}
 		return null;
 	}
