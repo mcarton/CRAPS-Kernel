@@ -27,12 +27,10 @@ start:
     // begin
     set RAM16_BEGIN, %r2
     set RAM16_END, %r9
-    set 0xffff, %r8
 loop:
     st %r2, [%r2]
     ld [%r2], %r3
-    and %r2, %r8, %r4 // r4 = r2 & 0xffff
-    cmp %r4, %r3
+    cmp %r2, %r3
     bne error
     add %r2, %r20, %r2 // %r2++
     cmp %r2, %r9

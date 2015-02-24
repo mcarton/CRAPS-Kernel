@@ -37,9 +37,9 @@ public class SHDLPredefinedRamCtrl extends SHDLPredefinedOccurence {
 
     public int getArity(int index) {
         switch (index) {
-            case 2: return 23;
-            case 4: return 16;
-            case 7: return 16;
+            case 2: return 22;
+            case 4: return 32;
+            case 7: return 32;
             case 10: return 16;
             case 11: return 22;
             default: return 1;
