@@ -1,6 +1,7 @@
+STACK       = 0x2000
 RAM16_BEGIN = 0xE0000000
-RAM16_END = 0xE03FFFFF
-SEGS7 = 0xA0000000
+RAM16_END   = 0xE03FFFFF
+SEGS7       = 0xA0000000
 
     ba start
     // interrupt table
@@ -14,7 +15,7 @@ SEGS7 = 0xA0000000
 
 null_handler: reti
 start:
-    set 0x2000, %sp
+    set STACK, %sp
 
     // display 0
     set SEGS7, %r1

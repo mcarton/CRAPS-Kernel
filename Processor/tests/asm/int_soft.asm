@@ -1,13 +1,14 @@
-ba start
+STACK       = 0x2000
 
-// interrupt table
-.word null_handler
-.word null_handler
-.word null_handler
-.word null_handler
-.word null_handler
-.word null_handler
-.word soft_handler
+    ba start
+    // interrupt table
+    .word null_handler
+    .word null_handler
+    .word null_handler
+    .word null_handler
+    .word null_handler
+    .word null_handler
+    .word soft_handler
 
 null_handler: reti
 soft_handler:
@@ -24,7 +25,7 @@ soft_handler:
     reti
 
 start:
-    set 0x1fff, %sp
+    set STACK, %sp
     setq 1, %r1
     setq 2, %r2
     syscall

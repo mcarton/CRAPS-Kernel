@@ -1,6 +1,21 @@
+STACK     = 0x2000
 RAM_BEGIN = 100
-RAM_END = 8192
-SEGS7 = 0xA0000000
+RAM_END   = 8192
+SEGS7     = 0xA0000000
+
+    ba start
+    // interrupt table
+    .word null_handler
+    .word null_handler
+    .word null_handler
+    .word null_handler
+    .word null_handler
+    .word null_handler
+    .word null_handler
+
+null_handler: reti
+start:
+    set STACK, %sp
 
 	// display 0
 	set SEGS7, %r1

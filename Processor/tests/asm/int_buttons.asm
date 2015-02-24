@@ -1,4 +1,4 @@
-STACK    = 0x200
+STACK    = 0x2000
 SEGS7    = 0xA0000000 // adresse d'I/O des afficheurs 7-segments
 
 	.org 0
@@ -8,6 +8,9 @@ SEGS7    = 0xA0000000 // adresse d'I/O des afficheurs 7-segments
 	.word btn1_handler // btn[1]
 	.word btn2_handler // btn[2]
 	.word btn3_handler // btn[3]
+    .word null_handler
+    .word null_handler
+    .word null_handler
 
 null_handler:
 	reti
