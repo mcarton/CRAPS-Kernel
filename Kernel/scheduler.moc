@@ -108,16 +108,14 @@ pwm_handler_afterreset:
     reti
 ")
 
-void kill_process(int pid)
-{
+void kill_process(int pid) {
     asm("
     set 2, %r1
     ld $pid, %r2
     syscall");
 }
 
-void start_process(void* start_addr)
-{
+void start_process(void* start_addr) {
     asm("
     set 1, %r1
     ld $start_addr, %r2
@@ -137,8 +135,7 @@ void _kill_process(int pid) {
     if(process_table->current_process > pid) {
         process_table->current_process = process_table->current_process - 1;
     }
-    else if(process_table->current_process == pid)
-    {
+    else if(process_table->current_process == pid) {
         // FIXME: for now, we don't support suicide
         _panic(5);
     }

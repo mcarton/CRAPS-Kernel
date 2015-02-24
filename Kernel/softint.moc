@@ -13,16 +13,13 @@ softint_handler:
 ")
 
 export int softint_handler(int r1, int r2) {
-    if(r1 == 0)
-    {
+    if(r1 == 0) {
         _panic(r2);
     }
-    else if(r1 == 1)
-    {
+    else if(r1 == 1) {
         _start_process((void*)r2);
     }
-    else if(r1 == 2)
-    {
+    else if(r1 == 2) {
         _kill_process(r2);
     }
 }

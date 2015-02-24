@@ -26,34 +26,26 @@ void shell(char* line) {
     else if (strcmp(line, "help")) {
         write("Commands: help, echo, run, kill.\n");
     }
-    else if(strcmp(line, "run"))
-    {
-        if(strcmp(parameters, "dummy"))
-        {
+    else if(strcmp(line, "run")) {
+        if(strcmp(parameters, "dummy")) {
             start_process(task_dummy);
         }
-        else if(strcmp(parameters, "leds"))
-        {
+        else if(strcmp(parameters, "leds")) {
             start_process(task_leds);
         }
-        else if(strcmp(parameters, "counter"))
-        {
+        else if(strcmp(parameters, "counter")) {
             start_process(task_counter);
         }
-        else
-        {
+        else {
             write("Usage: run dummy|leds|counter\n");
         }
     }
-    else if(strcmp(line, "kill"))
-    {
-        if(parameters[1] == '\0')
-        {
+    else if(strcmp(line, "kill")) {
+        if(parameters[1] == '\0') {
             int pid = (int)parameters[0] - (int)'0';
             kill_process(pid);
         }
-        else
-        {
+        else {
             write("Usage: kill pid\n");
         }
     }
