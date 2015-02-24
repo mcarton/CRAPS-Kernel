@@ -23,7 +23,7 @@ public class SHDLDigilentNexysBoard extends SHDLBoard {
 	public String[] getBoardPrefixes() {
 		return new String[] { "mclk", "btn", "sw", "ld", "an", "ssg", "rxd", "txd",
 			"pdb", "astb", "dstb", "pwr", "pwait",
-			"memdb", "memaddr", "ramcs", "flashcs", "memwr", "memoe", "ramub",
+			"memdb", "memadr", "ramcs", "flashcs", "memwr", "memoe", "ramub",
 			"ramlb", "ramcre", "ramadv", "ramclk", "ramwait", "flashrp", "flashststs",
 			"red", "grn", "blue", "hs", "vs",
 			"ja1", "ja2", "ja3", "ja4" ,"ja7", "ja8", "ja9", "ja10",
