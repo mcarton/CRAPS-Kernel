@@ -748,22 +748,22 @@ public class SHDL2VHDLConverter extends JFrame {
             if (new SHDLSignal("memadr", 22, 22, design.getTopModule()).containedIn(interfaceSignals)) pw.println("NET \"memadr<22>\"  LOC = \"D1\" ;");
             if (new SHDLSignal("memadr", 23, 23, design.getTopModule()).containedIn(interfaceSignals)) pw.println("NET \"memadr<23>\"  LOC = \"K6\" ;");
 
-            if (new SHDLSignal("memdb", 0, 0, design.getTopModule()).containedIn(interfaceSignals)) pw.println("NET \"memdb\"  LOC = \"L1\" ;");
-            if (new SHDLSignal("memdb", 1, 1, design.getTopModule()).containedIn(interfaceSignals)) pw.println("NET \"memdb\"  LOC = \"L4\" ;");
-            if (new SHDLSignal("memdb", 2, 2, design.getTopModule()).containedIn(interfaceSignals)) pw.println("NET \"memdb\"  LOC = \"L6\" ;");
-            if (new SHDLSignal("memdb", 3, 3, design.getTopModule()).containedIn(interfaceSignals)) pw.println("NET \"memdb\"  LOC = \"M4\" ;");
-            if (new SHDLSignal("memdb", 4, 4, design.getTopModule()).containedIn(interfaceSignals)) pw.println("NET \"memdb\"  LOC = \"N5\" ;");
-            if (new SHDLSignal("memdb", 5, 5, design.getTopModule()).containedIn(interfaceSignals)) pw.println("NET \"memdb\"  LOC = \"P1\" ;");
-            if (new SHDLSignal("memdb", 6, 6, design.getTopModule()).containedIn(interfaceSignals)) pw.println("NET \"memdb\"  LOC = \"P2\" ;");
-            if (new SHDLSignal("memdb", 7, 7, design.getTopModule()).containedIn(interfaceSignals)) pw.println("NET \"memdb\"  LOC = \"R2\" ;");
-            if (new SHDLSignal("memdb", 8, 8, design.getTopModule()).containedIn(interfaceSignals)) pw.println("NET \"memdb\"  LOC = \"L3\" ;");
-            if (new SHDLSignal("memdb", 9, 9, design.getTopModule()).containedIn(interfaceSignals)) pw.println("NET \"memdb\"  LOC = \"L5\" ;");
-            if (new SHDLSignal("memdb", 10, 10, design.getTopModule()).containedIn(interfaceSignals)) pw.println("NET \"memdb\"  LOC = \"M3\" ;");
-            if (new SHDLSignal("memdb", 11, 11, design.getTopModule()).containedIn(interfaceSignals)) pw.println("NET \"memdb\"  LOC = \"M6\" ;");
-            if (new SHDLSignal("memdb", 12, 12, design.getTopModule()).containedIn(interfaceSignals)) pw.println("NET \"memdb\"  LOC = \"L2\" ;");
-            if (new SHDLSignal("memdb", 13, 13, design.getTopModule()).containedIn(interfaceSignals)) pw.println("NET \"memdb\"  LOC = \"N4\" ;");
-            if (new SHDLSignal("memdb", 14, 14, design.getTopModule()).containedIn(interfaceSignals)) pw.println("NET \"memdb\"  LOC = \"R3\" ;");
-            if (new SHDLSignal("memdb", 15, 15, design.getTopModule()).containedIn(interfaceSignals)) pw.println("NET \"memdb\"  LOC = \"T1\" ;");
+            if (new SHDLSignal("memdb", 0, 0, design.getTopModule()).containedIn(interfaceSignals)) pw.println("NET \"memdb<0>\"  LOC = \"L1\" ;");
+            if (new SHDLSignal("memdb", 1, 1, design.getTopModule()).containedIn(interfaceSignals)) pw.println("NET \"memdb<1>\"  LOC = \"L4\" ;");
+            if (new SHDLSignal("memdb", 2, 2, design.getTopModule()).containedIn(interfaceSignals)) pw.println("NET \"memdb<2>\"  LOC = \"L6\" ;");
+            if (new SHDLSignal("memdb", 3, 3, design.getTopModule()).containedIn(interfaceSignals)) pw.println("NET \"memdb<3>\"  LOC = \"M4\" ;");
+            if (new SHDLSignal("memdb", 4, 4, design.getTopModule()).containedIn(interfaceSignals)) pw.println("NET \"memdb<4>\"  LOC = \"N5\" ;");
+            if (new SHDLSignal("memdb", 5, 5, design.getTopModule()).containedIn(interfaceSignals)) pw.println("NET \"memdb<5>\"  LOC = \"P1\" ;");
+            if (new SHDLSignal("memdb", 6, 6, design.getTopModule()).containedIn(interfaceSignals)) pw.println("NET \"memdb<6>\"  LOC = \"P2\" ;");
+            if (new SHDLSignal("memdb", 7, 7, design.getTopModule()).containedIn(interfaceSignals)) pw.println("NET \"memdb<7>\"  LOC = \"R2\" ;");
+            if (new SHDLSignal("memdb", 8, 8, design.getTopModule()).containedIn(interfaceSignals)) pw.println("NET \"memdb<8>\"  LOC = \"L3\" ;");
+            if (new SHDLSignal("memdb", 9, 9, design.getTopModule()).containedIn(interfaceSignals)) pw.println("NET \"memdb<9>\"  LOC = \"L5\" ;");
+            if (new SHDLSignal("memdb", 10, 10, design.getTopModule()).containedIn(interfaceSignals)) pw.println("NET \"memdb<10>\"  LOC = \"M3\" ;");
+            if (new SHDLSignal("memdb", 11, 11, design.getTopModule()).containedIn(interfaceSignals)) pw.println("NET \"memdb<11>\"  LOC = \"M6\" ;");
+            if (new SHDLSignal("memdb", 12, 12, design.getTopModule()).containedIn(interfaceSignals)) pw.println("NET \"memdb<12>\"  LOC = \"L2\" ;");
+            if (new SHDLSignal("memdb", 13, 13, design.getTopModule()).containedIn(interfaceSignals)) pw.println("NET \"memdb<13>\"  LOC = \"N4\" ;");
+            if (new SHDLSignal("memdb", 14, 14, design.getTopModule()).containedIn(interfaceSignals)) pw.println("NET \"memdb<14>\"  LOC = \"R3\" ;");
+            if (new SHDLSignal("memdb", 15, 15, design.getTopModule()).containedIn(interfaceSignals)) pw.println("NET \"memdb<15>\"  LOC = \"T1\" ;");
         }
         pw.flush();
         pw.close();
