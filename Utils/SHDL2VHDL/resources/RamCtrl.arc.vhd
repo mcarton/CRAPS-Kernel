@@ -51,18 +51,18 @@ architecture synthesis of RamCtrl is
     constant stWrite5:    std_logic_vector(3 downto 0) := "1011"; -- pause
     constant stWriteDone: std_logic_vector(3 downto 0) := "1100"; -- all off
 
-    signal state : std_logic_vector(3 downto 0) := stIdle;
+    signal state : std_logic_vector(3 downto 0);
 
     -- Counter used to generate delays
     signal DelayCnt : std_logic_vector(2 downto 0);
 
-    signal regReadData : std_logic_vector(31 downto 0) := (others => '0');
+    signal regReadData : std_logic_vector(31 downto 0);
 begin
     readData <= regReadData;
 
     MemDB <= writeData(15 downto 0) when state = stWrite2 else
              writeData(31 downto 16) when state = stWrite4 else
-             "ZZZZZZZZ" & "ZZZZZZZZ";
+             (others => 'Z');
     MemAdr(23 downto 2) <= address(21 downto 0);
     MemAdr(1) <= '0' when (state = stIdle or state = stRead1 or
                            state = stRead2 or state = stRead3 or
@@ -96,7 +96,7 @@ begin
 
     process (clk, rst)
     begin
-        if clk'event and clk = '1' then
+        if rising_edge(clk) then
             if rst = '1' then
                 state <= stIdle;
             else
@@ -161,13 +161,17 @@ begin
     end process;
 
     -- Memory read
-    process (clk)
+    process (clk, rst)
     begin
-        if clk'event and clk = '1' then
-            if state = stRead2 then
-                regReadData(15 downto 0) <= MemDB;
-            elsif state = stRead4 then
-                regReadData(31 downto 16) <= MemDB;
+        if rising_edge(clk) then
+            if rst = '1' then
+                regReadData <= (others => '0');
+            else
+                if state = stRead2 then
+                    regReadData(15 downto 0) <= MemDB;
+                elsif state = stRead4 then
+                    regReadData(31 downto 16) <= MemDB;
+                end if;
             end if;
         end if;
     end process;
@@ -178,7 +182,7 @@ begin
 
     process (clk)
     begin
-        if clk'event and clk = '1' then
+        if rising_edge(clk) then
             if state = stIdle then
                 DelayCnt <= "000";
             else
