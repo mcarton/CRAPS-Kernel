@@ -1186,7 +1186,7 @@ public class ShdlDesign {
 		for (int j = 0; j < module.getInterfaceSignals().size(); j++) {
 			SHDLSignal signal = (SHDLSignal) module.getInterfaceSignals().get(j);
 			String prefix = signal.getPrefix();
-			if (prefix.equals("mclk") || prefix.equals("pdb") || prefix.equals("astb") || prefix.equals("dstb") || prefix.equals("pwr") || prefix.equals("pwr")) continue;
+			if (prefix.equals("mclk") || prefix.equals("pdb") || prefix.equals("astb") || prefix.equals("dstb") || prefix.equals("pwr") || prefix.equals("pwait")) continue;
 			if (!boardPrefixes.contains(prefix)) continue;
 			others.add(signal);
 		}
