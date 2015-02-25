@@ -17,6 +17,8 @@ struct process_table_t* process_table;
 asm("
 pwm_handler:
     push %r1
+    push %r24 // code position (for globals)
+    setq 0, %r24
 
     ld $pwm_count, %r1
     inccc %r1
@@ -26,6 +28,7 @@ pwm_handler:
     bge pwm_handler_do_it
 
     st %r1, $pwm_count
+    pop %r24
     pop %r1
     reti
 
@@ -34,7 +37,7 @@ pwm_handler:
     ////////////////////
 
 pwm_handler_do_it:
-    xor %r1, %r1, %r1 // reset the counter
+    setq 0, %r1 // reset the counter
     st %r1, $pwm_count
 
     push %r2
@@ -55,7 +58,6 @@ pwm_handler_do_it:
     push %r17
     push %r18
     push %r19
-    push %r24 // code pos
     push %fp
     push %r28 // @ret
 
@@ -87,7 +89,6 @@ pwm_handler_afterreset:
 
     pop %r28 // @ret
     pop %fp
-    pop %r24 // code pos
     pop %r19
     pop %r18
     pop %r17
@@ -106,20 +107,21 @@ pwm_handler_afterreset:
     pop %r4
     pop %r3
     pop %r2
+    pop %r24 // code pos
     pop %r1
     reti
 ")
 
 void kill_process(int pid) {
     asm("
-    set 2, %r1
+    setq 2, %r1
     ld $pid, %r2
     syscall");
 }
 
 void start_process(void* start_addr) {
     asm("
-    set 1, %r1
+    setq 1, %r1
     ld $start_addr, %r2
     syscall");
 }

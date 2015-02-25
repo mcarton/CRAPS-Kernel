@@ -6,11 +6,14 @@ rs232_handler_read:
     push %r1
     push %r2
     push %r3
+    push %r24
+    setq 0, %r24
 
     push %r28
     call f_rs232_handler_read
     pop %r28
 
+    pop %r24
     pop %r3
     pop %r2
     pop %r1

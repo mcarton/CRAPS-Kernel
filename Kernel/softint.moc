@@ -1,5 +1,9 @@
 asm("
 softint_handler:
+    push %r24
+    setq 0, %r24
+
+    // args
     push %r2
     push %r1
 
@@ -8,7 +12,7 @@ softint_handler:
     pop %r28
 
     add %sp, 2, %sp
-
+    pop %r24
     reti
 ")
 

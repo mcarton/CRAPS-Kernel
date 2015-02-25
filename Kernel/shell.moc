@@ -45,7 +45,7 @@ void shell(char* line) {
         putc('\n');
     }
     else if (strcmp(line, "help")) {
-        write("Commands: help, echo, run, kill, load.\n");
+        write("Commands: help, echo, run, kill, load, start_process.\n");
     }
     else if(strcmp(line, "run")) {
         if(strcmp(parameters, "dummy")) {
@@ -72,6 +72,16 @@ void shell(char* line) {
     }
     else if(strcmp(line, "load")) {
         load_command();
+    }
+    else if(strcmp(line, "start_process")) {
+        int addr = atod(parameters);
+
+        if(addr == -1) {
+            write("Usage: start_process addr");
+        }
+        else {
+            start_process((void*) addr);
+        }
     }
     else {
         write("Unknown command, try help.\n");

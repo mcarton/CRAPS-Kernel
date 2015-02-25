@@ -1,7 +1,7 @@
 void panic(int error_code)
 {
     asm("
-    set 0, %r1
+    setq 0, %r1
     ld $error_code, %r2
     syscall
     ");
