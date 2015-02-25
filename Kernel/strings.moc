@@ -44,7 +44,7 @@ void dtoa(int number, char* string) {
     }
 
     // i contains the number of chars
-    string[i+1] = (char)0;
+    string[i] = (char)0;
     while (i > 2) {
         n = number & 0xF;
         if (n < 10) {
