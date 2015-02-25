@@ -94,3 +94,4 @@ int atod(char* str) {
         return -1; // TODO
     }
 }
+

@@ -1,6 +1,7 @@
 char[256] rs232_read_buf;
 int rs232_read_buf_begin;
 int rs232_read_buf_end;
+
 asm("
 rs232_handler_read:
     push %r1

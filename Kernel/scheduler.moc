@@ -120,13 +120,11 @@ void start_process(void* start_addr) {
 }
 
 void _kill_process(int pid) {
-    if(pid >= PROCESS_COUNT)
-    {
+    if(pid >= PROCESS_COUNT) {
         _panic(5);
     }
 
-    if(_free_pid(pid) == -1)
-    {
+    if(_free_pid(pid) == -1) {
         _panic(6);
     }
 
@@ -135,10 +133,10 @@ void _kill_process(int pid) {
 
 void _start_process(void* start_addr) {
     int i = 0;
-    while(*((bool*)process_table->stack_pointers + i))
-    {
+    while(*((bool*)process_table->stack_pointers + i)){
         i = i + 1;
     }
+
     if(i >= PROCESS_COUNT) {
         _panic(1); // no PID/slot available
     }
@@ -163,3 +161,4 @@ void _start_process(void* start_addr) {
 
     *((void**)process_table->stack_pointers + i) = stack;
 }
+
