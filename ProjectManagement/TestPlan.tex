@@ -107,6 +107,10 @@
         is used to know if there is an error (9999 is an error, 1111 is ok).
       }
 
+      \testok{1.1.2}{The processor shall support 19 registers}{%
+        The kernel successfully uses all registers.
+      }
+
       \testok{1.1.3}{The processor shall handle several interrupts sources}{%
         A test per different interrupt has been created. Another test case
         tests the priority of different interrupts.
@@ -149,6 +153,24 @@
       \testok{1.3.1}{It shall support at least 10 hard-coded tasks}{%
         There can be any number of (hard-coded) tasks, we have tested with 2 to
         10 tasks.
+      }
+
+      \testok{1.3.2}{The OS shall provide a basic library}{%
+        The OS provides and uses that library. Tests independent from the kernel
+        exists.
+      }
+
+      \testok{2.3.1}{%
+        The OS shall have a task communicating using the RS-232
+        port
+      }{%
+        A script exists to test the serial port.
+      }
+
+      \testok{2.3.2}{%
+        The OS shall have an API to read/write on the serial port.
+      }{%
+        A script exists to test the serial port.
       }
 
     \subsection{Other tools}

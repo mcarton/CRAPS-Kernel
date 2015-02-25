@@ -44,7 +44,7 @@ void dtoa(int number, char* string) {
     }
 
     // i contains the number of chars
-    string[i+1] = (char)0;
+    string[i] = (char)0;
     while (i > 2) {
         n = number & 0xF;
         if (n < 10) {
@@ -59,3 +59,38 @@ void dtoa(int number, char* string) {
     }
 }
 
+// convert a string to an int
+int atod(char* str) {
+    int i = strlen(str) - 1;
+
+    if(i >= 2 && str[0] == '0' && str[1] == 'x') {
+        int r = 0;
+        int shift = 0;
+        char c;
+
+        while(i >= 2) {
+            c = str[i];
+
+            if(c >= 'A' && c <= 'E') {
+                r = r + (((int)c - (int)'A' + 10) << shift);
+            }
+            else if(c >= 'a' && c <= 'e') {
+                r = r + (((int)c - (int)'a' + 10) << shift);
+            }
+            else if(c >= '0' && c <= '9') {
+                r = r + (((int)c - (int)'0') << shift);
+            }
+            else {
+                return -1; // error
+            }
+
+            i = i - 1;
+            shift = shift + 4;
+        }
+
+        return r;
+    }
+    else {
+        return -1; // TODO
+    }
+}

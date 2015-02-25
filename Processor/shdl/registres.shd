@@ -108,6 +108,16 @@ module registres(rst, clk, areg[4..0], breg[4..0], dreg[4..0], dbus[31..0],
   abus[31..0] = tmp2[31..0]:asel[22];
   bbus[31..0] = tmp2[31..0]:bsel[22];
 
+  // %r23
+  reg32(rst, clk, dsel[23], dbus[31..0], r23[31..0]);
+  abus[31..0] = r23[31..0]:asel[23];
+  bbus[31..0] = r23[31..0]:bsel[23];
+
+  // %r24 = code position
+  reg32(rst, clk, dsel[24], dbus[31..0], r24[31..0]);
+  abus[31..0] = r24[31..0]:asel[24];
+  bbus[31..0] = r24[31..0]:bsel[24];
+
   // psr = %r25 = registre d'état (bits: IT(0..3), N(7), Z(6), V(5), C(4))
 
   IT[3..0] := DIT[3..0];
@@ -144,7 +154,6 @@ module registres(rst, clk, areg[4..0], breg[4..0], dreg[4..0], dbus[31..0],
   DC = /setVC*/dsel[25]*C + setVC*C_UAL + dsel[25]*dbus[4];
   abus[4] = C:asel[25];
   bbus[4] = C:bsel[25];
-
 
   // brk = %r26
   reg32(rst, clk, dsel[26], dbus[31..0], brk[31..0]);

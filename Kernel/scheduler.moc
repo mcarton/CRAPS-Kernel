@@ -1,12 +1,14 @@
 // every N PWM-interruptions we do a context switch, this is the counter
 int pwm_count;
 
-#define NB_SAVED_REGISTERS 22
+#define NB_SAVED_REGISTERS 23
 
 // implementation of the context switch
 asm("
 pwm_handler:
     push %r1
+    push %r24 // code position (for globals)
+    setq 0, %r24
 
     ld $pwm_count, %r1
     inccc %r1
@@ -16,6 +18,7 @@ pwm_handler:
     bge pwm_handler_do_it
 
     st %r1, $pwm_count
+    pop %r24
     pop %r1
     reti
 
@@ -97,20 +100,21 @@ pwm_handler_afterreset:
     pop %r4
     pop %r3
     pop %r2
+    pop %r24 // code pos
     pop %r1
     reti
 ")
 
 void kill_process(int pid) {
     asm("
-    set 2, %r1
+    setq 2, %r1
     ld $pid, %r2
     syscall");
 }
 
 void start_process(void* start_addr) {
     asm("
-    set 1, %r1
+    setq 1, %r1
     ld $start_addr, %r2
     syscall");
 }
