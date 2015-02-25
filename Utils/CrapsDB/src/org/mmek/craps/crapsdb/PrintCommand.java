@@ -131,7 +131,7 @@ public class PrintCommand implements Command {
         System.out.print(prefix);
         System.out.print(mem);
         System.out.print(" = ");
-        System.out.print(Long.toHexString(value));
+        System.out.print("0x" + Long.toHexString(value));
         System.out.print(" (");
         System.out.print(value);
         System.out.println(")");
