@@ -40,8 +40,8 @@ int main() {
     *((int*)malloc_start) = 0;
 
     // process table
-    process_table = (struct process_table_t*)malloc(sizeof(struct process_table_t));
     process_table->current_process = 0;
+    process_table = (struct process_table_t*)malloc(sizeof(struct process_table_t));
 
     int i;
     for(i = 0; i < PROCESS_COUNT; i=i+1) {
