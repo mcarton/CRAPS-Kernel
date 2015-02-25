@@ -1,13 +1,18 @@
-all: FinalReport.pdf ProjectCharter.pdf Specifications.pdf TestPlan.pdf Gantt.pdf
+all:                                  \
+	build/FinalReport.pdf         \
+	build/ProjectCharter.pdf      \
+	build/Specifications.pdf      \
+	build/TestPlan.pdf            \
+	build/Gantt.pdf
 
-export TEXC = latexmk -pdflatex="lualatex %O %S" -pdf -dvi- -ps-
+export TEXC = latexmk -output-directory=build -pdflatex="lualatex %O %S" -pdf -dvi- -ps-
 
 .PHONY: FORCE
 
-ProjectCharter.pdf: ProjectCharter.tex titlepage.tex Gantt.pdf
+build/ProjectCharter.pdf: ProjectCharter.tex titlepage.tex build/Gantt.pdf
 	$(TEXC) -latexoption=-shell-escape $<
 
-%.pdf: %.tex FORCE
+build/%.pdf: %.tex FORCE
 	$(TEXC) -latexoption=-shell-escape $<
 
 clean: FORCE
