@@ -11,7 +11,7 @@ struct process_table_t {
 
 struct process_table_t* process_table;
 
-#define NB_SAVED_REGISTERS 22
+#define NB_SAVED_REGISTERS 23
 
 // implementation of the context switch
 asm("
@@ -55,6 +55,7 @@ pwm_handler_do_it:
     push %r17
     push %r18
     push %r19
+    push %r24 // code pos
     push %fp
     push %r28 // @ret
 
@@ -86,6 +87,7 @@ pwm_handler_afterreset:
 
     pop %r28 // @ret
     pop %fp
+    pop %r24 // code pos
     pop %r19
     pop %r18
     pop %r17
