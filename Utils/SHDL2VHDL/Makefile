@@ -22,5 +22,5 @@ clean_dest:
 	rm  -rf $(JAVA_Dest)
 
 clean: clean_dest
-	rm -f $(JAR_Name)
+	rm -f $(shdl2vhdl_JAR_Name)
 
