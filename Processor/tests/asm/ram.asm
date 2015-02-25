@@ -1,6 +1,6 @@
 STACK     = 0x2000
 RAM_BEGIN = 100
-RAM_END   = 8192
+RAM_END   = 12288
 SEGS7     = 0xA0000000
 
     ba start
@@ -27,14 +27,22 @@ start:
 	// begin
 	set RAM_BEGIN, %r2
 	set RAM_END, %r9
-loop:
+loopinit:
 	st %r2, [%r2]
+	add %r2, %r20, %r2
+	cmp %r2, %r9
+	bne loopinit
+
+    set RAM_BEGIN, %r2
+loopverif:
 	ld [%r2], %r3
 	cmp %r2, %r3
 	bne error
 	add %r2, %r20, %r2
 	cmp %r2, %r9
-	bne loop
+	bne loopverif
+
+
 	ba success
 
 	// display 9999
