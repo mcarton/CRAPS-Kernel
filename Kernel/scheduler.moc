@@ -128,12 +128,12 @@ void _kill_process(int pid) {
         _panic(6);
     }
 
-    *((int*)process_table->stack_pointers + pid) = 0;
+    *((int*)process_table.stack_pointers + pid) = 0;
 }
 
 void _start_process(void* start_addr) {
     int i = 0;
-    while(*((bool*)process_table->stack_pointers + i)){
+    while(*((bool*)process_table.stack_pointers + i)){
         i = i + 1;
     }
 
@@ -142,12 +142,12 @@ void _start_process(void* start_addr) {
     }
 
     // we change the current process just for malloc to have it.
-    int cp = process_table->current_process;
-    process_table->current_process = i;
+    int cp = process_table.current_process;
+    process_table.current_process = i;
 
     void* stack = _malloc(256) + 255;
 
-    process_table->current_process = cp;
+    process_table.current_process = cp;
 
     // as a convention, we put on the stack the address of the first
     // instruction of the task (for "bootstraping" the processes)
@@ -159,6 +159,6 @@ void _start_process(void* start_addr) {
         *((int*) stack) = 0;
     }
 
-    *((void**)process_table->stack_pointers + i) = stack;
+    *((void**)process_table.stack_pointers + i) = stack;
 }
 

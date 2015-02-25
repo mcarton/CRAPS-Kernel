@@ -23,7 +23,7 @@ struct process_table_t {
     void*[PROCESS_COUNT] stack_pointers;
 };
 
-struct process_table_t* process_table;
+struct process_table_t process_table;
 
 #include "panic.moc"
 #include "memory.moc"
@@ -40,12 +40,11 @@ int main() {
     *((int*)malloc_start) = 0;
 
     // process table
-    process_table = (struct process_table_t*)malloc(sizeof(struct process_table_t));
-    process_table->current_process = 0;
+    process_table.current_process = 0;
 
     int i;
     for(i = 0; i < PROCESS_COUNT; i=i+1) {
-        *((int*)process_table->stack_pointers + i) = 0;
+        *((int*)process_table.stack_pointers + i) = 0;
     }
 
     // initialize all processes
@@ -54,7 +53,7 @@ int main() {
     start_process(task_leds);
 
     // first task: loads its stack...
-    int* stack_pointer = (int*)process_table->stack_pointers;
+    int* stack_pointer = (int*)process_table.stack_pointers;
     *stack_pointer = *stack_pointer + NB_SAVED_REGISTERS; // pop all registers
     int sp = *stack_pointer;
 

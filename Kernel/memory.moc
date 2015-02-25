@@ -60,12 +60,12 @@ void* _malloc(int size) {
 
     int bs = *c >> 8;
     if(bs == 0) { // end of the blocklist
-        *c = (size << 8) | 1 | (process_table->current_process << 1);
+        *c = (size << 8) | 1 | (process_table.current_process << 1);
         *(c + size + 1) = 0;
     }
     else {
         // We could split the block here
-        *c = (*c & 0xFFFFFF00) | (process_table->current_process << 1) | 1;
+        *c = (*c & 0xFFFFFF00) | (process_table.current_process << 1) | 1;
     }
     return (void*)c + 1;
 }
