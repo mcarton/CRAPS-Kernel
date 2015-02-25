@@ -28,13 +28,28 @@ export void rs232_handler_read() {
 
 char getc() {
     if (rs232_read_buf_begin == rs232_read_buf_end) {
-        return (char)-1;
+        return (char)-1; // 0xffffffff
     }
     else {
         char result = rs232_read_buf[rs232_read_buf_begin];
         rs232_read_buf_begin = (rs232_read_buf_begin+1) & 0xff;
         return result;
     }
+}
+
+int getint() {
+    int i;
+    int[4] bytes;
+
+    for(i = 0; i < 4; i=i+1) {
+        bytes[i] = (int)getc();
+
+        if(bytes[i] == -1) {
+            continue;
+        }
+    }
+
+    return (bytes[0] << 24) + (bytes[1] << 16) + (bytes[2] << 8) + bytes[3];
 }
 
 char* getline() {

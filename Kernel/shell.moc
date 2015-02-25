@@ -12,6 +12,27 @@ char* parseline(char* line) {
     return (char*)((int)line + i + 1);
 }
 
+void load_command() {
+    int i;
+
+    // read size (in 32 bits words)
+    int size = getint();
+
+    // read file word per word
+    int* file = (int*)malloc(size);
+
+    for(i = 0; i < size; i=i+1) {
+        *(file + i) = getint();
+    }
+
+    // write address to user
+    char[12] addr_hex;
+    dtoa((int)file, addr_hex);
+    write("File loaded at address ");
+    write(addr_hex);
+    putc('\n');
+}
+
 void shell(char* line) {
     char* parameters = parseline(line);
 
@@ -24,7 +45,7 @@ void shell(char* line) {
         putc('\n');
     }
     else if (strcmp(line, "help")) {
-        write("Commands: help, echo, run, kill.\n");
+        write("Commands: help, echo, run, kill, load.\n");
     }
     else if(strcmp(line, "run")) {
         if(strcmp(parameters, "dummy")) {
@@ -48,6 +69,9 @@ void shell(char* line) {
         else {
             write("Usage: kill pid\n");
         }
+    }
+    else if(strcmp(line, "load")) {
+        load_command();
     }
     else {
         write("Unknown command, try help.\n");
