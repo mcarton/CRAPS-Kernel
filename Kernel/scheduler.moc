@@ -1,16 +1,6 @@
 // every N PWM-interruptions we do a context switch, this is the counter
 int pwm_count;
 
-#define PROCESS_COUNT 10
-
-struct process_table_t {
-    int process_count;
-    int current_process;
-    void*[PROCESS_COUNT] stack_pointers;
-};
-
-struct process_table_t* process_table;
-
 #define NB_SAVED_REGISTERS 22
 
 // implementation of the context switch
@@ -22,7 +12,7 @@ pwm_handler:
     inccc %r1
 
     // do we do a context switch, or nothing ?
-    cmp %r1, 10
+    cmp %r1, 100
     bge pwm_handler_do_it
 
     st %r1, $pwm_count
@@ -34,8 +24,7 @@ pwm_handler:
     ////////////////////
 
 pwm_handler_do_it:
-    xor %r1, %r1, %r1 // reset the counter
-    st %r1, $pwm_count
+    st %r0, $pwm_count
 
     push %r2
     push %r3
@@ -59,30 +48,34 @@ pwm_handler_do_it:
     push %r28 // @ret
 
     ld $process_table, %r2
-    ld [%r2], %r3 // %r3: nb_tasks
-    ld [%r2 + 1], %r4 // %r4: current_task
-    add %r4, 2, %r5
-    add %r5, %r2, %r5 // %r5: current task entry
+    ld [%r2], %r4 // %r4: current_task
+    add %r2, %r4, %r5 // %r5: current task entry
+    inccc %r5
 
     // store the stack pointer
+    ld [%r5], %r6
+    cmp %r6, %r0
+    beq pwm_handler_ctloop
     st %sp, [%r5]
 
     // now it is stored, we can load the other task
 
+pwm_handler_ctloop:
     // current_task = (current_task + 1) % nb_tasks
     inccc %r4
-    cmp %r4, %r3
+    cmp %r4, PROCESS_COUNT
     bl pwm_handler_afterreset
-    xor %r4, %r4, %r4 // %r4 <- 0
+    mov %r0, %r4
 pwm_handler_afterreset:
 
-    st %r4, [%r2 + 1]
-
-    add %r4, 2, %r5
-    add %r5, %r2, %r5 // %r5: current task entry
-
-    // We switch the stack now that everything is pop'ed
+    add %r2, %r4, %r5 // %r5: current task entry
+    inccc %r5
     ld [%r5], %sp
+
+    cmp %sp, %r0
+    beq pwm_handler_ctloop
+
+    st %r4, [%r2]
 
     pop %r28 // @ret
     pop %fp
@@ -123,37 +116,36 @@ void start_process(void* start_addr) {
 }
 
 void _kill_process(int pid) {
-    if(process_table->process_count < 2) {
-        // if we only have one process, we can't kill anything...
-        _panic(4);
-    }
-
-    // if we kill the process and it has malloc()'ed memory, it will be leaked :(
-    // moreover, the current malloc implementation allow only to call free() with the base pointer.
-    //free(process_table->stack_pointers[pid]);
-
-    if(process_table->current_process > pid) {
-        process_table->current_process = process_table->current_process - 1;
-    }
-    else if(process_table->current_process == pid) {
-        // FIXME: for now, we don't support suicide
+    if(pid >= PROCESS_COUNT)
+    {
         _panic(5);
     }
 
-    process_table->process_count = process_table->process_count - 1;
-
-    int i;
-    for(i = pid; i < process_table->process_count; i=i+1) {
-        *((int*)process_table->stack_pointers + i) = *((int*)process_table->stack_pointers + i + 1);
+    if(_free_pid(pid) == -1)
+    {
+        _panic(6);
     }
+
+    *((int*)process_table->stack_pointers + pid) = 0;
 }
 
 void _start_process(void* start_addr) {
-    if(process_table->process_count >= PROCESS_COUNT) {
-        _panic(1);
+    int i = 0;
+    while(*((bool*)process_table->stack_pointers + i))
+    {
+        i = i + 1;
+    }
+    if(i >= PROCESS_COUNT) {
+        _panic(1); // no PID/slot available
     }
 
-    void* stack = malloc(256) + 255;
+    // we change the current process just for malloc to have it.
+    int cp = process_table->current_process;
+    process_table->current_process = i;
+
+    void* stack = _malloc(256) + 255;
+
+    process_table->current_process = cp;
 
     // as a convention, we put on the stack the address of the first
     // instruction of the task (for "bootstraping" the processes)
@@ -165,6 +157,5 @@ void _start_process(void* start_addr) {
         *((int*) stack) = 0;
     }
 
-    *((void**)process_table->stack_pointers + process_table->process_count) = stack;
-    process_table->process_count = process_table->process_count + 1;
+    *((void**)process_table->stack_pointers + i) = stack;
 }

@@ -1,5 +1,6 @@
 asm("
 softint_handler:
+    push %r3
     push %r2
     push %r1
 
@@ -7,19 +8,30 @@ softint_handler:
     call f_softint_handler
     pop %r28
 
-    add %sp, 2, %sp
+    pop %r2
+    pop %r2
+    pop %r3
 
     reti
 ")
 
-export int softint_handler(int r1, int r2) {
+export int softint_handler(int r1, int r2, int r3) {
     if(r1 == 0) {
         _panic(r2);
     }
-    else if(r1 == 1) {
+    if(r1 == 1) {
         _start_process((void*)r2);
     }
-    else if(r1 == 2) {
+    if(r1 == 2) {
         _kill_process(r2);
+    }
+    if(r1 == 3) {
+        return (int)_malloc(r2);
+    }
+    if(r1 == 4) {
+        return _free((void*)r2);
+    }
+    if(r1 == 5) {
+        return (int)_realloc((void*)r2, r3);
     }
 }

@@ -16,6 +16,15 @@ start:
     ba f_main
 ")
 
+#define PROCESS_COUNT 16
+
+struct process_table_t {
+    int current_process;
+    void*[PROCESS_COUNT] stack_pointers;
+};
+
+struct process_table_t* process_table;
+
 #include "panic.moc"
 #include "memory.moc"
 #include "scheduler.moc"
@@ -32,13 +41,17 @@ int main() {
 
     // process table
     process_table = (struct process_table_t*)malloc(sizeof(struct process_table_t));
-    process_table->process_count = 0;
     process_table->current_process = 0;
 
+    int i;
+    for(i = 0; i < PROCESS_COUNT; i=i+1) {
+        *((int*)process_table->stack_pointers + i) = 0;
+    }
+
     // initialize all processes
-    start_process(task_shell);
-    start_process(task_leds);
+    //start_process(task_shell);
     start_process(task_counter);
+    start_process(task_leds);
 
     // first task: loads its stack...
     int* stack_pointer = (int*)process_table->stack_pointers;

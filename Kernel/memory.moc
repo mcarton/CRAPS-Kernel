@@ -40,33 +40,47 @@ int nbp2(int n) {
 }
 
 void* malloc(int size) {
+    asm("
+    set 3, %r1
+    ld $size, %r2
+    syscall");
+}
+
+void* _malloc(int size) {
     size = nbp2(size);
 
     int* c = (int*)malloc_start;
     while (
         (bool)(*c & 1)
-     || (((*c >> 1) != size) && ((bool)*c))
+     || (((*c >> 8) != size) && ((bool)*c))
     ) {
-        c = c + (*c >> 1) + 1;
+        c = c + (*c >> 8) + 1;
     }
     // c now points to an unused block header of the right size
 
-    int bs = *c >> 1;
+    int bs = *c >> 8;
     if(bs == 0) { // end of the blocklist
-        *c = (size << 1) + 1;
+        *c = (size << 8) | 1 | (process_table->current_process << 1);
         *(c + size + 1) = 0;
     }
     else {
         // We could split the block here
-        *c = *c | 1;
+        *c = (*c & 0xFFFFFF00) | (process_table->current_process << 1) | 1;
     }
     return (void*)c + 1;
 }
 
 int free(void* addr) {
+    asm("
+    set 4, %r1
+    ld $addr, %r2
+    syscall");
+}
+
+int _free(void* addr) {
     int* c = (int*)malloc_start;
     while (c < addr - 1) {
-        c = c + (*c >> 1) + 1;
+        c = c + (*c >> 8) + 1;
         if(*c == 0) {
             return -1; // the address is after the last allocated block...
         }
@@ -78,7 +92,7 @@ int free(void* addr) {
     }
 
     *c = *c & 0xFFFFFFFE;
-    if (*((int*) (*c >> 1) + 1) == 0) {
+    if (*((int*) (*c >> 8) + 1) == 0) {
         *c = 0; // if it was the last block...
     }
 
@@ -86,14 +100,38 @@ int free(void* addr) {
     return 0;
 }
 
+int _free_pid(int pid) {
+    int* c = (int*)malloc_start;
+    while((bool)*c) {
+        if((bool)(*c & 1) && (((*c >> 1) & 0x7F) == pid)) {
+            if(_free((void*)c + 1) == -1)
+            {
+                return -1;
+            }
+        }
+        else {
+            c = c + (*c >> 8) + 1;
+        }
+    }
+    return 0;
+}
+
 void* realloc(void* addr, int new_size) {
+    asm("
+    set 5, %r1
+    ld $addr, %r2
+    ld $new_size, %r3
+    syscall");
+}
+
+void* _realloc(void* addr, int new_size) {
     new_size = nbp2(new_size);
 
     // taken from the free implementation
     // ---
     int* c = (int*)malloc_start;
     while (c < addr - 1) {
-        c = c + (*c >> 1) + 1;
+        c = c + (*c >> 8) + 1;
         if(*c == 0) {
             return (void*)-1; // the address is after the last allocated block...
         }
@@ -105,15 +143,16 @@ void* realloc(void* addr, int new_size) {
     // ---
 
     // already the good size
-    if((*c >> 1) >= new_size) {
+    if((*c >> 8) >= new_size) {
         return addr;
     }
     
     // here we will need to allocate a new block and copy it.
-    void* new_addr = malloc(new_size);
-    memcpy(addr, new_addr, *c >> 1);
-    if(free(addr) == -1) {
+    void* new_addr = _malloc(new_size);
+    memcpy(addr, new_addr, *c >> 8);
+    if(_free(addr) == -1) {
         return (void*)-1;
     }
     return new_addr;
 }
+
