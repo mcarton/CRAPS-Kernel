@@ -1,9 +1,10 @@
 all:                                  \
 	build/FinalReport.pdf         \
+	build/Gantt.pdf               \
 	build/ProjectCharter.pdf      \
+	build/Slides.pdf              \
 	build/Specifications.pdf      \
-	build/TestPlan.pdf            \
-	build/Gantt.pdf
+	build/TestPlan.pdf
 
 export TEXC = latexmk -output-directory=build -pdflatex="lualatex %O %S" -pdf -dvi- -ps-
 

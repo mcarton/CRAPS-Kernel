@@ -1,0 +1,47 @@
+\documentclass{beamer}
+
+% {{{ beamer stuffs
+\setbeamertemplate{footline}[frame number]
+\beamertemplatenavigationsymbolsempty%
+
+\AtBeginSection[]{%
+  \begin{frame}<beamer>{Plan}
+    \tableofcontents[currentsection]
+  \end{frame}
+}
+\AtBeginSubsection[]{%
+  \begin{frame}<beamer>{Plan}
+    \tableofcontents[currentsubsection]
+  \end{frame}
+}
+% }}}
+
+\usepackage{fontspec}
+\usepackage{hyperref}
+
+\title{CRAPS Kernel}
+\subtitle{Final presentation}
+\author{
+       Maxime Arthaud
+  \and Korantin Auguste
+  \and Martin Carton
+  \and Étienne Lebrun
+}
+\titlegraphic{\includegraphics[width=0.5\textwidth]{fig/LogoEnseeiht.png}}
+\date{March 13, 2015}
+
+\begin{document}
+  \begin{frame}
+    \titlepage%
+  \end{frame}
+
+  \section{Presentation}
+    \begin{frame}
+      \begin{figure}
+        \centering
+        \includegraphics[width=\textwidth, keepaspectratio]{fig/Nexys2.jpg}
+        \caption{A Nexys2 board}
+      \end{figure}
+    \end{frame}
+
+\end{document}
