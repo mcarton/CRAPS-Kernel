@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 UTILS_DIR=$(dirname "${BASH_SOURCE[0]}")
 CRAPSDB_DIR="$UTILS_DIR"/CrapsDB
