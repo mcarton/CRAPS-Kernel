@@ -8,9 +8,7 @@ softint_handler:
     call f_softint_handler
     pop %r28
 
-    pop %r2
-    pop %r2
-    pop %r3
+    add %sp, 3, %sp
 
     reti
 ")
