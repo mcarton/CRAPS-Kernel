@@ -7,8 +7,8 @@ int pwm_count;
 asm("
 pwm_handler:
     push %r1
-    push %r24 // code position (for globals)
-    setq 0, %r24
+    push %r24 // static position
+    set static, %r24
 
     ld $pwm_count, %r1
     inccc %r1
@@ -78,7 +78,7 @@ pwm_handler_do_it:
     pop %r4
     pop %r3
     pop %r2
-    pop %r24 // code pos
+    pop %r24 // static pos
     pop %r1
     reti
 ")

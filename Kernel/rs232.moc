@@ -8,7 +8,7 @@ rs232_handler_read:
     push %r2
     push %r3
     push %r24
-    setq 0, %r24
+    set static, %r24
 
     push %r28
     call f_rs232_handler_read

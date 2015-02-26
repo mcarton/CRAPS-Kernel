@@ -1,7 +1,7 @@
 asm("
 softint_handler:
     push %r24
-    setq 0, %r24
+    set static, %r24
 
     // args
     push %r3

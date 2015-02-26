@@ -13,6 +13,7 @@ asm("
 null_handler: reti
 start:
     set 0x1FFF, %sp // stack at the end of the memory
+    set static, %r24 // static position
     ba f_main
 ")
 
