@@ -61,21 +61,21 @@ public class Disassembler {
 
                     String codeop = "";
                     switch ((int) cond) {
-                        case 8:  codeop = "ba    "; break;
-                        case 1:  codeop = "be    "; break;
-                        case 9:  codeop = "bne   "; break;
-                        case 5:  codeop = "bcs   "; break;
-                        case 13: codeop = "bcc   "; break;
-                        case 14: codeop = "bpos  "; break;
-                        case 6:  codeop = "bneg  "; break;
-                        case 7:  codeop = "bvs   "; break;
-                        case 15: codeop = "bvc   "; break;
-                        case 10: codeop = "bg    "; break;
-                        case 2:  codeop = "ble   "; break;
-                        case 11: codeop = "bge   "; break;
-                        case 3:  codeop = "bl    "; break;
-                        case 12: codeop = "bgu   "; break;
-                        case 4:  codeop = "bleu  "; break;
+                        case 8:  codeop = "ba     "; break;
+                        case 1:  codeop = "be     "; break;
+                        case 9:  codeop = "bne    "; break;
+                        case 5:  codeop = "bcs    "; break;
+                        case 13: codeop = "bcc    "; break;
+                        case 14: codeop = "bpos   "; break;
+                        case 6:  codeop = "bneg   "; break;
+                        case 7:  codeop = "bvs    "; break;
+                        case 15: codeop = "bvc    "; break;
+                        case 10: codeop = "bg     "; break;
+                        case 2:  codeop = "ble    "; break;
+                        case 11: codeop = "bge    "; break;
+                        case 3:  codeop = "bl     "; break;
+                        case 12: codeop = "bgu    "; break;
+                        case 4:  codeop = "bleu   "; break;
                     }
                     String relDisp = disp24 + "";
                     if (disp24 >= 0) relDisp = "+" + relDisp;
@@ -118,22 +118,22 @@ public class Disassembler {
 
                 String codeop = "";
                 switch ((int) op3) {
-                    case 0:  codeop = "add   "; break;
-                    case 16: codeop = "addcc "; break;
-                    case 4:  codeop = "sub   "; break;
-                    case 20: codeop = "subcc "; break;
+                    case 0:  codeop = "add    "; break;
+                    case 16: codeop = "addcc  "; break;
+                    case 4:  codeop = "sub    "; break;
+                    case 20: codeop = "subcc  "; break;
                     case 26: codeop = "umulcc "; break;
-                    case 1:  codeop = "and "; break;
-                    case 2:  codeop = "or  "; break;
-                    case 3:  codeop = "xor  "; break;
-                    case 7:  codeop = "xnor  "; break;
-                    case 17: codeop = "andcc "; break;
-                    case 18: codeop = "orcc  "; break;
+                    case 1:  codeop = "and    "; break;
+                    case 2:  codeop = "or     "; break;
+                    case 3:  codeop = "xor    "; break;
+                    case 7:  codeop = "xnor   "; break;
+                    case 17: codeop = "andcc  "; break;
+                    case 18: codeop = "orcc   "; break;
                     case 19: codeop = "xorcc  "; break;
-                    case 23: codeop = "xnorcc  "; break;
-                    case 13: codeop = "srl   "; break;
-                    case 14: codeop = "sll   "; break;
-                    case 56: codeop = "jmpl  "; break;
+                    case 23: codeop = "xnorcc "; break;
+                    case 13: codeop = "srl    "; break;
+                    case 14: codeop = "sll    "; break;
+                    case 56: codeop = "jmpl   "; break;
                 }
 
                 String arg2 = "";
