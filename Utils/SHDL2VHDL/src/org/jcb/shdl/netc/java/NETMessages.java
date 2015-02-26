@@ -12,10 +12,10 @@ public class NETMessages extends Vector<Message> implements Messages{
     super();
     init();
     }
-  public static int S_02 = 0;
-  public static int S_01 = 1;
-  public static int S_00 = 2;
-  public static int P_02 = 3;
+  public static final int S_02 = 0;
+  public static final int S_01 = 1;
+  public static final int S_00 = 2;
+  public static final int P_02 = 3;
   private void init(){
     add(new Message(S_02, "end expected near ^1.", 1));
     add(new Message(S_01, "end expected near ^1.", 1));

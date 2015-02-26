@@ -12,7 +12,7 @@ public class OrNor1Module extends Module {
 
 	private boolean inverting;
 
-	private ArrayList pinIdList;
+	private ArrayList<Integer> pinIdList;
 	private int shapeIndex = 0;
 	private Point2D pinE;
 	private Point2D pinS;
@@ -30,9 +30,9 @@ public class OrNor1Module extends Module {
 
 	public OrNor1Module(int id, NumExpr nb, boolean inverting) {
 		super(id, nb);
-		pinIdList = new ArrayList();
-		pinIdList.add(new Integer(0));
-		pinIdList.add(new Integer(1));
+		pinIdList = new ArrayList<Integer>();
+		pinIdList.add(0);
+		pinIdList.add(1);
 		this.inverting = inverting;
 		bodyPath_0 = new GeneralPath(GeneralPath.WIND_EVEN_ODD, 3);
 
@@ -59,7 +59,7 @@ public class OrNor1Module extends Module {
 		return "or1";
 	}
 
-	public ArrayList getPinIdList() {
+	public ArrayList<Integer> getPinIdList() {
 		return pinIdList;
 	}
 

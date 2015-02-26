@@ -15,7 +15,6 @@ public class CnxPointInter extends CnxPoint {
 	private Point2D loc;
 
 	private Equipotential equi;
-	private String name;
 
 
 	public CnxPointInter(int id, Point2D loc) {

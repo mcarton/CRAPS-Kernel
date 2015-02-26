@@ -9,16 +9,12 @@ import org.jcb.shdl.*;
 
 
 public class UniversalGate extends Module {
-
-	private int nbInput;
-
-	private ArrayList pinIdList;
+	private ArrayList<Integer> pinIdList;
 	private GeneralPath bodyPath;
 	private float height;
 
 	public UniversalGate(int id, NumExpr nb, int nbInput) {
 		super(id, nb);
-		this.nbInput = nbInput;
 		bodyPath = new GeneralPath(GeneralPath.WIND_EVEN_ODD, 3);
 		height = nbInput * 10.f;
 		bodyPath.moveTo(-20.f, -height/2);
@@ -27,16 +23,16 @@ public class UniversalGate extends Module {
 		bodyPath.lineTo(20.f, -height/2);
 		bodyPath.closePath();
 
-		pinIdList = new ArrayList();
+		pinIdList = new ArrayList<>();
 		for (int i = 0; i < nbInput + 1; i++)
-			pinIdList.add(new Integer(i));
+			pinIdList.add(i);
 	}
 
 	public String getType() {
 		return "univgate";
 	}
 
-	public ArrayList getPinIdList() {
+	public ArrayList<Integer> getPinIdList() {
 		return pinIdList;
 	}
 
@@ -48,8 +44,7 @@ public class UniversalGate extends Module {
 	}
 
 	public int getPinOrientation(int pinId) {
-		
-		if (((Integer)pinIdList.get(pinIdList.size() - 1)).intValue() == pinId) return 1; // right for the last pin
+		if ((pinIdList.get(pinIdList.size() - 1)).intValue() == pinId) return 1; // right for the last pin
 		return 0; // otherwise : left
 	}
 

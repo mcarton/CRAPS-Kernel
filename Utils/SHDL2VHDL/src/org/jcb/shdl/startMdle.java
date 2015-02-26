@@ -112,7 +112,7 @@ class MdleFrame extends JFrame {
 		setContentPane(panel);
 	}
 
-	class EastPanel extends JScrollPane {
+	static class EastPanel extends JScrollPane {
 		public EastPanel(JPanel panel) {
 			super(panel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		}
@@ -122,7 +122,7 @@ class MdleFrame extends JFrame {
 		}
 	}
 
-	class CenterPanel extends JScrollPane {
+	static class CenterPanel extends JScrollPane {
 		public CenterPanel(JPanel panel) {
 			super(panel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		}

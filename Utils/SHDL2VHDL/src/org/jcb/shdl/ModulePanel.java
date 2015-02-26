@@ -147,7 +147,7 @@ public abstract class ModulePanel extends JPanel {
 			Rectangle2D subModSelRect = subMod.getBodyPath().getBounds2D();
 			subModSelRect.setRect(subModSelRect.getX() + locMod.getX(), subModSelRect.getY() + locMod.getY(), subModSelRect.getWidth(), subModSelRect.getHeight());
 			if (selectRectangle.contains(subModSelRect)) {
-				Integer I = new Integer(subMod.getId());
+				Integer I = Integer.valueOf(subMod.getId());
 				if (list.contains(I))
 					list.remove(I);
 				else

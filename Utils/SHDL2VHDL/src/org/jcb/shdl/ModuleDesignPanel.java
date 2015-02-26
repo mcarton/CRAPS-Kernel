@@ -504,7 +504,7 @@ System.out.println("toDo=" + toDo + ", done=" + done);
 			for (int i = 0; i < selected.size(); i++) {
 				Integer subModIndex = (Integer) selected.get(i);
 				if (i == subModIndex.intValue()) continue; // already dealt with
-				copiedIndexesModules.add(new Integer(subModIndex.intValue()));
+				copiedIndexesModules.add(Integer.valueOf(subModIndex.intValue()));
 			}
 		}
 	}
@@ -972,7 +972,7 @@ System.out.println("nbPaint=" + nbPaint);
 
 			} else if (state == 2) {
 				state = 0;
-				Integer I = new Integer(modHitId);
+				Integer I = Integer.valueOf(modHitId);
 				if (!ctrlOrShift(ev)) {
 					selected.clear();
 					selected.add(I);
@@ -1079,7 +1079,7 @@ System.out.println("nbPaint=" + nbPaint);
 			} else if (state == 18) {
 				CnxPoint cp1 = cnxHit.getCp1();
 				CnxPoint cp2 = cnxHit.getCp2();
-				if ((cp1 instanceof CnxPointInter) && (cp1 instanceof CnxPointInter)) {
+				if (cp1 != null && cp2 != null) {
 					ArrayList cmdList = new ArrayList();
 					cmdList.add("moveCnxPoint\t" + cp1.getId() + "\t" + cnxCp1Loc.getX() + "\t" + cnxCp1Loc.getY() + "\t" + (cnxCp1Loc.getX() + curX - startX) + "\t" + (cnxCp1Loc.getY() + curY - startY));
 					cmdList.add("moveCnxPoint\t" + cp2.getId() + "\t" + cnxCp2Loc.getX() + "\t" + cnxCp2Loc.getY() + "\t" + (cnxCp2Loc.getX() + curX - startX) + "\t" + (cnxCp2Loc.getY() + curY - startY));
@@ -1170,7 +1170,7 @@ System.out.println("nbPaint=" + nbPaint);
 				case 18: // move both ends
 					CnxPoint cp1 = cnxHit.getCp1();
 					CnxPoint cp2 = cnxHit.getCp2();
-					if ((cp1 instanceof CnxPointInter) && (cp1 instanceof CnxPointInter)) {
+					if (cp1 != null && cp2 != null) {
 						cp1.setLocation(new Point2D.Double(cnxCp1Loc.getX() + curX - startX, cnxCp1Loc.getY() + curY - startY));
 						cp2.setLocation(new Point2D.Double(cnxCp2Loc.getX() + curX - startX, cnxCp2Loc.getY() + curY - startY));
 					}
@@ -1253,7 +1253,7 @@ tt = System.currentTimeMillis();
 		while (subModIterator.hasNext()) {
 			Module subMod = (Module) subModIterator.next();
                         Point2D locMod = compModule.getSubModuleLocation(subMod.getId());
-                        boolean sel = selected.contains(new Integer(subMod.getId()));
+                        boolean sel = selected.contains(Integer.valueOf(subMod.getId()));
                         g2.translate(locMod.getX(), locMod.getY());
                         // paint submodule
                         subMod.paint(g2, compModule, sel, false);

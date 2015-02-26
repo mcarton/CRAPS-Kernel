@@ -362,8 +362,8 @@ public class ShdlDesign {
 				SHDLSignal signal = (SHDLSignal) module.getModuleSignals().get(i);
 				if (signal.isConstant()) continue;
 				if (signal.isPartOfBus()) {
-					ArrayList unassigned = new ArrayList();
-					ArrayList unused = new ArrayList();
+					ArrayList<Integer> unassigned = new ArrayList<>();
+					ArrayList<Integer> unused = new ArrayList<>();
 					for (int j = signal.getLowestIndex(); j <= signal.getHighestIndex(); j++) {
 						String signalName = signal.getPrefix() + "[" + j + "]";
 						ArrayList sources = module.getSignalSources(signalName);
@@ -371,9 +371,9 @@ public class ShdlDesign {
 						if ((sources == null) || (sources.size() == 0)) {
 							if (!module.isInterface(signalName) && isRead) {
 								//System.out.println("uass signalName=" + signalName);
-								unassigned.add(new Integer(j));
+								unassigned.add(j);
 							} else if (!isRead)
-								unused.add(new Integer(j));
+								unused.add(j);
 						}
 					}
 					if (unassigned.size() == 1) {

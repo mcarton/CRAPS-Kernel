@@ -8,7 +8,6 @@ import java.math.*;
 public class SHDLSignal {
 
 	private static int nb_ = 0;
-	private int nb;
 
 	private SHDLModule module;
 	private String first; // x -> x, a[7..0] -> a
@@ -27,23 +26,18 @@ public class SHDLSignal {
 	private String numEnding;
 	private BigInteger constantValue;
 	private char constantBase; // 'D'=decimal, 'H'=hexa, 'B'=binary
-	private boolean isDeclared = false;
 	//
 	// true when the signal is read as part of an equation, or is the output of a combin. or seq. setting
 	// when the signal is one of a module occurrence arguments, the same meaning applies (a recursive search
 	// through the module's calling hierarchy is done to assess these values)
 	private boolean read = false;
 	private ArrayList sources = new ArrayList();
-	private boolean sourcesComplete = false; // true when all sources are known, included through occurrence hierarchy
 
 	private boolean isAdded; // true for a 'whole' bus signal which has been added
-	private SHDLSignal whole; // non-null if it is a part of a whole
-	private ArrayList parts; // non-null for a whole bus which is separated into parts
 
 	// constructor for ordinary signal (called from parser)
 	public SHDLSignal(String first, boolean isInterface, SHDLModule module) {
 		this.module = module;
-		this.nb = nb_++;
 		this.first = first;
 		this.isInterface = isInterface;
 		this.isConstant = false;
@@ -51,14 +45,12 @@ public class SHDLSignal {
 	// constructor for litteral constants
 	public SHDLSignal(String value, SHDLModule module) {
 		this.module = module;
-		this.nb = nb_++;
 		this.value = value;
 		this.isConstant = true;
 	}
 	// general constructor for bus signal
 	public SHDLSignal(String prefix, int n1, int n2, SHDLModule module) {
 		this.module = module;
-		this.nb = nb_++;
 		this.first = prefix;
 		setN1(n1 + "");
 		if (n2 != n1) setN2(n2 + "");

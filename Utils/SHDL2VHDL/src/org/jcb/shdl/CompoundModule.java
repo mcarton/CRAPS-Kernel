@@ -15,7 +15,7 @@ public class CompoundModule extends Module {
 	private ModuleNameLabel moduleNameLabel1 = null;
 	private ModuleNameLabel moduleNameLabel2 = null;
 
-	private ArrayList pinIdList = new ArrayList();
+	private ArrayList pinIdList = new ArrayList<Integer>();
 	private ArrayList cnxPointList = new ArrayList();
 	private ArrayList cnxList = new ArrayList();
 	private ArrayList labelList = new ArrayList();
@@ -161,7 +161,7 @@ public class CompoundModule extends Module {
 	//////////////////           Pins            ///////////////////
 
 
-	public ArrayList getPinIdList() {
+	public ArrayList<Integer> getPinIdList() {
 		return pinIdList;
 	}
 
@@ -908,14 +908,14 @@ System.out.println("cmd=" + cmd);
 				if (undo) {
 					CnxPoint cp = getCnxPoint(pinId);
 					delCnxPoint(cp);
-					pinIdList.remove(new Integer(pinId));
+					pinIdList.remove(pinId);
 				} else {
 					// add pin on the design inside
 					CnxPointPin pin = new CnxPointPin(pinId, new Point2D.Double(x, y), new Point2D.Double(xi, yi));
 					addCnxPoint(pin);
 					// add pin on the design outside
 					pin.setExtLocation(new Point2D.Double(xi, yi));
-					pinIdList.add(new Integer(pinId));
+					pinIdList.add(pinId);
 				}
 
 			} else if (op.equals("moveCnxPoint")) {

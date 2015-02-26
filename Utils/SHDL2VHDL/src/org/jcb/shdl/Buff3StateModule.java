@@ -12,7 +12,7 @@ public class Buff3StateModule extends Module {
 
 	private boolean inverting;
 
-	private ArrayList pinIdList;
+	private ArrayList<Integer> pinIdList;
 	private int shapeIndex = 0;
 	private Point2D pinE;
 	private Point2D pinS;
@@ -32,10 +32,10 @@ public class Buff3StateModule extends Module {
 
 	public Buff3StateModule(int id, NumExpr nb, boolean inverting) {
 		super(id, nb);
-		pinIdList = new ArrayList();
-		pinIdList.add(new Integer(0));
-		pinIdList.add(new Integer(1));
-		pinIdList.add(new Integer(2));
+		pinIdList = new ArrayList<Integer>();
+		pinIdList.add(0);
+		pinIdList.add(1);
+		pinIdList.add(2);
 		this.inverting = inverting;
 		bodyPath_0 = new GeneralPath(GeneralPath.WIND_EVEN_ODD, 3);
 		bodyPath_0.moveTo(-15.f, -12.f);

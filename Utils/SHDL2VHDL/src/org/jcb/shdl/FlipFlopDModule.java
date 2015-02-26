@@ -10,7 +10,7 @@ import org.jcb.shdl.*;
 
 public class FlipFlopDModule extends Module {
 
-	private ArrayList pinIdList;
+	private ArrayList<Integer> pinIdList;
 	private int shapeIndex = 0;
 	protected Point2D pinD;
 	protected Point2D pinH;
@@ -33,11 +33,11 @@ public class FlipFlopDModule extends Module {
 
 	public FlipFlopDModule(int id, NumExpr nb) {
 		super(id, nb);
-		pinIdList = new ArrayList();
-		pinIdList.add(new Integer(0));
-		pinIdList.add(new Integer(1));
-		pinIdList.add(new Integer(2));
-		pinIdList.add(new Integer(3));
+		pinIdList = new ArrayList<Integer>();
+		pinIdList.add(0);
+		pinIdList.add(1);
+		pinIdList.add(2);
+		pinIdList.add(3);
 		bodyPath_0 = new GeneralPath(GeneralPath.WIND_EVEN_ODD, 3);
 		bodyPath_0.moveTo(-15.f, -40.f);
 		bodyPath_0.lineTo(-15.f, 10.f);

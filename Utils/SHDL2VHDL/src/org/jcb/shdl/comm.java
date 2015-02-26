@@ -85,7 +85,7 @@ public class comm {
 	}
 		
 	
-	class DataPad {
+	static class DataPad {
 		private String sigName;
 		private String type;
 		private int n1;
@@ -133,7 +133,7 @@ public class comm {
 		}
 	}
 	
-	class Scalar {
+	static class Scalar {
 		public String name;
 		public int i;
 		public boolean isPartOfVector;
@@ -324,9 +324,11 @@ public class comm {
 		} catch(Exception ex) {
 			System.out.println("unknown error : " + ex.getMessage());
 		} finally {
-			try {
-				br.close();
-			} catch (IOException e) {
+			if (br != null) {
+				try {
+					br.close();
+                                }
+				catch (IOException e) {}
 			}
 		}
 		return true;

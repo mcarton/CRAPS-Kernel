@@ -12,7 +12,7 @@ public abstract class Gate2Module extends Module {
 
 	protected boolean inverting;
 
-	private ArrayList pinIdList;
+	private ArrayList<Integer> pinIdList;
 	private int shapeIndex = 0;
 	protected Point2D pinE1;
 	protected Point2D pinE2;
@@ -35,17 +35,17 @@ public abstract class Gate2Module extends Module {
 		super(id, nb);
 		this.inverting = inverting;
 
-		pinIdList = new ArrayList();
-		pinIdList.add(new Integer(0));
-		pinIdList.add(new Integer(1));
-		pinIdList.add(new Integer(2));
+		pinIdList = new ArrayList<Integer>();
+		pinIdList.add(0);
+		pinIdList.add(1);
+		pinIdList.add(2);
 		this.inverting = inverting;
 		rotate90.setToRotation(Math.PI/2);
 		rotate_90.setToRotation(-Math.PI/2);
 		rotate180.setToRotation(Math.PI);
 	}
 
-	public ArrayList getPinIdList() {
+	public ArrayList<Integer> getPinIdList() {
 		return pinIdList;
 	}
 

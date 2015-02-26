@@ -27,7 +27,7 @@ public class SHDLSequentialSetting {
 		sb.append(signal + ", evolution=");
 		if (sig1 == null) sb.append("null");
 		else if (sig2 == null) sb.append(sig1.toString());
-		else if (sig2 != null) sb.append(sig1.toString() + "*" + sig2.toString() + "+" + sig3.toString() + "*" + sig4.toString());
+		else sb.append(sig1.toString() + "*" + sig2.toString() + "+" + sig3.toString() + "*" + sig4.toString());
 		sb.append(", clk=" + getCLK());
 		sb.append(", rst=" + getRST());
 		sb.append(", set=" + getSET());

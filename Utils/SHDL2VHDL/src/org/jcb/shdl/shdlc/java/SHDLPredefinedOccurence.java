@@ -10,16 +10,16 @@ public abstract class SHDLPredefinedOccurence {
 	private Pattern namePattern;
 	protected boolean checked = false;
 
-	protected static Pattern multiplierPattern = Pattern.compile("umult([0-9]+)x([0-9]+)");
-	protected static Pattern commUSBPattern = Pattern.compile("commusb");
-	protected static Pattern ramsReadFirstPattern = Pattern.compile("rams_read_first([0-9]+)([km]?)x([0-9]+)");
-	protected static Pattern ramsWriteFirstPattern = Pattern.compile("rams_write_first([0-9]+)([km]?)x([0-9]+)");
-	protected static Pattern ramsReadThroughPattern = Pattern.compile("rams_read_through([0-9]+)([km]?)x([0-9]+)");
-	protected static Pattern ramsAsynReadPattern = Pattern.compile("rams_asyn_read([0-9]+)([km]?)x([0-9]+)");
-	protected static Pattern ramsDualAsynReadPattern = Pattern.compile("rams_dual_asyn_read([0-9]+)([km]?)x([0-9]+)");
-	protected static Pattern ram = Pattern.compile("rams_dual_asyn_read([0-9]+)([km]?)x([0-9]+)");
-	protected static Pattern rs232Pattern = Pattern.compile("rs232refcomp");
-	protected static Pattern ramCtrlPattern = Pattern.compile("ramctrl");
+	protected static final Pattern multiplierPattern = Pattern.compile("umult([0-9]+)x([0-9]+)");
+	protected static final Pattern commUSBPattern = Pattern.compile("commusb");
+	protected static final Pattern ramsReadFirstPattern = Pattern.compile("rams_read_first([0-9]+)([km]?)x([0-9]+)");
+	protected static final Pattern ramsWriteFirstPattern = Pattern.compile("rams_write_first([0-9]+)([km]?)x([0-9]+)");
+	protected static final Pattern ramsReadThroughPattern = Pattern.compile("rams_read_through([0-9]+)([km]?)x([0-9]+)");
+	protected static final Pattern ramsAsynReadPattern = Pattern.compile("rams_asyn_read([0-9]+)([km]?)x([0-9]+)");
+	protected static final Pattern ramsDualAsynReadPattern = Pattern.compile("rams_dual_asyn_read([0-9]+)([km]?)x([0-9]+)");
+	protected static final Pattern ram = Pattern.compile("rams_dual_asyn_read([0-9]+)([km]?)x([0-9]+)");
+	protected static final Pattern rs232Pattern = Pattern.compile("rs232refcomp");
+	protected static final Pattern ramCtrlPattern = Pattern.compile("ramctrl");
 
 
 	public SHDLPredefinedOccurence(SHDLModuleOccurence moduleOccurence, Pattern namePattern) {

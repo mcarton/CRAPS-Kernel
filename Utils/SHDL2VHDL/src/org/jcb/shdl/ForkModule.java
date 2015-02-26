@@ -10,7 +10,7 @@ import org.jcb.shdl.*;
 
 public class ForkModule extends Module {
 
-	private ArrayList pinIdList;
+	private ArrayList<Integer> pinIdList;
 	private int shapeIndex = 0;
 	private Point2D pinE;
 	private Point2D pinS1;
@@ -31,9 +31,9 @@ public class ForkModule extends Module {
 	public ForkModule(int id, NumExpr nb) {
 		super(id, nb);
 		pinIdList = new ArrayList();
-		pinIdList.add(new Integer(0));
-		pinIdList.add(new Integer(1));
-		pinIdList.add(new Integer(2));
+		pinIdList.add(0);
+		pinIdList.add(1);
+		pinIdList.add(2);
 		bodyPath_0 = new GeneralPath(GeneralPath.WIND_EVEN_ODD, 3);
 		//bodyPath_0.moveTo(-5.f, -(float)Module.busStrokeWidth / 2.f);
 		//bodyPath_0.lineTo(10.f, -10.f - (float)Module.busStrokeWidth / 2.f + (float)Module.gateOutlineStrokeWidth / 2.f);
@@ -60,7 +60,7 @@ public class ForkModule extends Module {
 		return "fork";
 	}
 
-	public ArrayList getPinIdList() {
+	public ArrayList<Integer> getPinIdList() {
 		return pinIdList;
 	}
 

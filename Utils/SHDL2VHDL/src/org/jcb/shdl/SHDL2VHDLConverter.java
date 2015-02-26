@@ -955,20 +955,38 @@ public class SHDL2VHDLConverter extends JFrame {
 
         InputStream is = process.getInputStream();
         InputStreamReader isr = new InputStreamReader(is);
-        BufferedReader br = new BufferedReader(isr);
+
+        BufferedReader br = null;
         String line;
-        while ((line = br.readLine()) != null) {
-            if (verboseCheck.isSelected()) addMessage(line + "\n");
-            System.out.println(line);
+        try {
+            br = new BufferedReader(isr);
+            while ((line = br.readLine()) != null) {
+                if (verboseCheck.isSelected()) addMessage(line + "\n");
+                System.out.println(line);
+            }
+        }
+        finally {
+            if (br != null) {
+                br.close();
+            }
         }
 
         InputStream eis = process.getErrorStream();
         InputStreamReader eisr = new InputStreamReader(eis);
-        BufferedReader ebr = new BufferedReader(eisr);
-        String eline;
-        while ((eline = ebr.readLine()) != null) {
-            if (verboseCheck.isSelected()) addMessage("*** " + eline + "\n");
-            System.out.println(line);
+
+        BufferedReader ebr = null;
+        try {
+            ebr = new BufferedReader(eisr);
+            String eline;
+            while ((eline = ebr.readLine()) != null) {
+                if (verboseCheck.isSelected()) addMessage("*** " + eline + "\n");
+                System.out.println(line);
+            }
+        }
+        finally {
+            if (ebr != null) {
+                ebr.close();
+            }
         }
 
         return process.exitValue();
@@ -1040,7 +1058,7 @@ public class SHDL2VHDLConverter extends JFrame {
     }
 
 
-    class DataPad {
+    static class DataPad {
         private String sigName;
         private String type;
         private int n1;
@@ -1088,18 +1106,14 @@ public class SHDL2VHDLConverter extends JFrame {
         }
     }
 
-    class Scalar {
+    static class Scalar {
         public String name;
         public int i;
         public boolean isPartOfVector;
-        public String type;
-        public int bitnum;
         public Scalar(String name, int i, boolean isPartOfVector, String type, int bitnum) {
             this.name = name;
             this.i = i;
             this.isPartOfVector = isPartOfVector;
-            this.type = type;
-            this.bitnum = bitnum;
         }
         public String toString() {
             if (isPartOfVector)
@@ -1279,9 +1293,11 @@ public class SHDL2VHDLConverter extends JFrame {
         } catch(Exception ex) {
             System.out.println("unknown error : " + ex.getMessage());
         } finally {
-            try {
-                br.close();
-            } catch (IOException e) {
+            if (br != null) {
+                try {
+                    br.close();
+                }
+                catch (IOException e) {}
             }
         }
         return true;

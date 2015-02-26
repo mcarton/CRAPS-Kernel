@@ -7,17 +7,16 @@ import org.jcb.shdl.*;
 
 
 public class TestComm {
-	
+
 	private CommThread commThread;
-	private int mon_ack;
 	private int[] outs = new int[64];
 
 
 	public TestComm() throws IOException {
 		commThread = new CommThread();
-	}	
-	
-	
+	}
+
+
 	public static void main(String[] args) {
 		try {
 			TestComm test = new TestComm();
@@ -27,16 +26,16 @@ public class TestComm {
 		}
 	}
 
-	
+
 	public void go() throws Exception {
 
 		if (CommThread.init() < 0) return;
-		
+
 		if (CommThread.openData() < 0) return;
-		
+
 		java.util.Random rand = new java.util.Random();
-		
-		
+
+
 		// test d'écriture/lecture des registres
 		long[] values = new long[15];
 		for (int j = 1; j < 10; j++) {
@@ -46,7 +45,7 @@ public class TestComm {
 			long val = (long) rand.nextInt();
 			if (val < 0) val = -val;
 			int num = rand.nextInt(9) + 1;
-			
+
 			writeRegister(num, val);
 			long v = readRegister(num);
 			if (v == val) {
@@ -64,13 +63,13 @@ public class TestComm {
 				}
 			}
 		}
-		
-		
+
+
 		//writeMemory(1L, 31L);
 		//long u = readMemory(1L);
 		//System.out.println("u=" + u);
-		
-		
+
+
 		final int MAXADDR = 512;
 		for (int i = 0; i < 100; i++) {
 			long val = (long) rand.nextInt();
@@ -78,7 +77,7 @@ public class TestComm {
 			int iaddr = rand.nextInt(MAXADDR);
 			long addr = (long) iaddr;
 			addr = addr * 4; // multiple de 4
-			
+
 			writeMemory(addr, val);
 
 			long v = readMemory(addr);
@@ -94,12 +93,12 @@ public class TestComm {
 				System.out.println("******************** relecture ok=" + ok);
 			}
 		}
-		
+
 		CommThread.closeData();
 		System.exit(0);
 	}
-	
-	
+
+
 	int getByte(int i) {
 		int res = 0;
 		if (outs[8*i] == 1) res |= 1;
@@ -112,7 +111,7 @@ public class TestComm {
 		if (outs[8*i+7] == 1) res |= 128;
 		return res;
 	}
-	
+
 	void setBits(int first, int last, long val) {
 		//System.out.println("first=" + first + ", last=" + last + ", val=" + val);
 		for (int i = first; i <= last; i++) {
@@ -123,21 +122,21 @@ public class TestComm {
 		//System.out.println("getByte(4)=" + getByte(4));
 	}
 
-	
+
 	public long readRegister(int numreg) {
 		//if (numreg == numreg) return 0;
-		
+
 		// mon_cmd <- "0001" (read register)
 		setBits(60, 63, 1);
 		CommThread.sendByte(7, getByte(7));
 		// reg # on pc2board[5..0]
 		setBits(0, 5, numreg);
 		CommThread.sendByte(0, getByte(0));
-		
+
 		// mon_req <- 1
 		outs[59] = 1;
 		CommThread.sendByte(7, getByte(7));
-		
+
 		// wait for mon_ack = 1
 		do { } while ((CommThread.readdByte(7) & 128) == 0);
 
@@ -153,13 +152,13 @@ public class TestComm {
 		// mon_req <- 0
 		outs[59] = 0;
 		CommThread.sendByte(7, getByte(7));
-					
+
 		return value;
 	}
-	
-	
+
+
 	public void writeRegister(int numreg, long val) {
-		
+
 		// mon_cmd <- "0011" (write register)
 		setBits(60, 63, 3);
 		CommThread.sendByte(7, getByte(7));
@@ -171,22 +170,22 @@ public class TestComm {
 		for (int i = 0; i < 4; i++) {
 			CommThread.sendByte(i, getByte(i));
 		}
-		
+
 		// mon_req <- 1
 		outs[59] = 1;
 		CommThread.sendByte(7, getByte(7));
-		
+
 		// wait for mon_ack = 1
 		do { } while ((CommThread.readdByte(7) & 128) == 0);
 
 		// mon_req <- 0
 		outs[59] = 0;
 		CommThread.sendByte(7, getByte(7));
-	}	
-	
-	
+	}
+
+
 	public void writeMemory(long addr, long val) {
-		
+
 		// mon_cmd <- "0010" (write memory)
 		setBits(60, 63, 2);
 		// address on pc2board[31..0]
@@ -197,7 +196,7 @@ public class TestComm {
 		// mon_req <- 1
 		outs[59] = 1;
 		CommThread.sendByte(7, getByte(7));
-		
+
 		// wait for mon_ack = 1
 		do { } while ((CommThread.readdByte(7) & 128) == 0);
 
@@ -209,12 +208,12 @@ public class TestComm {
 		// mon_req <- 0
 		outs[59] = 0;
 		CommThread.sendByte(7, getByte(7));
-		
+
 		// wait for mon_ack = 0
 		do { } while ((CommThread.readdByte(7) & 128) != 0);
-	}	
-	
-	
+	}
+
+
 	public long readMemory(long addr) {
 
 		// mon_cmd <- "0000" (read memory)
@@ -227,7 +226,7 @@ public class TestComm {
 		// mon_req <- 1
 		outs[59] = 1;
 		CommThread.sendByte(7, getByte(7));
-		
+
 		// wait for mon_ack = 1
 System.out.println("memread #1 wait for mon_ack = 1");
 		do { } while ((CommThread.readdByte(7) & 128) == 0);
@@ -246,9 +245,9 @@ System.out.println("ok");
 		outs[59] = 0;
 		CommThread.sendByte(7, getByte(7));
 		return value;
-	}	
-	
+	}
+
 }
 
-		
+
 //try { Thread.sleep(10); } catch(Exception ex) {}

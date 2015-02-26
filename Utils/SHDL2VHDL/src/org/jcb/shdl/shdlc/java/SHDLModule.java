@@ -17,7 +17,7 @@ public class SHDLModule {
 	private ArrayList seqSettings;
 	private ArrayList seqModifiers;
 	private ArrayList moduleOccurences;
-	
+
 	protected static final String newline = System.getProperty("line.separator");
 
 	public SHDLModule() {
@@ -437,7 +437,7 @@ public class SHDLModule {
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 
-	private HashMap signalRangeMap = new HashMap();
+	private HashMap<String, Integer> signalRangeMap = new HashMap<>();
 
 	// Return the highest index for all signals having prefix <prefix>
 	public int getHighestIndex(String prefix) {
@@ -451,7 +451,7 @@ public class SHDLModule {
 			if (!signal.getPrefix().equals(prefix)) continue;
 			max = Math.max(max, signal.getHighestIndex());
 		}
-		signalRangeMap.put("max:" + prefix, new Integer(max));
+		signalRangeMap.put("max:" + prefix, max);
 		return max;
 	}
 
@@ -470,7 +470,7 @@ public class SHDLModule {
 			else
 				min = Math.min(min, signal.getLowestIndex());
 		}
-		signalRangeMap.put("min:" + prefix, new Integer(min));
+		signalRangeMap.put("min:" + prefix, min);
 		return min;
 	}
 
@@ -499,7 +499,7 @@ public class SHDLModule {
 				if (dir == 1) { dir = -2; break; } else dir = 2;
 			}
 		}
-		signalRangeMap.put("dir:" + prefix, new Integer(dir));
+		signalRangeMap.put("dir:" + prefix, dir);
 		return dir;
 	}
 
@@ -678,10 +678,6 @@ public class SHDLModule {
 			if (constArity == 1) {
 				return "'" + signal.getConstantValue() + "'";
 			} else {
-				if (signal.getConstantBase() == 'D') {
-				} else if (signal.getConstantBase() == 'H') {
-				} else if (signal.getConstantBase() == 'B') {
-				}
 				StringBuffer sb = new StringBuffer();
 				String binStr = signal.getConstantValue().toString(2);
 				if (constArity == 1) sb.append("'"); else sb.append("\"");

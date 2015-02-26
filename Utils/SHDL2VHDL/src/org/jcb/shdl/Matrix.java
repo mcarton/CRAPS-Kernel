@@ -100,7 +100,7 @@ public class Matrix {
 	}
 
 	public MatrixRow getRow(long time) {
-		return ((MatrixRow) rows.get(new Long(time)));
+		return ((MatrixRow) rows.get(Long.valueOf(time)));
 	}
 
 	public MatrixRow lastRow() {
@@ -116,7 +116,7 @@ public class Matrix {
 				&& (!row.vals[equiIndex].val.equals(getHighZValue(equiIndex))))
 			val = row.vals[equiIndex].val;
 		else {
-			SortedMap sub = rows.subMap(MIN_LONG, new Long(time));
+			SortedMap sub = rows.subMap(MIN_LONG, Long.valueOf(time));
 			if ((sub.size() > 0) && !val.equals(getHighZValue(equiIndex))) {
 				val = getValue(((Long) sub.lastKey()).longValue(), equiIndex);
 			}
@@ -126,7 +126,7 @@ public class Matrix {
 
 	public String getValueBefore(long time, int equiIndex) {
 		String val = getUndefValue(equiIndex);
-		SortedMap sub = rows.subMap(MIN_LONG, new Long(time));
+		SortedMap sub = rows.subMap(MIN_LONG, Long.valueOf(time));
 		if (sub.size() > 0) {
 			val = getValue(((Long) sub.lastKey()).longValue(), equiIndex);
 		}
@@ -135,7 +135,7 @@ public class Matrix {
 
 	public Ev getEventBefore(long time, int equiIndex) {
 		Ev ev = null;
-		SortedMap sub = rows.subMap(MIN_LONG, new Long(time));
+		SortedMap sub = rows.subMap(MIN_LONG, Long.valueOf(time));
 		if (sub.size() > 0) {
 			Long Time = (Long) sub.lastKey();
 			MatrixRow row = (MatrixRow) rows.get(Time);
@@ -151,7 +151,7 @@ public class Matrix {
 		for (int i = 0; i < getNbEqui(); i++) {
 			row.vals[i] = null;
 		}
-		rows.put(new Long(time), row);
+		rows.put(Long.valueOf(time), row);
 		return row;
 	}
 
@@ -163,7 +163,7 @@ public class Matrix {
 
 	public void connectPropagatorToEqui(int equiIndex, Propagator prop, int propIndex) {
 		connectedProps[equiIndex].add(prop);
-		connectedPins[equiIndex].add(new Integer(propIndex));
+		connectedPins[equiIndex].add(Integer.valueOf(propIndex));
 		prop.setEquiIndex(propIndex, equiIndex);
 	}
 
