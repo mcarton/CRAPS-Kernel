@@ -92,7 +92,7 @@ int _free(void* addr) {
     }
 
     *c = *c & 0xFFFFFFFE;
-    if (*((int*) (*c >> 8) + 1) == 0) {
+    if (*(c + (*c >> 8) + 1) == 0) {
         *c = 0; // if it was the last block...
     }
 
