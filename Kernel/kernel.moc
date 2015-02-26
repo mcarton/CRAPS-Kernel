@@ -40,22 +40,20 @@ int main() {
     *((int*)malloc_start) = 0;
 
     // process table
+    void*[] stack_pointers = process_table.stack_pointers;
     process_table.current_process = 0;
 
     int i;
     for(i = 0; i < PROCESS_COUNT; i=i+1) {
-        *((int*)process_table.stack_pointers + i) = 0;
+        stack_pointers[i] = NULL;
     }
 
     // initialize all processes
-    //start_process(task_shell);
-    start_process(task_counter);
-    start_process(task_leds);
+    _start_process(task_shell);
 
     // first task: loads its stack...
-    int* stack_pointer = (int*)process_table.stack_pointers;
-    *stack_pointer = *stack_pointer + NB_SAVED_REGISTERS; // pop all registers
-    int sp = *stack_pointer;
+    stack_pointers[0] = stack_pointers[0] + NB_SAVED_REGISTERS; // pop all registers
+    void* sp = stack_pointers[0];
 
     // PWM rising edge every milliseconds
     *((int*)0xC0000000) = 195; // P

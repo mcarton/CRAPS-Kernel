@@ -10,9 +10,7 @@ export int task_counter() {
     *(ssegs + 1) = 0b1111;
     while (true) {
         *ssegs = counter;
-        for(i = 0; i < 10000; i=i+1)
-        {
-        }
+        for(i = 0; i < 1000; i=i+1) {}
         counter = counter + 1;
     }
 }
@@ -30,8 +28,7 @@ export int task_leds() {
 export int task_shell() {
     while (true) {
         char* line = getline();
-        if((bool)*line)
-        {
+        if((bool)*line) {
             shell(line);
         }
         if(free((void*)line) == -1) {

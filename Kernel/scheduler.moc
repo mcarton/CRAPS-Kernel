@@ -50,35 +50,13 @@ pwm_handler_do_it:
     push %fp
     push %r28 // @ret
 
-    ld $process_table, %r2
-    ld [%r2], %r4 // %r4: current_task
-    add %r2, %r4, %r5 // %r5: current task entry
-    inccc %r5
-
-    // store the stack pointer
-    ld [%r5], %r6
-    cmp %r6, %r0
-    beq pwm_handler_ctloop
-    st %sp, [%r5]
-
-    // now it is stored, we can load the other task
-
-pwm_handler_ctloop:
-    // current_task = (current_task + 1) % nb_tasks
-    inccc %r4
-    cmp %r4, PROCESS_COUNT
-    bl pwm_handler_afterreset
-    mov %r0, %r4
-pwm_handler_afterreset:
-
-    add %r2, %r4, %r5 // %r5: current task entry
-    inccc %r5
-    ld [%r5], %sp
-
-    cmp %sp, %r0
-    beq pwm_handler_ctloop
-
-    st %r4, [%r2]
+    mov %sp, %r1
+    push %r1
+    push %r28
+    call f_next_stack
+    pop %r28
+    add %sp, 1, %sp
+    mov %r1, %sp
 
     pop %r28 // @ret
     pop %fp
@@ -105,6 +83,29 @@ pwm_handler_afterreset:
     reti
 ")
 
+export void* next_stack(void* current_stack) {
+    void*[] stack_pointers = process_table.stack_pointers;
+
+    if(stack_pointers[process_table.current_process] != NULL) {
+        stack_pointers[process_table.current_process] = current_stack;
+    }
+
+    int i = process_table.current_process + 1;
+    if (i == PROCESS_COUNT) {
+        i = 0;
+    }
+
+    while(stack_pointers[i] == NULL) {
+        i = i + 1;
+        if (i == PROCESS_COUNT) {
+            i = 0;
+        }
+    }
+
+    process_table.current_process = i;
+    return stack_pointers[i];
+}
+
 void kill_process(int pid) {
     asm("
     setq 2, %r1
@@ -128,12 +129,14 @@ void _kill_process(int pid) {
         _panic(6);
     }
 
-    *((int*)process_table.stack_pointers + pid) = 0;
+    void*[] stack_pointers = process_table.stack_pointers;
+    stack_pointers[pid] = NULL;
 }
 
 void _start_process(void* start_addr) {
+    void*[] stack_pointers = process_table.stack_pointers;
     int i = 0;
-    while(*((bool*)process_table.stack_pointers + i)){
+    while(stack_pointers[i] != NULL) {
         i = i + 1;
     }
 
@@ -159,6 +162,6 @@ void _start_process(void* start_addr) {
         *((int*) stack) = 0;
     }
 
-    *((void**)process_table.stack_pointers + i) = stack;
+    stack_pointers[i] = stack;
 }
 
