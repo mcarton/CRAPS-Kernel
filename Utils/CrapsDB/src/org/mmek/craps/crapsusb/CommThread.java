@@ -42,8 +42,8 @@ public class CommThread implements Runnable {
     /**
      * CommThread
      */
-    private final int N = 128;
-    private final long IDLE_TIME = 10; // 10ms = probe time if no activity
+    private static final int N = 128;
+    private static final long IDLE_TIME = 10; // 10ms = probe time if no activity
 
     private Device device;
     private ArrayList<CommListener> listeners;

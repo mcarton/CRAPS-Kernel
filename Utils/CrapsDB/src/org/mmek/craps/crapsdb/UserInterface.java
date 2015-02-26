@@ -12,14 +12,12 @@ import org.jcb.craps.crapsc.java.ObjModule;
 
 public class UserInterface {
     private CrapsApi api;
-    private ObjModule objModule;
     private Disassembler dis;
     private StatePrinter sp;
     private ArrayList<Command> commands = new ArrayList<>();
 
     public UserInterface(CrapsApi api, ObjModule objModule) {
         this.api = api;
-        this.objModule = objModule;
         this.dis = new Disassembler(objModule);
         this.sp = new StatePrinter(api, dis);
 
@@ -78,7 +76,7 @@ public class UserInterface {
         }
     }
 
-    class RunCommand implements Command {
+    static class RunCommand implements Command {
         CrapsApi api;
 
         RunCommand(CrapsApi api) { this.api = api; }
@@ -100,34 +98,35 @@ public class UserInterface {
             }
         }
     }
-}
 
-class UICrapsListener implements CrapsListener {
-    private StatePrinter sp;
+    static class UICrapsListener implements CrapsListener {
+        private StatePrinter sp;
 
-    public UICrapsListener(StatePrinter sp) {
-        this.sp = sp;
-    }
-
-    public void breakpoint() {
-        System.out.print(Colors.BOLD + "\rBreakpoint reached\n" + Colors.ALL_OFF);
-
-        try {
-            sp.printAll();
+        public UICrapsListener(StatePrinter sp) {
+            this.sp = sp;
         }
-        catch(CommException e) {}
 
-        System.out.print("> ");
-    }
+        public void breakpoint() {
+            System.out.print(Colors.BOLD + "\rBreakpoint reached\n" + Colors.ALL_OFF);
 
-    public void reset() {
-        System.out.print(Colors.BOLD + "\rReset\n" + Colors.ALL_OFF);
+            try {
+                sp.printAll();
+            }
+            catch(CommException e) {}
 
-        try {
-            sp.printAll();
+            System.out.print("> ");
         }
-        catch(CommException e) {}
 
-        System.out.print("> ");
+        public void reset() {
+            System.out.print(Colors.BOLD + "\rReset\n" + Colors.ALL_OFF);
+
+            try {
+                sp.printAll();
+            }
+            catch(CommException e) {}
+
+            System.out.print("> ");
+        }
     }
+
 }

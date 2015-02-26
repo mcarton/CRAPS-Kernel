@@ -47,17 +47,17 @@ public class Disassembler {
     }
 
     public String disassemble(long addr, long instr) {
-        long op = instr / 1073741824L; // 2^30
+        long op = instr / (1 << 30);
 
         switch ((int) op) {
             case 0: // branch ou sethi
-                long ir29 = (instr / 536870912L) % 2; // 2^29
+                long ir29 = (instr / (1 << 29)) % 2;
 
                 if (ir29 == 1) {
                     // branch
-                    long disp24 = instr % 16777216L; // 2^24
-                    if (disp24 >= 8388608L) disp24 -= 16777216L;
-                    long cond = (instr / 33554432L) % 16; // 2^25
+                    long disp24 = instr % (1 << 24);
+                    if (disp24 >= (1 << 23)) disp24 -= (1 << 24);
+                    long cond = (instr / (1 << 25)) % 16;
 
                     String codeop = "";
                     switch ((int) cond) {
@@ -76,6 +76,7 @@ public class Disassembler {
                         case 3:  codeop = "bl     "; break;
                         case 12: codeop = "bgu    "; break;
                         case 4:  codeop = "bleu   "; break;
+                        default: codeop = "badins ";
                     }
                     String relDisp = disp24 + "";
                     if (disp24 >= 0) relDisp = "+" + relDisp;
@@ -86,8 +87,8 @@ public class Disassembler {
                 }
                 else {
                     // sethi
-                    long imm24 = instr % 16777216L; // 2^24
-                    long rd = (instr / 16777216L) % 32; // 2^24
+                    long imm24 = instr % (1 << 24);
+                    long rd = (instr / (1 << 24)) % 32;
                     return "sethi  0x" + Long.toHexString(imm24) + ", " + registerNames[(int) rd];
                 }
             case 1: // special instructions
@@ -134,6 +135,7 @@ public class Disassembler {
                     case 13: codeop = "srl    "; break;
                     case 14: codeop = "sll    "; break;
                     case 56: codeop = "jmpl   "; break;
+                    default: codeop = "badin  ";
                 }
 
                 String arg2 = "";
@@ -146,9 +148,9 @@ public class Disassembler {
                     return codeop + registerNames[(int) rs1] + ", " + arg2 + ", " + registerNames[(int) rd];
                 else {
                     if (((op3 / 4) % 2) != 0)
-                        return "st    " + registerNames[(int) rd] + ", [" + registerNames[(int) rs1] + "+" + arg2 + "]";
+                        return "st     " + registerNames[(int) rd] + ", [" + registerNames[(int) rs1] + "+" + arg2 + "]";
                     else
-                        return "ld    [" + registerNames[(int) rs1] + "+" + arg2 + "], " + registerNames[(int) rd];
+                        return "ld     [" + registerNames[(int) rs1] + "+" + arg2 + "], " + registerNames[(int) rd];
                 }
         }
 

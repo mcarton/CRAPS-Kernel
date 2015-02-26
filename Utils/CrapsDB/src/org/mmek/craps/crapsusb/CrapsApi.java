@@ -230,29 +230,31 @@ public class CrapsApi {
 
     class CrapsCommListener implements CommListener {
         public void valueChanged(CommEvent ev) {
-            int[] bitVector = ev.getBitVector();
-            int brk = bitVector[62];
-            int rst = bitVector[61];
+            synchronized (CrapsApi.this) {
+                int[] bitVector = ev.getBitVector();
+                int brk = bitVector[62];
+                int rst = bitVector[61];
 
-            if(brk == 1 && running) {
-                try {
-                    stop();
+                if(brk == 1 && running) {
+                    try {
+                        stop();
+                    }
+                    catch(CommException e) {}
+
+                    for(CrapsListener listener : listeners) {
+                        listener.breakpoint();
+                    }
                 }
-                catch(CommException e) {}
 
-                for(CrapsListener listener : listeners) {
-                    listener.breakpoint();
-                }
-            }
+                if(rst == 1) {
+                    try {
+                        stop();
+                    }
+                    catch(CommException e) {}
 
-            if(rst == 1) {
-                try {
-                    stop();
-                }
-                catch(CommException e) {}
-
-                for(CrapsListener listener : listeners) {
-                    listener.reset();
+                    for(CrapsListener listener : listeners) {
+                        listener.reset();
+                    }
                 }
             }
         }

@@ -31,48 +31,58 @@ public class ObjModule {
 
     // <addr> must be even. <om> is the module from which comes this entry,
     // in case of obj module fusion
-    public void add(ObjModule om, long addr, String word, SourceLine sl) {
-        ObjEntry oe = new ObjEntry(om, word, sl);
-        map.put(new Long(addr), oe);
+    public void add(long addr, String word, SourceLine sl) {
+        ObjEntry oe = new ObjEntry(word, sl);
+        map.put(addr, oe);
     }
 
     // <addr> must be even
     public ObjEntry get(long addr) {
-        return map.get(new Long(addr));
+        return map.get(addr);
     }
 
     public void remove(long addr) {
-        map.remove(new Long(addr));
+        map.remove(addr);
     }
 
     public static ObjModule load(File file) throws IOException {
         ObjModule objModule = new ObjModule();
-        LineNumberReader reader = new LineNumberReader(new FileReader(file));
-        while (true) {
-            String line = reader.readLine();
+        LineNumberReader reader = null;
 
-            if (line == null) {
-                break;
-            }
+        try {
+            reader = new LineNumberReader(new FileReader(file));
+            while (true) {
+                String line = reader.readLine();
 
-            int sp1 = line.indexOf(' ');
-            int sp2 = line.indexOf(' ', sp1 + 1);
-            String type = line.substring(0, sp1);
+                if (line == null) {
+                    break;
+                }
 
-            if (type.equals("word")) {
-                // load word contents
-                String saddr = line.substring(sp1 + 1, sp2);
-                String word = line.substring(sp2 + 1);
-                objModule.add(objModule, Long.parseLong(saddr), word, null);
-            }
-            else if (type.equals("sym")) {
-                // load global symbol
-                String sym = line.substring(sp1 + 1, sp2);
-                String val = line.substring(sp2 + 1);
-                objModule.set(sym, Long.parseLong(val), -1);
-                objModule.addGlobalSymbol(sym);
+                int sp1 = line.indexOf(' ');
+                int sp2 = line.indexOf(' ', sp1 + 1);
+                String type = line.substring(0, sp1);
+
+                if (type.equals("word")) {
+                    // load word contents
+                    String saddr = line.substring(sp1 + 1, sp2);
+                    String word = line.substring(sp2 + 1);
+                    objModule.add(Long.parseLong(saddr), word, null);
+                }
+                else if (type.equals("sym")) {
+                    // load global symbol
+                    String sym = line.substring(sp1 + 1, sp2);
+                    String val = line.substring(sp2 + 1);
+                    objModule.set(sym, Long.parseLong(val), -1);
+                    objModule.addGlobalSymbol(sym);
+                }
             }
         }
+        finally {
+            if (reader != null) {
+                reader.close();
+            }
+        }
+
         return objModule;
     }
 
