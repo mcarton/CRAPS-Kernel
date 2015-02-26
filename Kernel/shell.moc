@@ -6,10 +6,10 @@ char* parseline(char* line) {
     {}
 
     if (line[i] == '\0') {
-        return (char*)((int)line + i);
+        return line + i;
     }
     line[i] = '\0';
-    return (char*)((int)line + i + 1);
+    return line + i + 1;
 }
 
 void load_command() {
