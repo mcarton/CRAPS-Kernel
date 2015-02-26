@@ -54,7 +54,7 @@ abstract public class CrapsDB {
     public static Device chooseDevice() {
         List<Device> devices = CommThread.getAvailableDevices();
 
-        if(!devices.isEmpty()) {
+        if(devices.isEmpty()) {
             System.err.println("No device available.");
             System.exit(1);
             return null; // unreachable

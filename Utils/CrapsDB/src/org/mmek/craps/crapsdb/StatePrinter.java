@@ -111,7 +111,7 @@ public class StatePrinter {
     }
 
     public void printStack(long first, long last) throws CommException {
-        for(long addr = first; addr <= Math.min(last, 8192); addr++) {
+        for(long addr = first; addr <= Math.min(last, 12228); addr++) {
             System.out.println(
                 Colors.BLUE
               + " 0x" + formatHexString(addr)
