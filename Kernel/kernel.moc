@@ -20,7 +20,7 @@ start:
 
 struct process_t {
     void* stack;
-    void* args;
+    void* command;
 };
 
 struct process_table_t {
@@ -31,9 +31,9 @@ struct process_table_t {
 struct process_table_t process_table;
 
 #include "panic.moc"
+#include "strings.moc"
 #include "memory.moc"
 #include "scheduler.moc"
-#include "strings.moc"
 #include "rs232.moc"
 #include "tasks.moc"
 #include "softint.moc"
@@ -51,11 +51,11 @@ int main() {
     int i;
     for(i = 0; i < PROCESS_COUNT; i=i+1) {
         processes[i].stack = NULL;
-        processes[i].args = NULL;
+        processes[i].command = NULL;
     }
 
     // initialize all processes
-    _start_process(task_shell);
+    _start_process(task_shell, "shell");
 
     // first task: loads its stack...
     processes[0].stack = processes[0].stack + NB_SAVED_REGISTERS; // pop all registers

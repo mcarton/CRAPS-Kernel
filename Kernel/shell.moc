@@ -49,13 +49,13 @@ void shell(char* line) {
     }
     else if(strcmp(line, "run")) {
         if(strcmp(parameters, "dummy")) {
-            start_process(task_dummy);
+            start_process(task_dummy, "dummy");
         }
         else if(strcmp(parameters, "leds")) {
-            start_process(task_leds);
+            start_process(task_leds, "leds");
         }
         else if(strcmp(parameters, "counter")) {
-            start_process(task_counter);
+            start_process(task_counter, "counter");
         }
         else {
             write("Usage: run dummy|leds|counter\n");
@@ -80,7 +80,7 @@ void shell(char* line) {
             write("Usage: start_process addr");
         }
         else {
-            start_process((void*) addr);
+            start_process((void*) addr, "TODO");
         }
     }
     else {

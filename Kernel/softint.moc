@@ -22,7 +22,7 @@ export int softint_handler(int r1, int r2, int r3) {
         _panic(r2);
     }
     if(r1 == 1) {
-        _start_process((void*)r2);
+        _start_process((void*)r2, (char*)r3);
     }
     if(r1 == 2) {
         _kill_process(r2);

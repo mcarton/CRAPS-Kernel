@@ -115,10 +115,11 @@ void kill_process(int pid) {
     syscall");
 }
 
-void start_process(void* start_addr) {
+void start_process(void* start_addr, char* command) {
     asm("
     setq 1, %r1
     ld $start_addr, %r2
+    ld $command, %r3
     syscall");
 }
 
@@ -133,10 +134,10 @@ void _kill_process(int pid) {
 
     struct process_t[] processes = process_table.processes;
     processes[pid].stack = NULL;
-    processes[pid].args = NULL;
+    processes[pid].command = NULL;
 }
 
-void _start_process(void* start_addr) {
+void _start_process(void* start_addr, char* command) {
     struct process_t[] processes = process_table.processes;
     int i = 0;
     while(processes[i].stack != NULL) {
@@ -155,8 +156,14 @@ void _start_process(void* start_addr) {
 
     process_table.current_process = cp;
 
+    // we put the command at the end of the stack
+    stack = stack - strlen(command);
+    strcpy((char*)stack, command);
+    processes[i].command = stack;
+
     // as a convention, we put on the stack the address of the first
     // instruction of the task (for "bootstraping" the processes)
+    stack = stack - 1;
     *((int*) stack) = (int)start_addr;
 
     int j;
@@ -166,6 +173,5 @@ void _start_process(void* start_addr) {
     }
 
     processes[i].stack = stack;
-    processes[i].args = NULL; //TODO
 }
 
