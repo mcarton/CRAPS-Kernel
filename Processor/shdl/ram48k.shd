@@ -1,0 +1,12 @@
+module ram48k(clk, wrRam, abus[13..0], dbus[31..0], dbus_ram[31..0]) 
+
+wrRam1 = wrRam * /abus[13];
+wrRam2 = wrRam * abus[13];
+
+rams_read_through8192x32(clk, wrRam1, abus[12..0], dbus[31..0], dbus_ram1[31..0]) ;
+rams_read_through4096x32(clk, wrRam2, abus[11..0], dbus[31..0], dbus_ram2[31..0]) ;
+
+dbus_ram[31..0]=dbus_ram1[31..0]*/abus[13] +
+				dbus_ram2[31..0]* abus[13];
+
+end module

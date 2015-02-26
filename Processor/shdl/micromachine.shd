@@ -21,15 +21,9 @@ module micromachine(rst, clk, mclk, areg[4..0], breg[4..0], dreg[4..0], cmd_ual[
 
   // RAM 48K (12288 mots de 32 bits)
   wrRam = write*cs[0];
-  wrRam1 = wrRam*/abus[13];
-  wrRam2 = wrRam*abus[13];
-  rams_read_through8192x32(clk, wrRam1, abus[12..0], dbus[31..0], dbus_ram1[31..0]) ;
-  rams_read_through4096x32(clk, wrRam2, abus[11..0], dbus[31..0], dbus_ram2[31..0]) ;
+  ram48k(clk, wrRam, abus[13..0], dbus[31..0], dbus_ram[31..0]);
   oe_ram = oe[2] * cs[0];
-  oe_ram1 = oe_ram*/abus[13];
-  oe_ram2 = oe_ram*abus[13];
-  dbus[31..0] = dbus_ram1[31..0] : oe_ram1;
-  dbus[31..0] = dbus_ram2[31..0] : oe_ram2;
+  dbus[31..0] = dbus_ram[31..0] : oe_ram;
 
   // Switches
   reg8(rst, swClk, 1, switch[7..0]: swDebounced[7..0]);
