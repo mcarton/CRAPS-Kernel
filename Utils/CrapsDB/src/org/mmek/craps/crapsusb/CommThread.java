@@ -3,9 +3,7 @@ package org.mmek.craps.crapsusb;
 import java.io.*;
 import java.util.*;
 
-
 public class CommThread implements Runnable {
-
     static {
         System.loadLibrary("crapsusb");
     }
@@ -46,7 +44,7 @@ public class CommThread implements Runnable {
     private static final long IDLE_TIME = 10; // 10ms = probe time if no activity
 
     private Device device;
-    private ArrayList<CommListener> listeners;
+    private List<CommListener> listeners;
     private Thread readThread;
     private boolean readThreadAlive;
     private int[] bitVector = new int[N]; // vector of N bits currently read on the board

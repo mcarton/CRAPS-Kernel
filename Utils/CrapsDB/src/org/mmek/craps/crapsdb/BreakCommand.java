@@ -3,9 +3,7 @@ package org.mmek.craps.crapsdb;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.mmek.craps.crapsusb.CommEvent;
 import org.mmek.craps.crapsusb.CommException;
-import org.mmek.craps.crapsusb.CommListener;
 import org.mmek.craps.crapsusb.CrapsApi;
 
 public class BreakCommand implements Command {

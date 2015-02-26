@@ -1,13 +1,8 @@
 package org.jcb.craps.crapsc.java;
 
-import java.util.*;
-import org.jcb.craps.*;
-import org.jcb.craps.crapsc.java.*;
-
 // instruction, synthetic instruction or directive
 public abstract class CrapsInstrDirecSynth {
-
-    private boolean addressKnown = false;
+    private boolean addressKnown;
     private long adr;			// address of first byte
 
     public boolean isAddressKnown() {

@@ -56,7 +56,9 @@ public class Disassembler {
                 if (ir29 == 1) {
                     // branch
                     long disp24 = instr % (1 << 24);
-                    if (disp24 >= (1 << 23)) disp24 -= (1 << 24);
+                    if (disp24 >= (1 << 23)) {
+                        disp24 -= (1 << 24);
+                    }
                     long cond = (instr / (1 << 25)) % 16;
 
                     String codeop = "";
@@ -140,14 +142,15 @@ public class Disassembler {
 
                 String arg2 = "";
                 if (ir13 != 0) {
-                    arg2 = "" + simm13;
+                    arg2 += simm13;
                 } else {
                     arg2 = registerNames[(int) rs2];
                 }
+
                 if (op == 2)
                     return codeop + registerNames[(int) rs1] + ", " + arg2 + ", " + registerNames[(int) rd];
                 else {
-                    if (((op3 / 4) % 2) != 0)
+                    if ((op3 / 4) % 2 != 0)
                         return "st     " + registerNames[(int) rd] + ", [" + registerNames[(int) rs1] + "+" + arg2 + "]";
                     else
                         return "ld     [" + registerNames[(int) rs1] + "+" + arg2 + "], " + registerNames[(int) rd];

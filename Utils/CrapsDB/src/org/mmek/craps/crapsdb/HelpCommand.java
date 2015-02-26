@@ -1,15 +1,15 @@
 package org.mmek.craps.crapsdb;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class HelpCommand implements Command {
-    ArrayList<Command> commands;
+    List<Command> commands;
 
     Pattern pattern = Pattern.compile("help +(.+)");
 
-    HelpCommand(ArrayList<Command> commands) { this.commands = commands; }
+    HelpCommand(List<Command> commands) { this.commands = commands; }
 
     public String help() {
         return "help [command]";

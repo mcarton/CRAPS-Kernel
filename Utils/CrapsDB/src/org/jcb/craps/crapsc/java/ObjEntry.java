@@ -1,9 +1,5 @@
 package org.jcb.craps.crapsc.java;
 
-import org.jcb.craps.*;
-import org.jcb.craps.crapsc.java.*;
-import java.util.*;
-
 public class ObjEntry {
     public String word;
     public SourceLine sl;

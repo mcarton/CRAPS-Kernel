@@ -15,7 +15,7 @@ public class Device {
     }
 
     public synchronized void open() throws ConnectionFailedException {
-        assert(handle == null);
+        assert handle == null;
         handle = CommThread.openData(alias);
 
         if(handle == -1) {
@@ -24,7 +24,7 @@ public class Device {
     }
 
     public synchronized void close() throws ConnectionFailedException {
-        assert(handle != null);
+        assert handle != null;
 
         if(CommThread.closeData(handle) == -1) {
             throw new ConnectionFailedException();
@@ -34,12 +34,12 @@ public class Device {
     }
 
     public synchronized int writeByte(int num, int data) {
-        assert(handle != null);
+        assert handle != null;
         return CommThread.writeByte(handle, num, data);
     }
 
     public synchronized int readByte(int num) {
-        assert(handle != null);
+        assert handle != null;
         return CommThread.readByte(handle, num);
     }
 

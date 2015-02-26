@@ -1,18 +1,10 @@
 package org.jcb.craps.crapsc.java;
 
-import java.util.*;
-import java.text.*;
-import org.jcb.craps.*;
-import org.jcb.craps.crapsc.java.*;
-
-
 public class SourceLine {
     public int lineno;
     public String label = "";
     public CrapsInstrDirecSynth instr_or_direc_or_synth;
     public String comment = "";
-
-    public SourceLine() {}
 
     public SourceLine(String label, CrapsInstrDirecSynth instr_or_direc_or_synth, String comment) {
         this.label = label;

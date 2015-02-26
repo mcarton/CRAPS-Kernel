@@ -1,9 +1,7 @@
 package org.mmek.craps.crapsdb;
 
-import java.io.*;
 import java.util.*;
 
-import org.mmek.craps.crapsusb.CommEvent;
 import org.mmek.craps.crapsusb.CommException;
 import org.mmek.craps.crapsusb.CrapsApi;
 import org.mmek.craps.crapsusb.CrapsListener;
@@ -14,7 +12,7 @@ public class UserInterface {
     private CrapsApi api;
     private Disassembler dis;
     private StatePrinter sp;
-    private ArrayList<Command> commands = new ArrayList<>();
+    private List<Command> commands = new ArrayList<>();
 
     public UserInterface(CrapsApi api, ObjModule objModule) {
         this.api = api;

@@ -11,8 +11,7 @@ import org.mmek.craps.crapsusb.CrapsApi;
 import org.jcb.craps.crapsc.java.ObjModule;
 
 
-public class CrapsDB {
-
+abstract public class CrapsDB {
     private static void help() {
         System.out.println("usage: crapsdb [-h] [FILE.obj]\n\n"
                          + "Debug a craps processor.\n\n"
@@ -55,7 +54,7 @@ public class CrapsDB {
     public static Device chooseDevice() {
         List<Device> devices = CommThread.getAvailableDevices();
 
-        if(devices.size() == 0) {
+        if(!devices.isEmpty()) {
             System.err.println("No device available.");
             System.exit(1);
             return null; // unreachable

@@ -1,7 +1,5 @@
 package org.mmek.craps.crapsdb;
 
-import org.jcb.craps.crapsc.java.ObjModule;
-
 import org.mmek.craps.crapsusb.CommException;
 import org.mmek.craps.crapsusb.CrapsApi;
 

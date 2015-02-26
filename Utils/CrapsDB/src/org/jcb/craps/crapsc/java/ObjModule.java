@@ -2,15 +2,14 @@ package org.jcb.craps.crapsc.java;
 
 import java.io.*;
 import java.util.*;
-import org.jcb.craps.crapsc.java.*;
 
 // encapsulates a memory map and its associated symbol table
 public class ObjModule {
-    private TreeMap<Long, ObjEntry> map = new TreeMap<>();
-    private HashMap<String, String> sym2val = new HashMap<>();
-    private HashMap<String, String> val2sym = new HashMap<>();
-    private HashMap<String, String> sym2lineno = new HashMap<>();
-    private ArrayList<String> globalSymbols = new ArrayList<>();
+    private Map<Long, ObjEntry> map = new TreeMap<>();
+    private Map<String, String> sym2val = new HashMap<>();
+    private Map<String, String> val2sym = new HashMap<>();
+    private Map<String, String> sym2lineno = new HashMap<>();
+    private List<String> globalSymbols = new ArrayList<>();
 
     public void reset() {
         map.clear();
@@ -112,13 +111,13 @@ public class ObjModule {
     ////////////       SYMBOLS & LINES MANAGEMENT       //////////////
 
     public boolean isDefined(String sym) {
-        return (sym2val.containsKey(sym));
+        return sym2val.containsKey(sym);
     }
 
     public void set(String sym, long val, int lineno) {
-        sym2val.put(sym, val + "");
-        val2sym.put(val + "", sym);
-        sym2lineno.put(sym, lineno + "");
+        sym2val.put(sym, Long.toString(val));
+        val2sym.put(Long.toString(val), sym);
+        sym2lineno.put(sym, Long.toString(lineno));
     }
 
     public void removeSymbol(String sym) {
@@ -138,7 +137,7 @@ public class ObjModule {
     }
 
     public String getSym(long val) {
-        return val2sym.get(val + "");
+        return val2sym.get(Long.toString(val));
     }
 
     public int getLineNo(String sym) {
