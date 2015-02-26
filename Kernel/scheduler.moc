@@ -84,18 +84,20 @@ pwm_handler_do_it:
 ")
 
 export void* next_stack(void* current_stack) {
-    void*[] stack_pointers = process_table.stack_pointers;
+    struct process_t[] processes = process_table.processes;
 
-    if(stack_pointers[process_table.current_process] != NULL) {
-        stack_pointers[process_table.current_process] = current_stack;
+    // save current stack
+    if(processes[process_table.current_process].stack != NULL) {
+        processes[process_table.current_process].stack = current_stack;
     }
 
+    // get the next process (round-robin)
     int i = process_table.current_process + 1;
     if (i == PROCESS_COUNT) {
         i = 0;
     }
 
-    while(stack_pointers[i] == NULL) {
+    while(processes[i].stack == NULL) {
         i = i + 1;
         if (i == PROCESS_COUNT) {
             i = 0;
@@ -103,7 +105,7 @@ export void* next_stack(void* current_stack) {
     }
 
     process_table.current_process = i;
-    return stack_pointers[i];
+    return processes[i].stack;
 }
 
 void kill_process(int pid) {
@@ -129,14 +131,15 @@ void _kill_process(int pid) {
         _panic(6);
     }
 
-    void*[] stack_pointers = process_table.stack_pointers;
-    stack_pointers[pid] = NULL;
+    struct process_t[] processes = process_table.processes;
+    processes[pid].stack = NULL;
+    processes[pid].args = NULL;
 }
 
 void _start_process(void* start_addr) {
-    void*[] stack_pointers = process_table.stack_pointers;
+    struct process_t[] processes = process_table.processes;
     int i = 0;
-    while(stack_pointers[i] != NULL) {
+    while(processes[i].stack != NULL) {
         i = i + 1;
     }
 
@@ -162,6 +165,7 @@ void _start_process(void* start_addr) {
         *((int*) stack) = 0;
     }
 
-    stack_pointers[i] = stack;
+    processes[i].stack = stack;
+    processes[i].args = NULL; //TODO
 }
 

@@ -18,9 +18,14 @@ start:
 
 #define PROCESS_COUNT 16
 
+struct process_t {
+    void* stack;
+    void* args;
+};
+
 struct process_table_t {
     int current_process;
-    void*[PROCESS_COUNT] stack_pointers;
+    struct process_t[PROCESS_COUNT] processes;
 };
 
 struct process_table_t process_table;
@@ -40,20 +45,21 @@ int main() {
     *((int*)malloc_start) = 0;
 
     // process table
-    void*[] stack_pointers = process_table.stack_pointers;
+    struct process_t[] processes = process_table.processes;
     process_table.current_process = 0;
 
     int i;
     for(i = 0; i < PROCESS_COUNT; i=i+1) {
-        stack_pointers[i] = NULL;
+        processes[i].stack = NULL;
+        processes[i].args = NULL;
     }
 
     // initialize all processes
     _start_process(task_shell);
 
     // first task: loads its stack...
-    stack_pointers[0] = stack_pointers[0] + NB_SAVED_REGISTERS; // pop all registers
-    void* sp = stack_pointers[0];
+    processes[0].stack = processes[0].stack + NB_SAVED_REGISTERS; // pop all registers
+    void* sp = processes[0].stack;
 
     // PWM rising edge every milliseconds
     *((int*)0xC0000000) = 195; // P
