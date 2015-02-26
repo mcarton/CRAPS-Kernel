@@ -141,7 +141,7 @@ public class CommThread implements Runnable {
         }
         catch(CommException e) {
             System.err.println(e);
-            System.exit(1);
+            throw new RuntimeException(e);
         }
     }
 
