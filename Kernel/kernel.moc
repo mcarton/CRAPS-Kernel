@@ -21,7 +21,7 @@ start:
 
 struct process_t {
     void* stack;
-    void* command;
+    char* command;
 };
 
 struct process_table_t {

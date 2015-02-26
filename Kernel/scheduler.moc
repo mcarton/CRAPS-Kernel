@@ -123,6 +123,18 @@ void start_process(void* start_addr, char* command) {
     syscall");
 }
 
+struct process_info_t {
+    int pid;
+    char* command;
+};
+
+struct process_info_t[] processes_info(int* size) {
+    asm("
+    setq 6, %r1
+    ld $size, %r2
+    syscall");
+}
+
 void _kill_process(int pid) {
     if(pid >= PROCESS_COUNT) {
         _panic(5);
@@ -159,7 +171,7 @@ void _start_process(void* start_addr, char* command) {
     // we put the command at the end of the stack
     stack = stack - strlen(command);
     strcpy((char*)stack, command);
-    processes[i].command = stack;
+    processes[i].command = (char*)stack;
 
     // as a convention, we put on the stack the address of the first
     // instruction of the task (for "bootstraping" the processes)
@@ -173,5 +185,32 @@ void _start_process(void* start_addr, char* command) {
     }
 
     processes[i].stack = stack;
+}
+
+struct process_info_t[] _processes_info(int* size) {
+    struct process_t[] processes = process_table.processes;
+    int i;
+
+    // count processes
+    int nb = 0;
+    for(i = 0; i < PROCESS_COUNT; i = i+1) {
+        if(processes[i].stack != NULL) {
+            nb = nb + 1;
+        }
+    }
+    *size = nb;
+
+    struct process_info_t[] info = (struct process_info_t[]) _malloc(nb * sizeof(struct process_info_t));
+
+    int current = 0;
+    for(i = 0; i < PROCESS_COUNT; i = i+1) {
+        if(processes[i].stack != NULL) {
+            info[current].pid = i;
+            info[current].command = processes[i].command;
+            current = current + 1;
+        }
+    }
+
+    return info;
 }
 

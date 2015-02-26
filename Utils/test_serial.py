@@ -20,7 +20,7 @@ def parse_obj(f):
             words[pos] = int(e[2], 2)
             last_pos = max(last_pos, pos)
 
-    return list(map(lambda p: words[p] if p in words else 0, range(last_pos + 1)))
+    return map(lambda p: words[p] if p in words else 0, range(last_pos + 1))
 
 
 while True:
@@ -44,7 +44,7 @@ while True:
                 continue
             else:
                 with open(path, 'r') as f:
-                    words = parse_obj(f)
+                    words = list(parse_obj(f))
                     message = struct.pack('>I', len(words)) # length
                     message += b''.join(struct.pack('>I', word) for word in words)
                     s.write(line.encode('ascii') + b'\n')
@@ -52,10 +52,10 @@ while True:
     else:
         s.write(line.encode('ascii') + b'\n')
 
-    time.sleep(0.5)
-    line = s.readline().decode('ascii').strip()
-
-    if line == '\x04': # ^D
-        break
-    elif line:
-        print(line)
+    byte = None
+    while byte != b'\0': # end of message
+        byte = s.read(1)
+        if byte == b'\x04':
+            exit(0)
+        elif byte != b'\0':
+            print(byte.decode('ascii'), end='')

@@ -36,4 +36,8 @@ export int softint_handler(int r1, int r2, int r3) {
     if(r1 == 5) {
         return (int)_realloc((void*)r2, r3);
     }
+    if(r1 == 6) {
+        return (int)_processes_info((int*)r2);
+    }
 }
+
