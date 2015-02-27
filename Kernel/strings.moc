@@ -30,7 +30,7 @@ bool strcmp(char* str1, char* str2) {
 }
 
 // convert an int to an hexadecimal string like 0xDEADBEEF
-void dtoa(int number, char* string) {
+void itoha(int number, char* string) {
     string[0] = '0';
     string[1] = 'x';
     int i = 2;
@@ -61,7 +61,7 @@ void dtoa(int number, char* string) {
 }
 
 // convert a string to an int
-int atod(char* str) {
+int atoi(char* str) {
     int i = strlen(str) - 1;
 
     if(i >= 2 && str[0] == '0' && str[1] == 'x') {
@@ -87,6 +87,24 @@ int atod(char* str) {
 
             i = i - 1;
             shift = shift + 4;
+        }
+
+        return r;
+    }
+    else if(i >= 0) {
+        int r = 0;
+        int j;
+        char c;
+
+        for(j = 0; j <= i; j = j+1) {
+            c = str[j];
+
+            if(c >= '0' && c <= '9') {
+                r = 10 * r + ((int)c - (int)'0');
+            }
+            else {
+                return -1; // error
+            }
         }
 
         return r;

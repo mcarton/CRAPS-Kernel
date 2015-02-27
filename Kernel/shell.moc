@@ -27,7 +27,7 @@ void load_command() {
 
     // write address to user
     char[12] addr_hex;
-    dtoa((int)file, addr_hex);
+    itoha((int)file, addr_hex);
     write("File loaded at address ");
     write(addr_hex);
     putc('\n');
@@ -62,19 +62,20 @@ void shell(char* line) {
         }
     }
     else if(strcmp(line, "kill")) {
-        if(parameters[1] == '\0') {
-            int pid = (int)parameters[0] - (int)'0';
-            kill_process(pid);
+        int pid = atoi(parameters);
+
+        if(pid == -1) {
+            write("Usage: kill pid\n");
         }
         else {
-            write("Usage: kill pid\n");
+            kill_process(pid);
         }
     }
     else if(strcmp(line, "load")) {
         load_command();
     }
     else if(strcmp(line, "start_process")) {
-        int addr = atod(parameters);
+        int addr = atoi(parameters);
 
         if(addr == -1) {
             write("Usage: start_process addr\n");
@@ -91,7 +92,7 @@ void shell(char* line) {
 
         write("Process table:\n");
         for(i = 0; i < nb; i = i+1) {
-            dtoa(info[i].pid, buff);
+            itoha(info[i].pid, buff);
             write(buff);
             write("  ");
             write(info[i].command);
