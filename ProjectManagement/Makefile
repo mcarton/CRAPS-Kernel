@@ -13,12 +13,14 @@ export TEXC = latexmk -output-directory=build -pdflatex="lualatex %O %S" -pdf -d
 build/ProjectCharter.pdf: ProjectCharter.tex titlepage.tex build/Gantt.pdf
 	$(TEXC) -latexoption=-shell-escape $<
 
+build/FinalReport.pdf: FinalReport.tex build/Gantt.pdf
+	$(TEXC) -latexoption=-shell-escape $<
+
 build/%.pdf: %.tex FORCE
 	$(TEXC) -latexoption=-shell-escape $<
 
 clean: FORCE
 	$(TEXC) -C
-	$(RM) *.nav *.snm *.vrb *.aux *.log *.fls *.fdb_latexmk *.out *.toc
 
-clean_all: clean FORCE
-	$(RM) *.pdf
+clean_all: FORCE
+	rm -r build
