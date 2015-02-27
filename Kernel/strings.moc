@@ -60,6 +60,29 @@ void itoha(int number, char* string) {
     }
 }
 
+// convert an int to a decimal string
+void itoa(int number, char* string) {
+    int i = 0;
+    int n = number;
+    int mod;
+
+    while((bool)n) {
+        div_mod(n, 10, &n, &mod);
+        i = i + 1;
+    }
+
+    if (i == 0) {
+        i = 1; // if number == 0, we print a zero.
+    }
+
+    string[i] = (char)0;
+    while(i >= 1) {
+        div_mod(number, 10, &number, &mod);
+        i = i - 1;
+        string[i] = (char)(mod + (int)'0');
+    }
+}
+
 // convert a string to an int
 int atoi(char* str) {
     int i = strlen(str) - 1;

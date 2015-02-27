@@ -32,6 +32,7 @@ struct process_table_t {
 struct process_table_t process_table;
 
 #include "panic.moc"
+#include "math.moc"
 #include "strings.moc"
 #include "memory.moc"
 #include "scheduler.moc"
@@ -42,7 +43,7 @@ struct process_table_t process_table;
 int main() {
     pwm_count = 0;
     // /!\ Should be big enough not to overwrite the code !
-    malloc_start = (void*)0x1200;
+    malloc_start = (void*)0x1300;
     *((int*)malloc_start) = 0;
 
     // process table

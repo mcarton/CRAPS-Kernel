@@ -85,14 +85,14 @@ void shell(char* line) {
         }
     }
     else if(strcmp(line, "ps")) {
-        char[6] buff;
+        char[3] buff;
         int i;
         int nb;
         struct process_info_t[] info = processes_info(&nb);
 
         write("Process table:\n");
         for(i = 0; i < nb; i = i+1) {
-            itoha(info[i].pid, buff);
+            itoa(info[i].pid, buff);
             write(buff);
             write("  ");
             write(info[i].command);
