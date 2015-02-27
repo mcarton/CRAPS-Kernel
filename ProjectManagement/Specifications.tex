@@ -58,9 +58,12 @@
 
       \subsection{Development of the OS}
         \begin{enumerate}
-          \item The OS shall have a scheduler. There are no real-time constraint
-            (but it shall switch at least 10 times per second). It shall support
-            at least 10 hard-coded tasks.
+          \item The OS shall have a scheduler.
+              \begin{enumerate}
+                \item It shall switch at least 10 times per second, but there
+                    are no real-time constraint.
+                \item It shall support at least 10 hard-coded tasks.
+              \end{enumerate}
           \item The OS shall provide a basic library available to any program:
             \begin{itemize}
               \item a \verb+malloc+ to allocate dynamic memory;
@@ -77,6 +80,7 @@
           \item The processor shall be connected to a serial port, to allow
             communication with other devices (like a computer). It can use the
             \textit{RS-232} port on the FPGA.
+          \item No data shall be lost during communications in either direction 
         \end{enumerate}
 
       \subsection{Compiler}

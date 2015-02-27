@@ -107,8 +107,10 @@
         is used to know if there is an error (9999 is an error, 1111 is ok).
       }
 
-      \testok{1.1.2}{The processor shall support 19 registers}{%
-        The kernel successfully uses all registers.
+      \testok{1.1.2}{The RAM shall be accessed in less than 10 cycles}{%
+        This exigence can not be tested automatically. It has been validated by
+        drawing the sequencer state machine and counting the steps for the
+        memory access instructions.
       }
 
       \testok{1.1.3}{The processor shall handle several interrupts sources}{%
@@ -118,41 +120,53 @@
         They use the 7-segment as an output and they cannot be fully automated
         (some interrupts require the user to push buttons).
       }
+      \testok{1.1.4}{The processor shall support 19 registers}{%
+        The kernel successfully uses all registers.
+      }
+
 
       \testok{2.1.1}{The processor shall be connected to a serial port}{%
         No specific test but other tests use it.
       }
 
-      \testnop{2.1.1}{The serial port communication shall not lose data}{%
-        A stress test should check if we lose any data. This is not done
-        currently.
+      \testnop{2.1.2}{No data shall be lost }{%
+        The shell task successfully communicates via the serial port.
+        We have not had time to implement a proper stress test.
       }
 
     \subsection{Compiler}
+      \testok{1.2.1 / 2.2.1}{The compiler input shall be a subset of C89}{%
+        The kernel uses all the elements available in the specified subset
+      }
       \testko{1.2.2}{The compiler shall generate valid CRAPS assembly}{%
         We have made a lot of tests. We try to test as many features as
         possible.
       }{%
         We cannot test all possible programs, so the test cannot be validated.
+        The kernel is however functional, which shows that pretty big programs
+        can be successfully generated.
       }
 
       \testok{2.2.2}{The assembly generated shall be more optimized}{%
-        We managed to reduce the number of instructions generated. We had up to
-        25\% less instructions for a typical sample of code.
+        We have compared the code generated before and after optimization for a
+        typical sample of code. We managed to generate up to 25\% less
+        instructions.
       }
 
     \subsection{Kernel}
       \testok{1.3.1}{The OS shall have a scheduler}{%
-        The scheduler has been tested with various tasks displaying different
+           The scheduler has been tested with various tasks displaying different
         number on the 7-segment to show it schedules.
 
         The tasks use registers and memory to check if the scheduler saves
         them correctly at context switch.
-      }
+        }
 
-      \testok{1.3.1}{It shall support at least 10 hard-coded tasks}{%
-        There can be any number of (hard-coded) tasks, we have tested with 2 to
-        10 tasks.
+      \testok{1.3.1.a/b}{The scheduler shall switch at least 10 times per
+        second and support 10 tasks}{%
+        We can interact with the shell using a python script, and launch 10
+        tasks. One of these put the value of the switches on the LEDs. We
+        observe that the reaction time is consistently lower than 1 second.
       }
 
       \testok{1.3.2}{The OS shall provide a basic library}{%
@@ -160,7 +174,7 @@
         exists.
       }
 
-      \testok{2.3.1}{%
+      \testok{2.3.1/2.3.2}{%
         The OS shall have a task communicating using the RS-232
         port
       }{%
