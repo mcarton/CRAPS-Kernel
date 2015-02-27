@@ -112,13 +112,28 @@ public class StatePrinter {
 
     public void printStack(long first, long last) throws CommException {
         for(long addr = first; addr <= Math.min(last, 12228); addr++) {
-            System.out.println(
-                Colors.BLUE
-              + " 0x" + formatHexString(addr)
-              + Colors.ALL_OFF
-              + " | 0x"
-              + formatHexString(api.readMemory(addr))
-            );
+            long value = api.readMemory(addr);
+
+            String line = Colors.BLUE
+                        + " 0x" + formatHexString(addr)
+                        + Colors.ALL_OFF
+                        + " | 0x" + formatHexString(value)
+                        + " |";
+
+            if(value == 9) {
+                line += " '\\t'";
+            }
+            else if(value == 10) {
+                line += " '\\n'";
+            }
+            else if(value == 13) {
+                line += " '\\r'";
+            }
+            else if(value >= 32 && value <= 126) {
+                line += " '" + (char)value + "'";
+            }
+
+            System.out.println(line);
         }
     }
 
