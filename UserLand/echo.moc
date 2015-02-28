@@ -1,0 +1,25 @@
+#include "lib/header.moc"
+
+void putc(char c) {
+    *((char*)0xD0000001) = c;
+
+    int i;
+    for(i = 0; i < 500; i=i+1) {
+        // wait for the byte to be sent
+    }
+}
+
+void write(char* string) {
+    int i;
+    for(i = 0; (bool)string[i]; i=i+1) {
+        putc(string[i]);
+    }
+}
+
+int main(char* command) {
+    write("received: ");
+    write(command);
+    putc('\n');
+
+    while(true) {}
+}

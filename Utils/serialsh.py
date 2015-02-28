@@ -33,7 +33,7 @@ while True:
 
     # special case for exec command
     if line.startswith('exec '):
-        m = re.match(r'^exec\s+(\S+)\.obj$', line)
+        m = re.match(r'^exec\s+(\S+)\.obj($|\s)', line)
         if not m:
             print('Error: the file must end with .obj')
             continue

@@ -1,6 +1,13 @@
 asm("
+    // set %r24 (static position)
     mov %pc, %r24
     set static, %r1
     add %r24, %r1, %r24
+
+    // call main
+    mov %sp, %r1
+    push %r1
+    push %r28
     ba f_main
+    pop %r28
 ")
