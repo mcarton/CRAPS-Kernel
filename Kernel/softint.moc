@@ -27,26 +27,26 @@ export int softint_handler(int r1, int r2, int r3) {
     if(r1 == 0) {
         _panic(r2);
     }
-    if(r1 == 1) {
+    else if(r1 == 1) {
         _start_process((void*)r2, (char*)r3);
     }
-    if(r1 == 2) {
+    else if(r1 == 2) {
         _kill_process(r2);
     }
-    if(r1 == 3) {
+    else if(r1 == 3) {
         return (int)_malloc(r2);
     }
-    if(r1 == 4) {
+    else if(r1 == 4) {
         return _free((void*)r2);
     }
-    if(r1 == 5) {
+    else if(r1 == 5) {
         return (int)_realloc((void*)r2, r3);
     }
-    if(r1 == 6) {
+    else if(r1 == 6) {
         return (int)_processes_info((int*)r2);
     }
     // r1 == 7 unreachable
-    if(r1 == 8) {
+    else if(r1 == 8) {
         _kill_process(process_table.current_process);
     }
 }
