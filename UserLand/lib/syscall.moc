@@ -62,3 +62,9 @@ void wait() {
     syscall");
 }
 
+void exit() {
+    asm("
+    setq 8, %r1
+    syscall");
+}
+

@@ -7,7 +7,12 @@ asm("
     // call main
     mov %sp, %r1
     push %r1
+
     push %r28
     ba f_main
     pop %r28
+
+    // exit syscall
+    setq 8, %r1
+    syscall
 ")

@@ -141,6 +141,12 @@ void wait() {
     syscall");
 }
 
+void exit() {
+    asm("
+    setq 8, %r1
+    syscall");
+}
+
 void _kill_process(int pid) {
     if(pid >= PROCESS_COUNT) {
         _panic(5);
@@ -153,6 +159,10 @@ void _kill_process(int pid) {
     struct process_t[] processes = process_table.processes;
     processes[pid].stack = NULL;
     processes[pid].command = NULL;
+
+    if(pid == process_table.current_process) {
+        asm("ba pwm_handler_do_it");
+    }
 }
 
 void _start_process(void* start_addr, char* command) {

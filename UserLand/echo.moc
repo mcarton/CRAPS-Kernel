@@ -16,10 +16,8 @@ void write(char* string) {
     }
 }
 
-int main(char* command) {
+void main(char* command) {
     write("received: ");
     write(command);
     putc('\n');
-
-    while(true) {}
 }
