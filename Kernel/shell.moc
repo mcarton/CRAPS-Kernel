@@ -12,7 +12,7 @@ char* parseline(char* line) {
     return line + i + 1;
 }
 
-void load_command() {
+void exec_command(char* parameters) {
     int i;
 
     // read size (in 32 bits words)
@@ -25,12 +25,8 @@ void load_command() {
         *(file + i) = getint();
     }
 
-    // write address to user
-    char[12] addr_hex;
-    itoha((int)file, addr_hex);
-    write("File loaded at address ");
-    write(addr_hex);
-    putc('\n');
+    // start
+    start_process((void*) file, parameters);
 }
 
 void shell(char* line) {
@@ -45,7 +41,7 @@ void shell(char* line) {
         putc('\n');
     }
     else if (strcmp(line, "help")) {
-        write("Commands: help, echo, run, kill, load, start_process, ps.\n");
+        write("Commands: help, echo, run, kill, exec, ps.\n");
     }
     else if(strcmp(line, "run")) {
         if(strcmp(parameters, "dummy")) {
@@ -71,18 +67,8 @@ void shell(char* line) {
             kill_process(pid);
         }
     }
-    else if(strcmp(line, "load")) {
-        load_command();
-    }
-    else if(strcmp(line, "start_process")) {
-        int addr = atoi(parameters);
-
-        if(addr == -1) {
-            write("Usage: start_process addr\n");
-        }
-        else {
-            start_process((void*) addr, "TODO");
-        }
+    else if(strcmp(line, "exec")) {
+        exec_command(parameters);
     }
     else if(strcmp(line, "ps")) {
         char[3] buff;

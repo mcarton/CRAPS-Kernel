@@ -31,9 +31,9 @@ while True:
     except EOFError:
         break
 
-    # special case for load command
-    if line.startswith('load '):
-        m = re.match(r'^load\s+(\S+)\.obj$', line)
+    # special case for exec command
+    if line.startswith('exec '):
+        m = re.match(r'^exec\s+(\S+)\.obj$', line)
         if not m:
             print('Error: the file must end with .obj')
             continue
