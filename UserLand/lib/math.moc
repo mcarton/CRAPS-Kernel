@@ -1,0 +1,26 @@
+void div_mod(int a, int b, int *quotient, int *mod) {
+    int q = 0;
+
+    while (a >= 0) {
+        q = q+1;
+        a = a-b;
+    }
+
+    *quotient = q-1;
+    *mod = a+b;
+}
+
+int div(int a, int b) {
+    int quotient;
+    int mod;
+    div_mod(a, b, &quotient, &mod);
+    return quotient;
+}
+
+int mod(int a, int b) {
+    int quotient;
+    int mod;
+    div_mod(a, b, &quotient, &mod);
+    return mod;
+}
+

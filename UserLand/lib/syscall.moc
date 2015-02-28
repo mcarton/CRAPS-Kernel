@@ -1,0 +1,57 @@
+void panic(int error_code)
+{
+    asm("
+    setq 0, %r1
+    ld $error_code, %r2
+    syscall
+    ");
+}
+
+void start_process(void* start_addr, char* command) {
+    asm("
+    setq 1, %r1
+    ld $start_addr, %r2
+    ld $command, %r3
+    syscall");
+}
+
+void kill_process(int pid) {
+    asm("
+    setq 2, %r1
+    ld $pid, %r2
+    syscall");
+}
+
+void* malloc(int size) {
+    asm("
+    set 3, %r1
+    ld $size, %r2
+    syscall");
+}
+
+int free(void* addr) {
+    asm("
+    set 4, %r1
+    ld $addr, %r2
+    syscall");
+}
+
+void* realloc(void* addr, int new_size) {
+    asm("
+    set 5, %r1
+    ld $addr, %r2
+    ld $new_size, %r3
+    syscall");
+}
+
+struct process_info_t {
+    int pid;
+    char* command;
+};
+
+struct process_info_t[] processes_info(int* size) {
+    asm("
+    setq 6, %r1
+    ld $size, %r2
+    syscall");
+}
