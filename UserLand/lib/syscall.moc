@@ -55,3 +55,10 @@ struct process_info_t[] processes_info(int* size) {
     ld $size, %r2
     syscall");
 }
+
+void wait() {
+    asm("
+    setq 7, %r1
+    syscall");
+}
+

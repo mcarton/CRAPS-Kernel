@@ -1,0 +1,14 @@
+#include "lib/header.moc"
+#include "lib/syscall.moc"
+
+void main() {
+    int *ssegs = (int*) 0xA0000000;
+    int counter = 0;
+    *(ssegs + 1) = 0b1111;
+
+    while (true) {
+        *ssegs = counter;
+        wait();
+        counter = counter + 1;
+    }
+}

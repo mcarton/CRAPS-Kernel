@@ -1,7 +1,12 @@
 asm("
 softint_handler:
-    push %r24
+    push %r1 // needed by wait
+    push %r24 // static position
     set static, %r24
+
+    // wait syscall
+    cmp %r1, 7
+    be pwm_handler_do_it
 
     // args
     push %r3
@@ -14,6 +19,7 @@ softint_handler:
 
     add %sp, 3, %sp
     pop %r24
+    add %sp, 1, %sp // drop %r1
     reti
 ")
 
@@ -39,5 +45,6 @@ export int softint_handler(int r1, int r2, int r3) {
     if(r1 == 6) {
         return (int)_processes_info((int*)r2);
     }
+    // r1 == 7 unreachable
 }
 

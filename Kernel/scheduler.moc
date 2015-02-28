@@ -135,6 +135,12 @@ struct process_info_t[] processes_info(int* size) {
     syscall");
 }
 
+void wait() {
+    asm("
+    setq 7, %r1
+    syscall");
+}
+
 void _kill_process(int pid) {
     if(pid >= PROCESS_COUNT) {
         _panic(5);
