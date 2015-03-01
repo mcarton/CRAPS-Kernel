@@ -106,6 +106,34 @@
     ENSEEIHT. Thus, as long as he can show students how an operating system
     works the project will be a success.
 
+    \section{Redaction of the technical specifications}
+      Once we had determined the client's needs, we had to specify exactly what
+      we had to do. This phase was difficult as the client was imprecise about
+      what we had to do.
+
+    \section{Technical choices}
+      We choose to work as much as possible on GNU/Linux as this is our
+      daily-use operating system and the operating system installed on most
+      ENSEEIHT computers.
+      However, the tools we needed were designed to work exclusively on
+      Microsoft Windows. To get around this problem, we decided to use the
+      Windows-specific tools in a virtual machine or adapt tools to GNU/Linux
+      when possible.
+
+      \subsection{Compiler}
+        As we had to write a compiler but this is a very time-consuming task, we
+        decided to reuse the compiler we had to write for a previous ENSEEIHT
+        project. This compiler did not target the CRAPS machine, but we made it
+        modular enough to able to easily add a CRAPS back-end.
+
+        We considered for a moment to write a CRAPS back-end for \emph{LLVM}, a
+        compiler infrastructure\cite{llvm}. This would have had the advantage to
+        be able to used \emph{clang}, a real, complete and optimized
+        \emph{C} compiler. But the work it would have required seemed to be too
+        important as we did not know the \emph{LLVM} infrastructure and the
+        infrastructure contains a lot of features we would not have used but
+        would have had to support.
+
   \chapter{Implementation phase}
 
   \chapter{Validation phase}
@@ -128,6 +156,11 @@
       Revision: July 11, 2011.
 
       \mbox{\url{http://www.digilentinc.com/data/products/nexys2/nexys2_rm.pdf}}
+
+    \bibitem{llvm}
+      \emph{Writing an LLVM Backend}
+
+      \mbox{\url{http://llvm.org/docs/WritingAnLLVMBackend.html}}
   \end{thebibliography}
 
   \addcontentsline{toc}{chapter}{Annexes}
