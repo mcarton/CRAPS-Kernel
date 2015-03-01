@@ -20,6 +20,21 @@
   \and Pierre-Louis Michel
 }
 
+\newcommand{\risk}[4]{%
+  \noindent
+  \begin{center}
+    \begin{tabular}{|p{0.8\textwidth}|c|}
+        \hline
+        #2 & $#1$
+      \\\hline
+        \multicolumn{2}{|p{0.9\textwidth}|}{#3}
+      \\\hline
+        \multicolumn{2}{|p{0.9\textwidth}|}{#4}
+      \\\hline
+    \end{tabular}
+  \end{center}
+}
+
 \begin{document}
   \include{titlepage}
 
@@ -126,6 +141,43 @@
       produce for the management of the project and how to use them. Of course,
       as our project were short, we did not follow all Airbus practices but this
       showed us how do companies such as Airbus manage their project.
+
+      \section{Risks management}
+        Xavier asked us to list the risks of the project. This was difficult as
+        the project is quite free but we were able to identify three risks.
+
+        For each risk, the product $\text{probability} \times \text{gravity}$ is
+        shown in the top-right cell. If the product is above 6, the risk is
+        considered critical.
+
+        \risk{3 \times 3 = 9}{
+          A FPGA can be damaged, making any test impossible.
+        }{
+          This is likely to happen and very problematic but we have two FPGAs
+          and the possibility to have more in case of problem.
+        }{
+          Actually, we have 6 FPGAs, the risk is considered closed.
+        }
+
+        \risk{2 \times 3 = 6}{
+          We may not be able to integrate the RAM, leading to huge memory
+          limitations that may make the project impossible.
+        }{
+          We are now able to use the RAM, the risk is closed.
+        }{
+          In case of memory limitations, we can try to optimize the size of the
+          code we generate.
+        }
+
+        \risk{3 \times 1 = 3}{
+          The communication between the board and the computer might be too slow.
+        }{
+          We will have to be very careful to send just what is needed.
+        }{
+          We would need to limit the communication. It is not necessarily a problem
+          as this is just to show students how to implement a simple communication
+          protocol.
+        }
 
   \chapter{Specification phase}
     We planned a meeting with the client the first day of the project. He
