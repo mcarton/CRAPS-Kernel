@@ -145,7 +145,7 @@
 
       During these meetings, Xavier explained us what documents we should
       produce for the management of the project and how to use them. Of course,
-      as our project were short, we did not follow all Airbus practices but this
+      as our project was short, we did not follow all Airbus practices but this
       showed us how do companies such as Airbus manage their project.
 
       \section{Risks management}
@@ -222,8 +222,54 @@
 
   \chapter{Implementation phase}
 
+  \section{Interrupts}
+
+  We first had to develop an interrupt system, to have the possibility of executing
+  code when receiving data from the exterior.
+
+  \subsection{Software interrupts}
+
+  \section{Scheduler}
+
+  The scheduler is the component that makes it possible to execute more than one task at a time: it will switch between all running
+  task in a very fast way, giving the illusion that all processes runs at the same time.
+
+  To have it work, we had to create a specific interrupt that will be triggered by a PWM that we define. This interrupt save the execution context (all the registers of the processor)
+  and restore the one of the next process to execute.
+
+  To do that, we also have a data structure containing the list of the processes. First, it was simply a list that was redimensionned when we added/deleted processes.
+  However, we ended up changing it to a list of a fixed size, containing either pointer to processes stacks, or null values. This allowed the processes to have a fixed ID that will not
+  change during their life.
+  With that knowledge, the process management was made more easy, and it was also possible to annotate memory zones with the associated process ID, leading to clean freeing of all the memory
+  allocated by processes when they were terminated.
+
+  \section{Serial Port}
+
+  Is slow, but works.
+
+  \section{Memory management}
+
+  For the dynamic loading of processes to work, we needed to be able to allocate memory zones (for processes stacks). It was also really important to have the possibility for processes to allocate
+  the memory they need.
+
+  So, we had to create the equivalent of malloc/realloc/free. We did a very simple implementation: starting from a base pointer, we store block of memory. These blocks starts with a header indicating
+  their size, the process ID that allocated them (and a byte to tell if the block is free or not).
+ 
+  The size of each block is a power of two. So when we allocate a block, we will try to see if there is a free block of the good size. If there is not, we will create a new block at the end of the block list.
+  So, we don't merge or split blocks, and will waste memory. But it keeps the implementation simple, and the block are reused a lot, in general.
+
+  \section{Compiler}
+
+  Needed to support a language very close to C. Generate CRAPS Assemply.
+
+  \subsection{Optimizations}
+
+  All the optimizations made by the compiler.
+
   \chapter{Validation phase}
+
     \section{Tests}
+
     \section{Limitations}
 
   \chapter{Conclusion}
