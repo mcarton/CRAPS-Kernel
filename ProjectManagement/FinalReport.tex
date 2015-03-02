@@ -222,28 +222,28 @@
 
   \chapter{Implementation phase}
     \section{Interrupts}
-      We first had to develop an interrupt system, to have the possibility of
+      We first had to develop an interrupt system to have the possibility of
       executing code when receiving data from the exterior.
 
       \subsection{Software interrupts}
 
     \section{Scheduler}
       The scheduler is the component that makes it possible to execute more than
-      one task at a time: it will switch between all running task in a very fast
+      one task at a time: It will switch between all running task in a very fast
       way, giving the illusion that all processes runs at the same time.
 
-      To have it work, we had to create a specific interrupt that will be
-      triggered by a PWM that we define. This interrupt save the execution
-      context (all the registers of the processor) and restore the one of the
-      next process to execute.
+      To make it work, we had to create a specific interrupt that will be
+      triggered regularly by a clock. This interrupt saves the execution
+      context (all the registers and flags of the processor) and restores the
+      one of the next process to execute.
 
       To do that, we also have a data structure containing the list of the
-      processes. First, it was simply a list that was redimensionned when we
-      added/deleted processes.  However, we ended up changing it to a list of a
-      fixed size, containing either pointer to processes stacks, or null values.
+      processes. First, it was simply a list resized when we added or deleted
+      processes. However, we ended up changing it to a list of a fixed size,
+      containing either a pointer to processes stacks, or a null values.
       This allowed the processes to have a fixed ID that will not change during
-      their life.  With that knowledge, the process management was made more
-      easy, and it was also possible to annotate memory zones with the
+      their life. With that knowledge, the process management was made
+      easier, and it was also possible to annotate memory zones with the
       associated process ID, leading to clean freeing of all the memory
       allocated by processes when they were terminated.
 
@@ -255,9 +255,10 @@
       allocate memory zones (for processes stacks). It was also really important
       to have the possibility for processes to allocate the memory they need.
 
-      So, we had to create the equivalent of malloc/realloc/free. We did a very
+      Thus we had to create the equivalent of \verb+malloc+, \verb+realloc+ and
+      \verb+free+. We did a very
       simple implementation: starting from a base pointer, we store block of
-      memory. These blocks starts with a header indicating their size, the
+      memory. These blocks start with a header indicating their size, the
       process ID that allocated them (and a byte to tell if the block is free or
       not).
 
@@ -265,7 +266,7 @@
       will try to see if there is a free block of the good size. If there is
       not, we will create a new block at the end of the block list.
       So, we don't merge or split blocks, and will waste memory. But it keeps
-      the implementation simple, and the block are reused a lot, in general.
+      the implementation simple, and in general the block are reused a lot.
 
     \section{Compiler}
       Needed to support a language very close to C. Generate CRAPS Assembly.
