@@ -86,6 +86,35 @@
 
   \section{Système d'exploitation}
 
+  \begin{frame}[fragile]{Vue d'ensemble}
+    \begin{itemize}
+      \item Pas d'espace user/noyau
+      \item Pas de séparation mémoire
+      \item Tout se base sur des interruptions...
+      \item ... dont les appels systèmes
+    \end{itemize}
+\end{frame}
+
+  \begin{frame}[fragile]{Ordonnanceur}
+    \begin{itemize}
+      \item Basé sur les interruptions PWM matérielles. Donc fréquence fixée.
+      \item Table des processus (pointeur vers la stack)
+      \item Round-robin
+    \end{itemize}
+\end{frame}
+
+  \begin{frame}[fragile]{Gestion mémoire}
+    \begin{itemize}
+      \item \verb+malloc+/\verb+free+/\verb+realloc+
+      \item implémentation très simple (taille puissance de deux, pas de merge/split des blocs, mais réutilisation)
+      \item conservation du PID du processus qui alloue la mémoire, et routine pour libérer toute la mémoire allouée d'un processus
+    \end{itemize}
+\end{frame}
+
+  \begin{frame}[fragile]{Démarrage}
+      Fonction \verb+main+, à montrer.
+\end{frame}
+
   \section{Modifications du processeur, VHDL}
 
 \end{document}
