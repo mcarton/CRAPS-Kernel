@@ -1,0 +1,91 @@
+\documentclass{beamer}
+
+% {{{ beamer stuffs
+\setbeamertemplate{footline}[frame number]
+\beamertemplatenavigationsymbolsempty%
+
+\AtBeginSection[]{%
+  \begin{frame}<beamer>{Plan}
+    \tableofcontents[currentsection]
+  \end{frame}
+}
+\AtBeginSubsection[]{%
+  \begin{frame}<beamer>{Plan}
+    \tableofcontents[currentsubsection]
+  \end{frame}
+}
+% }}}
+
+\usepackage{fontspec}
+\usepackage{hyperref}
+\usepackage[french]{babel}
+
+\title{CRAPS Kernel}
+\subtitle{Présentation technique}
+\author{
+       Maxime Arthaud
+  \and Korantin Auguste
+  \and Martin Carton
+  \and Étienne Lebrun
+}
+\titlegraphic{\includegraphics[width=0.5\textwidth]{fig/LogoEnseeiht.png}}
+\date{5 avril 2014}
+
+\begin{document}
+  \begin{frame}
+    \titlepage%
+  \end{frame}
+
+  \section{Compilateur}
+
+  \begin{frame}[fragile]
+      \begin{itemize}
+          \item Basé sur notre projet compilateur de 2A (utilisant EGG). Nouveau backend CRAPS.
+          \item Syntaxe proche du C.
+          \item Support des includes via un petit wrapper avec préprocesseur: \verb+compile_craps+
+      \end{itemize}
+\end{frame}
+
+  \begin{frame}[fragile]{Gère}
+      \begin{itemize}
+          \item Boucles while, for. Conditions.
+          \item \verb+break+, \verb+continue+
+          \item Structures, tableaux
+          \item sizeof()
+          \item Déréférencement, opérateur \verb+&+.
+          \item Variables globales
+          \item Typage fort (et cast).
+      \end{itemize}
+\end{frame}
+
+ \begin{frame}[fragile]{Ne gère pas}
+      \begin{itemize}
+          \item Pas de déréférencement des champs des structures
+          \item Pas d'opérateur \verb|++|, \verb|--|
+          \item Pas de \verb|+=|, \verb|-=|, \verb|*=|, ...
+          \item Pas de divison/modulo (dû au processeur)
+          \item Pas de switch case.
+      \end{itemize}
+\end{frame}
+
+  \begin{frame}[fragile]{Optimisations}
+      \begin{itemize}
+          \item Suppression des fonctions non-utilisées (cf. mot clé \verb+extern+)
+          \item Simplifications des expressions arithmétiques
+          \item Simplification des \verb+while(true)+
+      \end{itemize}
+\end{frame}
+
+  \begin{frame}[fragile]{Gestion des registres}
+      Utilisés temporairement à chaque instruction. Mais, mot clé \verb+register+.
+\end{frame}
+
+  \begin{frame}[fragile]{Position-independent code}
+      Registre spécial \verb+%r24+.
+\end{frame}
+
+  \section{Système d'exploitation}
+
+  \section{Modifications du processeur, VHDL}
+
+\end{document}

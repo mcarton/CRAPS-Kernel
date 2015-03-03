@@ -4,7 +4,8 @@ all:                                  \
 	build/ProjectCharter.pdf      \
 	build/Slides.pdf              \
 	build/Specifications.pdf      \
-	build/TestPlan.pdf
+	build/TestPlan.pdf            \
+	build/TechSlides.pdf
 
 export TEXC = latexmk -output-directory=build -pdflatex="lualatex %O %S" -pdf -dvi- -ps-
 
