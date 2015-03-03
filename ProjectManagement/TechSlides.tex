@@ -37,82 +37,86 @@
   \end{frame}
 
   \section{Compilateur}
-
-  \begin{frame}[fragile]
+    \begin{frame}[fragile]
       \begin{itemize}
-          \item Basé sur notre projet compilateur de 2A (utilisant EGG). Nouveau backend CRAPS.
-          \item Syntaxe proche du C.
-          \item Support des includes via un petit wrapper avec préprocesseur: \verb+compile_craps+
+        \item Basé sur notre projet compilateur de 2A (utilisant EGG). Nouveau
+          backend CRAPS.
+        \item Syntaxe proche du C.
+        \item Support des includes via un petit wrapper avec préprocesseur:
+          \verb+compile_craps+
       \end{itemize}
 \end{frame}
 
-  \begin{frame}[fragile]{Gère}
+    \begin{frame}[fragile]{Gère}
       \begin{itemize}
-          \item Boucles while, for. Conditions.
-          \item \verb+break+, \verb+continue+
-          \item Structures, tableaux
-          \item sizeof()
-          \item Déréférencement, opérateur \verb+&+.
-          \item Variables globales
-          \item Typage fort (et cast).
+        \item Boucles while, for. Conditions.
+        \item \verb+break+, \verb+continue+
+        \item Structures, tableaux
+        \item sizeof()
+        \item Déréférencement, opérateur \verb+&+.
+        \item Variables globales
+        \item Typage fort (et cast).
       \end{itemize}
 \end{frame}
 
- \begin{frame}[fragile]{Ne gère pas}
+    \begin{frame}[fragile]{Ne gère pas}
       \begin{itemize}
-          \item Pas de déréférencement des champs des structures
-          \item Pas d'opérateur \verb|++|, \verb|--|
-          \item Pas de \verb|+=|, \verb|-=|, \verb|*=|, ...
-          \item Pas de divison/modulo (dû au processeur)
-          \item Pas de switch case.
+        \item Pas de déréférencement des champs des structures
+        \item Pas d'opérateur \verb|++|, \verb|--|
+        \item Pas de \verb|+=|, \verb|-=|, \verb|*=|, ...
+        \item Pas de divison/modulo (dû au processeur)
+        \item Pas de switch case.
       \end{itemize}
 \end{frame}
 
-  \begin{frame}[fragile]{Optimisations}
+    \begin{frame}[fragile]{Optimisations}
       \begin{itemize}
-          \item Suppression des fonctions non-utilisées (cf. mot clé \verb+extern+)
-          \item Simplifications des expressions arithmétiques
-          \item Simplification des \verb+while(true)+
+        \item Suppression des fonctions non-utilisées (cf. mot clé
+          \verb+extern+)
+        \item Simplifications des expressions arithmétiques
+        \item Simplification des \verb+while(true)+
       \end{itemize}
 \end{frame}
 
-  \begin{frame}[fragile]{Gestion des registres}
-      Utilisés temporairement à chaque instruction. Mais, mot clé \verb+register+.
+    \begin{frame}[fragile]{Gestion des registres}
+      Utilisés temporairement à chaque instruction. Mais, mot clé
+      \verb+register+.
 \end{frame}
 
-  \begin{frame}[fragile]{Position-independent code}
+    \begin{frame}[fragile]{Position-independent code}
       Registre spécial \verb+%r24+.
 \end{frame}
 
   \section{Système d'exploitation}
-
-  \begin{frame}[fragile]{Vue d'ensemble}
-    \begin{itemize}
-      \item Pas d'espace user/noyau
-      \item Pas de séparation mémoire
-      \item Tout se base sur des interruptions...
-      \item ... dont les appels systèmes
-    \end{itemize}
+    \begin{frame}[fragile]{Vue d'ensemble}
+      \begin{itemize}
+        \item Pas d'espace user/noyau
+        \item Pas de séparation mémoire
+        \item Tout se base sur des interruptions...
+        \item ... dont les appels systèmes
+      \end{itemize}
 \end{frame}
 
-  \begin{frame}[fragile]{Ordonnanceur}
-    \begin{itemize}
-      \item Basé sur les interruptions PWM matérielles. Donc fréquence fixée.
-      \item Table des processus (pointeur vers la stack)
-      \item Round-robin
-    \end{itemize}
+    \begin{frame}[fragile]{Ordonnanceur}
+      \begin{itemize}
+        \item Basé sur les interruptions PWM matérielles. Donc fréquence fixée.
+        \item Table des processus (pointeur vers la stack)
+        \item Round-robin
+      \end{itemize}
 \end{frame}
 
-  \begin{frame}[fragile]{Gestion mémoire}
-    \begin{itemize}
-      \item \verb+malloc+/\verb+free+/\verb+realloc+
-      \item implémentation très simple (taille puissance de deux, pas de merge/split des blocs, mais réutilisation)
-      \item conservation du PID du processus qui alloue la mémoire, et routine pour libérer toute la mémoire allouée d'un processus
-    \end{itemize}
+    \begin{frame}[fragile]{Gestion mémoire}
+      \begin{itemize}
+        \item \verb+malloc+/\verb+free+/\verb+realloc+
+        \item implémentation très simple (taille puissance de deux, pas de
+          merge/split des blocs, mais réutilisation)
+        \item conservation du PID du processus qui alloue la mémoire, et routine
+          pour libérer toute la mémoire allouée d'un processus
+      \end{itemize}
 \end{frame}
 
-  \begin{frame}[fragile]{Démarrage}
-      Fonction \verb+main+, à montrer.
+    \begin{frame}[fragile]{Démarrage}
+        Fonction \verb+main+, à montrer.
 \end{frame}
 
   \section{Modifications du processeur, VHDL}
