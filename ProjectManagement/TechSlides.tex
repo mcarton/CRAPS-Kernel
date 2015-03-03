@@ -49,32 +49,31 @@
 
     \begin{frame}[fragile]{Gère}
       \begin{itemize}
-        \item Boucles while, for. Conditions.
-        \item \verb+break+, \verb+continue+
-        \item Structures, tableaux
-        \item sizeof()
-        \item Déréférencement, opérateur \verb+&+.
-        \item Variables globales
+        \item Boucles \verb+while+, \verb+for+, conditions;
+        \item Structures, tableaux;
+        \item \verb+sizeof()+;
+        \item Déréférencement, opérateur \verb+&+;
+        \item Variables globales;
         \item Typage fort (et cast).
       \end{itemize}
 \end{frame}
 
     \begin{frame}[fragile]{Ne gère pas}
       \begin{itemize}
-        \item Pas de déréférencement des champs des structures
-        \item Pas d'opérateur \verb|++|, \verb|--|
-        \item Pas de \verb|+=|, \verb|-=|, \verb|*=|, ...
-        \item Pas de divison/modulo (dû au processeur)
+        \item Pas de déréférencement des champs des structures,
+        \item Pas d'opérateurs \verb|++|, \verb|--|,
+        \item Pas d'opérateurs \verb|+=|, \verb|-=|, \verb|*=|, \dots;
+        \item Pas de division/modulo (à cause du processeur),
         \item Pas de switch case.
       \end{itemize}
 \end{frame}
 
     \begin{frame}[fragile]{Optimisations}
       \begin{itemize}
-        \item Suppression des fonctions non-utilisées (cf. mot clé
-          \verb+extern+)
-        \item Simplifications des expressions arithmétiques
-        \item Simplification des \verb+while(true)+
+        \item Suppression des fonctions non utilisées (cf.\ mot clé
+          \verb+extern+);
+        \item Simplifications des expressions arithmétiques;
+        \item Simplification des \verb+while(true)+.
       \end{itemize}
 \end{frame}
 
@@ -90,28 +89,28 @@
   \section{Système d'exploitation}
     \begin{frame}[fragile]{Vue d'ensemble}
       \begin{itemize}
-        \item Pas d'espace user/noyau
-        \item Pas de séparation mémoire
-        \item Tout se base sur des interruptions...
-        \item ... dont les appels systèmes
+        \item Pas d'espace user/noyau;
+        \item Pas de séparation mémoire;
+        \item Tout se base sur des interruptions\dots
+        \item \dots dont les appels systèmes
       \end{itemize}
 \end{frame}
 
     \begin{frame}[fragile]{Ordonnanceur}
       \begin{itemize}
-        \item Basé sur les interruptions PWM matérielles. Donc fréquence fixée.
-        \item Table des processus (pointeur vers la stack)
-        \item Round-robin
+        \item Basé sur les interruptions PWM matérielles;
+        \item Table des processus (pointeur vers la stack);
+        \item Round-robin.
       \end{itemize}
 \end{frame}
 
     \begin{frame}[fragile]{Gestion mémoire}
       \begin{itemize}
-        \item \verb+malloc+/\verb+free+/\verb+realloc+
+        \item \verb+malloc+/\verb+free+/\verb+realloc+;
         \item implémentation très simple (taille puissance de deux, pas de
-          merge/split des blocs, mais réutilisation)
+          merge/split des blocs, mais réutilisation);
         \item conservation du PID du processus qui alloue la mémoire, et routine
-          pour libérer toute la mémoire allouée d'un processus
+          pour libérer toute la mémoire allouée d'un processus.
       \end{itemize}
 \end{frame}
 
