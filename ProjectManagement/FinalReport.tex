@@ -146,11 +146,12 @@
       During these meetings, Xavier explained us what documents we should
       produce for the management of the project and how to use them. Of course,
       as our project was short, we did not follow all Airbus practices but this
-      showed us how do companies such as Airbus manage their project.
+      showed us how do companies such as Airbus manage their projects.
 
       \section{Risks management}
-        Xavier asked us to list the risks of the project. This was difficult as
-        the project is quite free but we were able to identify three risks.
+        In order for the project to be as smooth as possible, Xavier asked us
+        to list the events that could threaten the project, and define actions
+        to limit the risk. We were able to identify three risks.
 
         For each risk, the product $\text{probability} \times \text{gravity}$ is
         shown in the top-right cell. If the product is above 6, the risk is
@@ -195,8 +196,18 @@
     \section{Redaction of the technical specifications}
       Once we had determined the client's needs, we had to specify exactly what
       we had to do. This phase was difficult as the client was imprecise about
-      what we had to do.
-
+      what we had to do. We decided to do split the project in three distinct
+      steps:
+      \begin{itemize}
+        \item in a first time, develop the tools to write the  most basic
+            functionalities
+        \item add a possibility to communicate with the OS with through the
+            serial port
+        \item finally, be able to load and run program dynamically
+      \end{itemize}
+      Once these steps were decided, we refined them into several tasks that
+      could be done by the different members of the group.
+ 
     \section{Technical choices}
       We choose to work as much as possible on GNU/Linux as this is our
       daily-use operating system and the operating system installed on most
@@ -207,7 +218,7 @@
       when possible.
 
       \subsection{Compiler}
-        As we had to write a compiler but this is a very time-consuming task, we
+        We had to write a compiler but as this is a very time-consuming task, we
         decided to reuse the compiler we had to write for a previous ENSEEIHT
         project. This compiler did not target the CRAPS machine, but we made it
         modular enough to able to easily add a CRAPS back-end.
@@ -248,7 +259,28 @@
       allocated by processes when they were terminated.
 
     \section{Serial Port}
-      Is slow, but works.
+      In order to communicate with the OS from another device, we added a UART 
+      (Universal Asynchronous Receiver Transmitter) module. We used the RS-232
+      reference module available on the digilent website. The most difficult
+      part was actually to modify the shdl to vhdl compiler to add a predefined
+      vhdl module, directly accessible from the shdl.
+
+      Due to hardware limitations, the communication is rather slow. Each byte
+      is transmitted with a baud rate of 9600, but we still have to wait
+      between each byte.
+
+      \subsection{OS implantation}
+
+         When a byte is received, an interrupt is sent to the OS. The handler
+         reads the byte from the UART and puts it in a circular buffer.
+         Processes that want can then read this buffer.Processes can also write
+         directly to the UART.
+
+        It would be nice to make the communication through system calls. It
+        would allow us to implement communication canals, which would allow
+        several processes to use the serial port simultaneously. 
+
+
 
     \section{Memory management}
       For the dynamic loading of processes to work, we needed to be able to
