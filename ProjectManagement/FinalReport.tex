@@ -307,13 +307,32 @@
         All the optimizations made by the compiler.
 
     \section{Dynamic loading}
-      We were able to directly upload code\dots
+
+        One of the last task we had to make was to make it possible to dynamically
+        load code on the board, and run it.
+
+        This was implemented on our "shell" task, as we made a new command that will
+        receive code transferred by the serial, in a newly allocated memory zone.
+        Then, a stack for the new process will be created and the process wil be ran.
+
+        The biggest problem was to have fully position-independent code (when we compile code,
+        it references variables that are at absolute addresses in memory, and the code can be loaded
+        at any address). To solve that problem we defined a register, \verb+%r24+, that contains the
+        base address of the process so all the references are relative to this base address.
 
     \section{Final result}
-      A lot of test tasks.
+      Our final result is a micro "operating system" running on the board.
+      
+      By default, it runs a task called the shell, that will receive command by the serial port.
+      So, we can then connect the board to a computer, and send command to the board.
+        
+      Among these command, it is possible to list the active process, and start built-in tasks (a counter,
+      a task to control the leds on the board...). We can also load code that was compiled on the computer using
+      dynamic loading. We can also kill running processes.
 
-      A shell communicating via the serial.
-      Add screens of the shell (real screens of a terminal), and list commands.
+      \subsection{Example of use}
+
+      TODO: Add screens of the shell (real screens of a terminal), and list commands.
 
   \chapter{Validation phase}
 
