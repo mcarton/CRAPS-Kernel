@@ -23,10 +23,11 @@ For now, we have 7 types of interruptions:
   3 | btn[2] | The button 2 is pressed
   4 | btn[3] | The button 3 is pressed
   5 | RS-232 | A byte has been read
-  6 | RS-232 | The serial port is ready to send another byte
+  6 | RS-232 | (The serial port is ready to send another byte)
   7 |   soft | A software interruption
 
 Note: button 0 is used for the reset.
+Note: the sixth handler does not actually work
 
 The identifier of the interruption act as a priority level.
 
