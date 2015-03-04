@@ -41,9 +41,9 @@
       \begin{itemize}
         \item Basé sur notre projet compilateur de 2A (utilisant EGG). Nouveau
           backend CRAPS.
-        \item Syntaxe proche du C.
+        \item Syntaxe proche du C (voir doc).
         \item Support des includes via un petit wrapper avec préprocesseur:
-          \verb+compile_craps+
+          \verb+compile_craps+.
       \end{itemize}
 \end{frame}
 
@@ -64,7 +64,7 @@
         \item Pas d'opérateurs \verb|++|, \verb|--|,
         \item Pas d'opérateurs \verb|+=|, \verb|-=|, \verb|*=|, \dots;
         \item Pas de division/modulo (à cause du processeur),
-        \item Pas de switch case.
+        \item Pas de switch/case.
       \end{itemize}
 \end{frame}
 
@@ -81,8 +81,10 @@
 \end{frame}
 
     \begin{frame}[fragile]{Gestion des registres}
-      Utilisés temporairement à chaque instruction. Mais, mot clé
-      \verb+register+.
+      \begin{itemize}
+        \item Les 19 registres banalisés sont utilisé
+        \item Support du mot clé \verb+register+
+      \end{itemize}
 \end{frame}
 
   \begin{frame}[fragile]{Position-independent code}
@@ -126,5 +128,38 @@
 \end{frame}
 
   \section{Modifications du processeur, VHDL}
+    \begin{frame}[fragile]{Documentation}
+      Tout a été documenté dans le dossier \verb+Processor/doc+.
+\end{frame}
+
+    \begin{frame}{Interruptions}
+    \end{frame}
+
+    \begin{frame}[fragile]{Test and set}
+      \begin{itemize}
+        \item finalement pas utilisée;
+        \item voir \verb+Processor/doc/registers.md+;
+        \item le format de l'instruction \verb+reti+ a été changé.
+      \end{itemize}
+\end{frame}
+
+  \section{Pratique}
+    \begin{frame}[fragile]{Synthèse}
+      \begin{itemize}
+        \item Sur Windows uniquement (programme pas porté);
+        \item utilise le script \verb+shdl2vhdl+;
+        \item → cocher "synthesize" puis glisser/déposer le ficher;
+        \item attendre 15mins.
+      \end{itemize}
+\end{frame}
+
+    \begin{frame}{Flasher une carte}
+\end{frame}
+
+    \begin{frame}{Uploader du code avec interface graphique}
+\end{frame}
+
+    \begin{frame}{Uploader du code avec crapsdb}
+\end{frame}
 
 \end{document}
