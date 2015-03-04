@@ -71,9 +71,12 @@
     \begin{frame}[fragile]{Optimisations}
       \begin{itemize}
         \item Suppression des fonctions non utilisées (cf.\ mot clé
-          \verb+extern+);
+          \verb+export+);
         \item Simplifications des expressions arithmétiques;
-        \item Simplification des \verb+while(true)+.
+        \item Calcul d'adresse à la compilation;
+        \item Utilisation de \verb+%r0+ et \verb+%r20+ autant que possible;
+        \item Utilisation de \verb+sethi+, \verb+setq+, \verb+set+;
+        \item Simplification des \verb+while(true)+, \verb+if+ sans else, etc…
       \end{itemize}
 \end{frame}
 
@@ -82,8 +85,12 @@
       \verb+register+.
 \end{frame}
 
-    \begin{frame}[fragile]{Position-independent code}
-      Registre spécial \verb+%r24+.
+  \begin{frame}[fragile]{Position-independent code}
+    \begin{itemize}
+      \item Registre spécial \verb+%r24+;
+      \item Contient la position des variables et chaine de caractères statiques;
+      \item Au lancement d'un processus, un petit bout de code assembleur l'initialise.
+    \end{itemize}
 \end{frame}
 
   \section{Système d'exploitation}
