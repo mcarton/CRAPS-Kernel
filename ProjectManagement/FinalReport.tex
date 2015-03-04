@@ -54,17 +54,18 @@
   \tableofcontents
 
   \chapter{Introduction}
+
     \section{Context}
       This project, suggested by Daniel Hagimont, is based on the CRAPS
       processor developed by Jean-Christophe Buisson and used in the first-year
       computer architecture courses at ENSEEIHT. The goal is to develop an
       operating system that would run on top of that processor.
 
-      Daniel Hagimont aims to do a operating system course for ENSEEIHT
+      Daniel Hagimont aims at doing an operating system course for ENSEEIHT
       students. The course would be based on the computer architecture course as
       Daniel Hagimont wants to add a more continuity in ENSEEIHT courses. At the
       beginning of the project it was only possible to do a little of assembly
-      directly on the processor to see it work, but nothing more.
+      directly on the processor to see it working, but nothing more.
       After our project, it should be possible for students to really see
       the layer that goes on top of the CPU in modern computers: the operating
       system. Students should be able to really make the link between the
@@ -76,7 +77,27 @@
         \includegraphics[width=0.8\textwidth]{./fig/Nexys2.jpg}
         \caption{A Nexys2 board}
       \end{figure}
+    
+    \section{Pre-existing code and tools}
+     CRAPS is a simple processor conceived by Jean-Christophe Buisson for the
+     first year architecture course. It is inspired from the SPARC
+     architecture. It is written in SHDL, a simple hardware description
+     language also developed by Mr. Buisson.
+     
+     The processor is loaded on a FPGA(Field-Programmable Gate Array), which is
+     an integrated circuit containing a lot of logic gates that can be
+     programmed using a hardware description language such as VHDL.
 
+     In the beginning of the project, we were given :
+     \begin{itemize}
+        \item all the SHDL source code for the CRAPS processor
+        \item the source code for the SHDL compiler. It takes SHDL code,
+            produces VHDL code and uses an external tool to synthesise the
+            design and create the final file that can be loaded on the FPGA.
+        \item the source code for the monitor that interacts with the processor
+            on the board. The monitor also contains the compiler to generate
+            CRAPS bytecode from the CRAPS assembly code.
+     \end{itemize}
     \section{Work required}
       The project is composed of three main tasks:
       \begin{itemize}
@@ -93,20 +114,20 @@
     \section{Available resources}
       Jean-Christophe Buisson initially lent us 2 boards. As this was not enough
       for the four of us to work efficiently, he lent us 4 more boards.
-      He also gave us the sources of the tools he developed for his students so
-      that we could adapt them for our needs.
-
+      
       Our client got us a room in ENSEEIHT to work.
 
       \paragraph{}
-      We also set up a \textit{git}\footnote{\textit{git} is distributed Version
-      Control System (VCS).} repository to put all the sources and document we
-      have produced during this project. This allowed us to efficiently work
-      simultaneously on the same files and keep a history of all changes.
-      We also set up a mailing list and a Jabber room\footnote{\textit{Jabber}
-      is an instant messaging protocol.} to communicate with each other.
+      We also set up a \textit{git}\footnote{\textit{git} is a distributed
+      Version Control System (VCS).} repository to put all the sources and
+      document we have produced during this project. This allowed us to
+      efficiently work simultaneously on the same files and keep a history of
+      all changes.  We also set up a mailing list and a Jabber
+      room\footnote{\textit{Jabber} is an instant messaging protocol.} to
+      communicate with each other.
 
       We did all the work on our own personal computers.
+
 
   \chapter{Project management}
     The team is composed of four members:
@@ -139,7 +160,7 @@
         \item Week 5 (February 18th): planning of the testing phase;
         \item Week 6 (February 25th): review of the test plan, planning of the
           final report and presentation;
-        \item Week 7 (March 4th): TODO
+        \item Week 7 (March 4th): review of the draft of final report.
         \item Week 8 (Martin 10th): TODO
       \end{itemize}
 
@@ -149,9 +170,9 @@
       showed us how do companies such as Airbus manage their projects.
 
       \section{Risks management}
-        In order for the project to be as smooth as possible, Xavier asked us
-        to list the events that could threaten the project, and define actions
-        to limit the risk. We were able to identify three risks.
+        In order for the project to be as smooth as possible, we made a list
+        the events that could threaten the project, and defined actions to
+        limit the risk. We were able to identify three risks.
 
         For each risk, the product $\text{probability} \times \text{gravity}$ is
         shown in the top-right cell. If the product is above 6, the risk is
@@ -185,7 +206,7 @@
           as this is just to show students how to implement a simple communication
           protocol.
         }
-
+        TODO by palkeo: blablating a bit more.
   \chapter{Specification phase}
     We planned a meeting with the client the first day of the project. He
     explained us what he wanted us to do and that the project was very flexible.
@@ -207,6 +228,7 @@
       \end{itemize}
       Once these steps were decided, we refined them into several tasks that
       could be done by the different members of the group.
+      Each requirement is numbered in the specification document.
  
     \section{Technical choices}
       We choose to work as much as possible on GNU/Linux as this is our
@@ -215,7 +237,11 @@
       However, the tools we needed were designed to work exclusively on
       Microsoft Windows. To get around this problem, we decided to use the
       Windows-specific tools in a virtual machine or adapt tools to GNU/Linux
-      when possible.
+      when possible. We ended up adapting the monitor, and using it as a basis,
+      we wrote a distinct compiler tool (CRAPSC) to generate the bytecode, and
+      a command line debugger, CRAPSDB. We decided not to bother adapting the
+      tools to synthesise the processor, and keep using them on the windows
+      virtual machine.
 
       \subsection{Compiler}
         We had to write a compiler but as this is a very time-consuming task, we
@@ -223,13 +249,15 @@
         project. This compiler did not target the CRAPS machine, but we made it
         modular enough to able to easily add a CRAPS back-end.
 
-        We considered for a moment to write a CRAPS back-end for \emph{LLVM}, a
-        compiler infrastructure\cite{llvm}. This would have had the advantage to
-        be able to used \emph{clang}, a real, complete and optimized
-        \emph{C} compiler. But the work it would have required seemed to be too
-        important as we did not know the \emph{LLVM} infrastructure and the
-        infrastructure contains a lot of features we would not have used but
-        would have had to support.
+        We considered for a moment to write a CRAPS back-end for
+        \emph{LLVM}\footnote{\textit{LLVM} is a compiler infrastructure.
+        Offering a set of reusable libraries, it gives a way to write specific
+        backends.\cite{llvm}}. This would have had the advantage to be able to
+        use \emph{clang}, a real, complete and optimized \emph{C} compiler. But
+        the work it would have required seemed to be too important as we did
+        not know the \emph{LLVM} infrastructure and the infrastructure contains
+        a lot of features we would not have used but would have had to
+        support.
 
   \chapter{Implementation phase}
     \section{Interrupts}
@@ -302,33 +330,39 @@
 
     \section{Compiler}
       Needed to support a language very close to C. Generate CRAPS Assembly.
+      TODO: link the definition of the subset
 
       \subsection{Optimizations}
         All the optimizations made by the compiler.
 
     \section{Dynamic loading}
 
-        One of the last task we had to make was to make it possible to dynamically
-        load code on the board, and run it.
+        One of the last task we had to make was to make it possible to
+        dynamically load code on the board, and run it.
 
-        This was implemented on our "shell" task, as we made a new command that will
-        receive code transferred by the serial, in a newly allocated memory zone.
-        Then, a stack for the new process will be created and the process wil be ran.
+        This was implemented on our "shell" task, as we made a new command that
+        will receive code transferred by the serial, in a newly allocated
+        memory zone.  Then, a stack for the new process will be created and the
+        process wil be ran.
 
-        The biggest problem was to have fully position-independent code (when we compile code,
-        it references variables that are at absolute addresses in memory, and the code can be loaded
-        at any address). To solve that problem we defined a register, \verb+%r24+, that contains the
-        base address of the process so all the references are relative to this base address.
+        The biggest problem was to have fully position-independent code (when
+        we compile code, it references variables that are at absolute addresses
+        in memory, and the code can be loaded at any address). To solve that
+        problem we defined a register, \verb+%r24+, that contains the base
+        address of the process so all the references are relative to this base
+        address.
 
     \section{Final result}
       Our final result is a micro "operating system" running on the board.
       
-      By default, it runs a task called the shell, that will receive command by the serial port.
-      So, we can then connect the board to a computer, and send command to the board.
+      By default, it runs a task called the shell, that will receive command by
+      the serial port.  So, we can then connect the board to a computer, and
+      send command to the board.
         
-      Among these command, it is possible to list the active process, and start built-in tasks (a counter,
-      a task to control the leds on the board...). We can also load code that was compiled on the computer using
-      dynamic loading. We can also kill running processes.
+      Among these command, it is possible to list the active process, and start
+      built-in tasks (a counter, a task to control the leds on the board...).
+      We can also load code that was compiled on the computer using dynamic
+      loading. We can also kill running processes.
 
       \subsection{Example of use}
 
