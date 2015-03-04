@@ -17,7 +17,6 @@
   \and Korantin Auguste
   \and Martin Carton
   \and Étienne Lebrun
-  \and Pierre-Louis Michel
 }
 
 \newcommand{\risk}[4]{%
@@ -54,7 +53,6 @@
   \tableofcontents
 
   \chapter{Introduction}
-
     \section{Context}
       This project, suggested by Daniel Hagimont, is based on the CRAPS
       processor developed by Jean-Christophe Buisson and used in the first-year
@@ -77,13 +75,13 @@
         \includegraphics[width=0.8\textwidth]{./fig/Nexys2.jpg}
         \caption{A Nexys2 board}
       \end{figure}
-    
+
     \section{Pre-existing code and tools}
      CRAPS is a simple processor conceived by Jean-Christophe Buisson for the
      first year architecture course. It is inspired from the SPARC
      architecture. It is written in SHDL, a simple hardware description
      language also developed by Mr. Buisson.
-     
+
      The processor is loaded on a FPGA(Field-Programmable Gate Array), which is
      an integrated circuit containing a lot of logic gates that can be
      programmed using a hardware description language such as VHDL.
@@ -198,13 +196,14 @@
         }
 
         \risk{3 \times 1 = 3}{
-          The communication between the board and the computer might be too slow.
+          The communication between the board and the computer might be too
+          slow.
         }{
           We will have to be very careful to send just what is needed.
         }{
-          We would need to limit the communication. It is not necessarily a problem
-          as this is just to show students how to implement a simple communication
-          protocol.
+          We would need to limit the communication. It is not necessarily a
+          problem as this is just to show students how to implement a simple
+          communication protocol.
         }
         TODO by palkeo: blablating a bit more.
   \chapter{Specification phase}
@@ -287,28 +286,25 @@
       allocated by processes when they were terminated.
 
     \section{Serial Port}
-      In order to communicate with the OS from another device, we added a UART 
+      In order to communicate with the OS from another device, we added a UART
       (Universal Asynchronous Receiver Transmitter) module. We used the RS-232
-      reference module available on the digilent website. The most difficult
-      part was actually to modify the shdl to vhdl compiler to add a predefined
-      vhdl module, directly accessible from the shdl.
+      reference module available on the Digilent website. The most difficult
+      part was actually to modify the SHDL to VHDL compiler to add a predefined
+      VHDL module, directly accessible from the SHDL.
 
       Due to hardware limitations, the communication is rather slow. Each byte
       is transmitted with a baud rate of 9600, but we still have to wait
       between each byte.
 
       \subsection{OS implantation}
-
-         When a byte is received, an interrupt is sent to the OS. The handler
-         reads the byte from the UART and puts it in a circular buffer.
-         Processes that want can then read this buffer.Processes can also write
-         directly to the UART.
+        When a byte is received, an interrupt is sent to the OS. The handler
+        reads the byte from the UART and puts it in a circular buffer.
+        Processes that want can then read this buffer.Processes can also write
+        directly to the UART.
 
         It would be nice to make the communication through system calls. It
         would allow us to implement communication canals, which would allow
-        several processes to use the serial port simultaneously. 
-
-
+        several processes to use the serial port simultaneously.
 
     \section{Memory management}
       For the dynamic loading of processes to work, we needed to be able to
@@ -336,37 +332,36 @@
         All the optimizations made by the compiler.
 
     \section{Dynamic loading}
+      One of the last task we had to make was to make it possible to
+      dynamically load code on the board, and run it.
 
-        One of the last task we had to make was to make it possible to
-        dynamically load code on the board, and run it.
+      This was implemented on our "shell" task, as we made a new command that
+      will receive code transferred by the serial, in a newly allocated
+      memory zone.  Then, a stack for the new process will be created and the
+      process will be ran.
 
-        This was implemented on our "shell" task, as we made a new command that
-        will receive code transferred by the serial, in a newly allocated
-        memory zone.  Then, a stack for the new process will be created and the
-        process wil be ran.
-
-        The biggest problem was to have fully position-independent code (when
-        we compile code, it references variables that are at absolute addresses
-        in memory, and the code can be loaded at any address). To solve that
-        problem we defined a register, \verb+%r24+, that contains the base
-        address of the process so all the references are relative to this base
-        address.
+      The biggest problem was to have fully position-independent code (when
+      we compile code, it references variables that are at absolute addresses
+      in memory, and the code can be loaded at any address). To solve that
+      problem we defined a register, \verb+%r24+, that contains the base
+      address of the process so all the references are relative to this base
+      address.
 
     \section{Final result}
       Our final result is a micro "operating system" running on the board.
-      
+
       By default, it runs a task called the shell, that will receive command by
       the serial port.  So, we can then connect the board to a computer, and
       send command to the board.
-        
+
       Among these command, it is possible to list the active process, and start
-      built-in tasks (a counter, a task to control the leds on the board...).
+      built-in tasks (a counter, a task to control the LEDs on the board...).
       We can also load code that was compiled on the computer using dynamic
       loading. We can also kill running processes.
 
       \subsection{Example of use}
-
-      TODO: Add screens of the shell (real screens of a terminal), and list commands.
+        TODO: Add screens of the shell (real screens of a terminal), and list
+        commands.
 
   \chapter{Validation phase}
 
