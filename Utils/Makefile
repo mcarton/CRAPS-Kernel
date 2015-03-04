@@ -2,7 +2,7 @@ all:
 	cd CrapsDB; make
 	cd CrapsMon5; make
 	cd libusbComm; make
-	cd SHDL2VHDL; make
+	cd SHDL2VHDL; make; make archive
 
 clean:
 	cd CrapsDB; make clean
