@@ -17,8 +17,8 @@ of it.
 Data structure
 --------------
 
-The process structure is quite simple: We keep the number of process, the ID of the current process and, for each process,
-the address of the top of its stack. That's all.
+The process structure is quite simple: We keep the ID of the current process and, for each process,
+the address of the top of its stack, and the address of the command string. That's all.
 
 For all the process that are not currently running, the top of the stack also contains the current address in the code of that
 process, and the registers (`%r1` to `%r19`, the flags register, the register with the return address, the frame pointer…).
