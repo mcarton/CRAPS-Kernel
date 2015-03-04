@@ -37,7 +37,7 @@
   \end{frame}
 
   \section{Compilateur}
-    \begin{frame}[fragile]
+    \begin{frame}[fragile]{Compilateur}
       \begin{itemize}
         \item Basé sur notre projet compilateur de 2A (utilisant EGG). Nouveau
           backend CRAPS.
@@ -66,6 +66,9 @@
         \item Pas de division/modulo (à cause du processeur),
         \item Pas de switch/case.
       \end{itemize}
+
+      \pause
+      → Voir \verb+Compiler/doc/language.pdf+.
 \end{frame}
 
     \begin{frame}[fragile]{Optimisations}
@@ -82,7 +85,7 @@
 
     \begin{frame}[fragile]{Gestion des registres}
       \begin{itemize}
-        \item Les 19 registres banalisés sont utilisé
+        \item Les 19 registres banalisés sont utilisés
         \item Support du mot clé \verb+register+
       \end{itemize}
 \end{frame}
@@ -90,8 +93,10 @@
   \begin{frame}[fragile]{Position-independent code}
     \begin{itemize}
       \item Registre spécial \verb+%r24+;
-      \item Contient la position des variables et chaine de caractères statiques;
-      \item Au lancement d'un processus, un petit bout de code assembleur l'initialise.
+      \item Contient la position des variables et chaine de caractères
+        statiques;
+      \item Au lancement d'un processus, un petit bout de code assembleur
+        l'initialise.
     \end{itemize}
 \end{frame}
 
@@ -108,7 +113,7 @@
     \begin{frame}[fragile]{Ordonnanceur}
       \begin{itemize}
         \item Basé sur les interruptions PWM matérielles;
-        \item Table des processus (pointeur vers la stack);
+        \item Table des processus (pointeur vers la pile);
         \item Round-robin.
       \end{itemize}
 \end{frame}
@@ -130,6 +135,13 @@
   \section{Modifications du processeur, VHDL}
     \begin{frame}[fragile]{Documentation}
       Tout a été documenté dans le dossier \verb+Processor/doc+.
+      \begin{itemize}
+        \item Interruptions;
+        \item Test and set;
+        \item Registres;
+        \item RS232;
+        \item RAM.
+      \end{itemize}
 \end{frame}
 
     \begin{frame}{Interruptions}
@@ -143,6 +155,36 @@
       \end{itemize}
 \end{frame}
 
+    \begin{frame}{Registres}
+      \begin{itemize}
+        \item 0: 0
+        \item 1--19: registres banalisés
+        \item 20: 1
+        \item 21, 22, 23: non mappés
+        \item 24: PIC, position des globales (nouveau)
+        \item 25: PSR, pour interruptions (nouveau)
+        \item 26: breakpoint
+        \item 27: FP: current's frame base pointer
+        \item 28: ret
+        \item 29: SP, top of stack
+        \item 30: PC, next instruction
+        \item 31: IR, current instruction
+      \end{itemize}
+    \end{frame}
+
+    \begin{frame}[fragile]{RS232}
+      \begin{itemize}
+        \item Lecture en \verb+0xD0000000+, écriture en \verb+0xD0000001+;
+        \item Interruption 5: quand on reçoit un bit;
+        \item Interruption 6: quand on a fini d'écrire un bit (ne marche pas);
+          \pause
+        \item du coup écriture puis attente.
+      \end{itemize}
+\end{frame}
+
+    \begin{frame}{RAM}
+    \end{frame}
+
   \section{Pratique}
     \begin{frame}[fragile]{Synthèse}
       \begin{itemize}
@@ -154,12 +196,35 @@
 \end{frame}
 
     \begin{frame}{Flasher une carte}
-\end{frame}
+      \begin{itemize}
+        \item Sur Windows uniquement (pas testé sur Linux);
+        \item Via Digilent Adept: deux choix:
+          \begin{itemize}
+            \item Sur le FPGA: rapide, volatile;
+            \item Sur la ROM: long, persistant.
+          \end{itemize}
+      \end{itemize}
+    \end{frame}
 
     \begin{frame}{Uploader du code avec interface graphique}
-\end{frame}
+      Montrer.
+    \end{frame}
 
-    \begin{frame}{Uploader du code avec crapsdb}
+    \begin{frame}[fragile]{Uploader du code avec crapsdb}
+      \begin{verbatim}
+% ./compile-craps path/to/kernel.moc
+% ./crapsc path/to/kernel.asm
+% ./crapsdb path/to/kernel.obj
+Loading file path/to/kernel.obj ... done.
+[… machine's state …]
+> break 0x42
+> run
+Breakpoint
+[… machine's state …]
+> print %r30
+%r30 = 291
+> exit
+      \end{verbatim}
 \end{frame}
 
 \end{document}
