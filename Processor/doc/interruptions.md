@@ -14,7 +14,7 @@ Overview of the interruption system
 -----------------------------------
 
 The interruption system in our processor is really simple.
-For now, we have only 4 types of interruptions:
+For now, we have 7 types of interruptions:
 
  ID |  Name  |           Description
 ----|--------|----------------------------------
@@ -22,8 +22,8 @@ For now, we have only 4 types of interruptions:
   2 | btn[1] | The button 1 is pressed
   3 | btn[2] | The button 2 is pressed
   4 | btn[3] | The button 3 is pressed
-  5 | RS-232 | TODO
-  6 | RS-232 | TODO
+  5 | RS-232 | A byte has been read
+  6 | RS-232 | The serial port is ready to send another byte
   7 |   soft | A software interruption
 
 Note: button 0 is used for the reset.
@@ -81,7 +81,7 @@ The processor has an `interruptions` component responsible for saving
 interruptions:
 
 ```
-module interruptions(rst, clk, pwm_out, button[2..0], handle_int: int_id[3..0])
+module interruptions(rst, clk, pwm_out, button[2..0], rsDataAvailable, rsTBE, soft_int, handle_int: int_id[3..0])
 ```
 
 This module has a *JK* latch for each interruption. The *J* signal is a rising
