@@ -74,35 +74,52 @@
         \centering
         \includegraphics[width=0.8\textwidth]{./fig/Nexys2.jpg}
         \caption{A Nexys2 board}
+        \label{fig:nexys}
       \end{figure}
 
+    \section{Acronyms}
+      \begin{description}
+        \item[SHDL] Simple Hardware Description Language is the language used to
+          implement the processor.
+        \item[VHDL] VHSIC1 Hardware Description Language is the language
+          \emph{SHDL} is compiled to. Some modules are written directly in
+          \emph{VHDL}.
+        \item[FPGA] Field-Programmable Gate Array is an integrated circuit
+          containing a lot of logic gates that can be programmed using a
+          hardware description language such as \emph{VHDL}.
+        \item[SPARC] Scalable Processor ARChitecture is a processor
+          architecture.
+        \item[VCS] Version Control System.
+      \end{description}
+
     \section{Pre-existing code and tools}
-     CRAPS is a simple processor conceived by Jean-Christophe Buisson for the
-     first year architecture course. It is inspired from the SPARC
-     architecture. It is written in SHDL, a simple hardware description
-     language also developed by Mr. Buisson.
+      \emph{CRAPS} is a simple processor conceived by Jean-Christophe Buisson for the
+      first year architecture course. It is inspired from the \emph{SPARC}
+      architecture. It is written in \emph{SHDL}, a simple hardware description
+      language also developed by Mr. Buisson.
 
-     The processor is loaded on a FPGA(Field-Programmable Gate Array), which is
-     an integrated circuit containing a lot of logic gates that can be
-     programmed using a hardware description language such as VHDL.
+      The processor is loaded on a Spartan-3E \emph{FPGA} (see
+      figure~\ref{fig:nexys}).
 
-     In the beginning of the project, we were given :
-     \begin{itemize}
-        \item all the SHDL source code for the CRAPS processor
-        \item the source code for the SHDL compiler. It takes SHDL code,
-            produces VHDL code and uses an external tool to synthesise the
-            design and create the final file that can be loaded on the FPGA.
+      In the beginning of the project, we were given :
+      \begin{itemize}
+        \item all the \emph{SHDL} source code for the CRAPS processor
+        \item the source code for the \emph{SHDL} compiler. It takes \emph{SHDL}
+          code, produces \emph{VHDL} code and uses an external tool to
+          synthesise the design and create the final file that can be loaded on
+          the \emph{FPGA}.
         \item the source code for the monitor that interacts with the processor
-            on the board. The monitor also contains the compiler to generate
-            CRAPS bytecode from the CRAPS assembly code.
-     \end{itemize}
+          on the board. The monitor also contains the compiler to generate
+          \emph{CRAPS} bytecode from the \emph{CRAPS} assembly code.
+      \end{itemize}
+
     \section{Work required}
       The project is composed of three main tasks:
       \begin{itemize}
         \item improve the simple processor developed by students to add missing
           features;
-        \item create a compiler for a \textit{C-like} language to the CRAPS
-          assembly language;
+        \item create a compiler for a \textit{C-like} language to the
+          \emph{CRAPS} assembly language;
         \item the operating kernel system itself.
       \end{itemize}
 
@@ -112,12 +129,12 @@
     \section{Available resources}
       Jean-Christophe Buisson initially lent us 2 boards. As this was not enough
       for the four of us to work efficiently, he lent us 4 more boards.
-      
+
       Our client got us a room in ENSEEIHT to work.
 
       \paragraph{}
       We also set up a \textit{git}\footnote{\textit{git} is a distributed
-      Version Control System (VCS).} repository to put all the sources and
+      VCS.} repository to put all the sources and
       document we have produced during this project. This allowed us to
       efficiently work simultaneously on the same files and keep a history of
       all changes.  We also set up a mailing list and a Jabber
@@ -177,12 +194,12 @@
         considered critical.
 
         \risk{3 \times 3 = 9}{
-          A FPGA can be damaged, making any test impossible.
+          A \emph{FPGA} can be damaged, making any test impossible.
         }{
-          This is likely to happen and very problematic but we have two FPGAs
-          and the possibility to have more in case of problem.
+          This is likely to happen and very problematic but we have two
+          \emph{FPGA}s and the possibility to have more in case of problem.
         }{
-          Actually, we have 6 FPGAs, the risk is considered closed.
+          Actually, we have 6 \emph{FPGA}s, the risk is considered closed.
         }
 
         \risk{2 \times 3 = 6}{
@@ -206,6 +223,7 @@
           communication protocol.
         }
         TODO by palkeo: blablating a bit more.
+
   \chapter{Specification phase}
     We planned a meeting with the client the first day of the project. He
     explained us what he wanted us to do and that the project was very flexible.
@@ -228,7 +246,7 @@
       Once these steps were decided, we refined them into several tasks that
       could be done by the different members of the group.
       Each requirement is numbered in the specification document.
- 
+
     \section{Technical choices}
       We choose to work as much as possible on GNU/Linux as this is our
       daily-use operating system and the operating system installed on most
@@ -237,10 +255,10 @@
       Microsoft Windows. To get around this problem, we decided to use the
       Windows-specific tools in a virtual machine or adapt tools to GNU/Linux
       when possible. We ended up adapting the monitor, and using it as a basis,
-      we wrote a distinct compiler tool (CRAPSC) to generate the bytecode, and
-      a command line debugger, CRAPSDB. We decided not to bother adapting the
-      tools to synthesise the processor, and keep using them on the windows
-      virtual machine.
+      we wrote a distinct compiler tool (\verb+crapsc+) to generate the
+      bytecode, and a command line debugger, \verb+crapsdb+. We decided not to
+      bother adapting the tools to synthesise the processor, and keep using them
+      on the Microsoft Windows virtual machine.
 
       \subsection{Compiler}
         We had to write a compiler but as this is a very time-consuming task, we
@@ -249,8 +267,8 @@
         modular enough to able to easily add a CRAPS back-end.
 
         We considered for a moment to write a CRAPS back-end for
-        \emph{LLVM}\footnote{\textit{LLVM} is a compiler infrastructure.
-        Offering a set of reusable libraries, it gives a way to write specific
+        \emph{LLVM}\footnote{\emph{LLVM} is a compiler infrastructure
+        offering a set of reusable libraries, it gives a way to write specific
         backends.\cite{llvm}}. This would have had the advantage to be able to
         use \emph{clang}, a real, complete and optimized \emph{C} compiler. But
         the work it would have required seemed to be too important as we did
@@ -289,8 +307,8 @@
       In order to communicate with the OS from another device, we added a UART
       (Universal Asynchronous Receiver Transmitter) module. We used the RS-232
       reference module available on the Digilent website. The most difficult
-      part was actually to modify the SHDL to VHDL compiler to add a predefined
-      VHDL module, directly accessible from the SHDL.
+      part was actually to modify the \emph{SHDL} to \emph{VHDL} compiler to add
+      a predefined \emph{VHDL} module, directly accessible from the \emph{SHDL}.
 
       Due to hardware limitations, the communication is rather slow. Each byte
       is transmitted with a baud rate of 9600, but we still have to wait
@@ -325,7 +343,8 @@
       the implementation simple, and in general the block are reused a lot.
 
     \section{Compiler}
-      Needed to support a language very close to C. Generate CRAPS Assembly.
+      We needed to support a language very close to C that could be compiled to
+      \emph{CRAPS} assembly.
       TODO: link the definition of the subset
 
       \subsection{Optimizations}
