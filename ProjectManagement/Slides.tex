@@ -49,6 +49,10 @@
 
     \subsection{Risks}
 
+    \begin{frame}
+      We were able to identify real risks, and mitigate them.
+    \end{frame}
+
     \subsection{Specification}
 
     \subsection{Calendar}
@@ -57,11 +61,41 @@
 
     \subsection{Compiler}
 
+    \begin{frame}
+      \begin{itemize}
+        \item Based on the compiler project from the second-year classes.
+        \item Language: a (quite large!) subset of C.
+        \item Various optimizations.
+      \end{itemize}
+    \end{frame}
+
     \subsection{Interrupts}
+
+    \begin{frame}
+      \begin{itemize}
+        \item Processor modifications.
+        \item Priority support.
+        \item Interrupt table.
+      \end{itemize}
+    \end{frame}
 
     \subsection{Scheduler}
 
+    \begin{frame}
+      \begin{itemize}
+        \item New interrupt based on the PWM...
+        \item that will trigger a context switch.
+      \end{itemize}
+    \end{frame}
+
     \subsection{Serial Port}
+
+    \begin{frame}
+      \begin{itemize}
+        \item New interrupt.
+        \item Limitations.
+      \end{itemize}
+    \end{frame}
 
     \subsection{Memory Management}
     
@@ -75,10 +109,26 @@
     \end{frame}
 
     \subsection{Dynamic loading}
+ 
+    \begin{frame}
+      \begin{itemize}
+        \item Not very hard to do...
+        \item ...but we had to make the code position-independent.
+      \end{itemize}
+    \end{frame}
 
-  \section{Demo}
+  \section{Final result}
+ 
+  \begin{frame}{Various processes}
+      \begin{itemize}
+        \item The shell (most important)
+        \item Counter
+        \item Leds
+        \item ... and dynamic loading !
+      \end{itemize}
+  \end{frame}
 
-  \begin{frame}
+  \begin{frame}{Demo}
     \begin{itemize}
       \item Compiler
       \item Debugger
