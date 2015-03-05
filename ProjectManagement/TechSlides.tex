@@ -39,7 +39,7 @@
   \section{Compilateur}
     \begin{frame}[fragile]{Compilateur}
       \begin{itemize}
-        \item Basé sur notre projet compilateur de 2A (utilisant EGG). Nouveau
+        \item Basé sur notre projet compilateur de 2A (utilisant Chicken, une version modifiée de EGG). Nouveau
           backend CRAPS.
         \item Syntaxe proche du C (voir doc).
         \item Support des includes via un petit wrapper avec préprocesseur:
@@ -129,7 +129,7 @@
 \end{frame}
 
     \begin{frame}[fragile]{Démarrage}
-        Fonction \verb+main+, à montrer.
+      Fonction \verb+main+, à montrer.
 \end{frame}
 
   \section{Modifications du processeur, VHDL}
@@ -225,6 +225,32 @@ Breakpoint
 %r30 = 291
 > exit
       \end{verbatim}
+\end{frame}
+
+    \begin{frame}[fragile]{Mémoire}
+      \begin{itemize}
+        \item Utilisation de la \verb+BRAM+, CRAPS dispose maintenant de 48Ko;
+        \item RAM 16Mo mappée à l'adresse \verb+0xE0000000+.
+      \end{itemize}
+\end{frame}
+
+    \begin{frame}[fragile]{Gestion des interruptions}
+      \begin{itemize}
+        \item Ajout d'un module \verb+interruptions+ dans la micromachine;
+        \item Encodeur de priorité 16 bits;
+        \item Avant chaque fetch-decode, le sequenceur vérifie s'il y a une
+          interruption de plus haute priorité en attente;
+        \item Ajout d'une interruption software (modification de \verb+crapsc+);
+        \item Table d'interruptions à l'adresse \verb+1+.
+      \end{itemize}
+\end{frame}
+
+    \begin{frame}[fragile]{Gestion de RS-232}
+      \begin{itemize}
+        \item Lecture en \verb+0xD0000000+, écriture en \verb+0xD0000001+;
+        \item Interruption pour signaler qu'un octet a été lu, et que le RS-232
+          est prêt pour écriture.
+      \end{itemize}
 \end{frame}
 
 \end{document}
