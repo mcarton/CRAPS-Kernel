@@ -35,14 +35,14 @@ char getc() {
         return (char)-1; // 0xffffffff
     }
     else {
-        char result = rs232_read_buf[rs232_read_buf_begin];
+        register char result = rs232_read_buf[rs232_read_buf_begin];
         rs232_read_buf_begin = (rs232_read_buf_begin+1) & 0xff;
         return result;
     }
 }
 
 int getint() {
-    int i;
+    register int i;
     int[4] bytes;
 
     for(i = 0; i < 4; i=i+1) {
@@ -57,11 +57,11 @@ int getint() {
 }
 
 char* getline() {
-    int i;
-    char c = (char)-1;
-    int size = 32;
-    char* buf = (char*)malloc(size);
-    char* new_buf;
+    register int i;
+    register char c = (char)-1;
+    register int size = 32;
+    register char* buf = (char*)malloc(size);
+    register char* new_buf;
 
     for (i = 0; c != '\n' && c != '\0'; i=i+1) {
         c = getc();
@@ -97,7 +97,7 @@ void putc(char c) {
 }
 
 void write(char* string) {
-    int i;
+    register int i;
     for(i = 0; (bool)string[i]; i=i+1) {
         putc(string[i]);
     }

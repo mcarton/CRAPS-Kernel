@@ -1,5 +1,5 @@
 void memcpy(void* source, void* destination, int size) {
-    int i;
+    register int i;
 
     for(i = 0; i < size; i=i+1) {
         *((int*)destination + i) = *((int*)source + i);
@@ -7,7 +7,7 @@ void memcpy(void* source, void* destination, int size) {
 }
 
 bool memcmp(void* b1, void* b2, int size) {
-    int i;
+    register int i;
 
     for(i = 0; i < size; i=i+1) {
         if(*((int*)b1 + i) != *((int*)b2 + i)) {
@@ -28,7 +28,7 @@ void *malloc_start;
 
 // get the nearest power of two that is bigger than the parameter.
 int nbp2(int n) {
-    int s = n - 1;
+    register int s = n - 1;
     n = 1;
 
     while((bool)s) {
@@ -49,7 +49,7 @@ void* malloc(int size) {
 void* _malloc(int size) {
     size = nbp2(size);
 
-    int* c = (int*)malloc_start;
+    register int* c = (int*)malloc_start;
     while (
         (bool)(*c & 1)
      || (((*c >> 8) != size) && ((bool)*c))
@@ -58,7 +58,7 @@ void* _malloc(int size) {
     }
     // c now points to an unused block header of the right size
 
-    int bs = *c >> 8;
+    register int bs = *c >> 8;
     if(bs == 0) { // end of the blocklist
         *c = (size << 8) | 1 | (process_table.current_process << 1);
         *(c + size + 1) = 0;
@@ -78,7 +78,7 @@ int free(void* addr) {
 }
 
 int _free(void* addr) {
-    int* c = (int*)malloc_start;
+    register int* c = (int*)malloc_start;
     while (c < addr - 1) {
         c = c + (*c >> 8) + 1;
         if(*c == 0) {
@@ -101,7 +101,7 @@ int _free(void* addr) {
 }
 
 int _free_pid(int pid) {
-    int* c = (int*)malloc_start;
+    register int* c = (int*)malloc_start;
     while((bool)*c) {
         if((bool)(*c & 1) && (((*c >> 1) & 0x7F) == pid)) {
             if(_free((void*)c + 1) == -1) {
@@ -128,7 +128,7 @@ void* _realloc(void* addr, int new_size) {
 
     // taken from the free implementation
     // ---
-    int* c = (int*)malloc_start;
+    register int* c = (int*)malloc_start;
     while (c < addr - 1) {
         c = c + (*c >> 8) + 1;
         if(*c == 0) {
@@ -147,7 +147,7 @@ void* _realloc(void* addr, int new_size) {
     }
 
     // here we will need to allocate a new block and copy it.
-    void* new_addr = _malloc(new_size);
+    register void* new_addr = _malloc(new_size);
     memcpy(addr, new_addr, *c >> 8);
     if(_free(addr) == -1) {
         return (void*)-1;

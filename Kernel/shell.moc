@@ -1,7 +1,7 @@
 // replace the first space of the char by a null character, and return a
 // pointer to the part after the null character that was added
 char* parseline(char* line) {
-    int i;
+    register int i;
     for (i = 0; line[i] != ' ' && line[i] != '\0'; i=i+1)
     {}
 
@@ -13,13 +13,13 @@ char* parseline(char* line) {
 }
 
 void exec_command(char* parameters) {
-    int i;
+    register int i;
 
     // read size (in 32 bits words)
-    int size = getint();
+    register int size = getint();
 
     // read file word per word
-    int* file = (int*)malloc(size);
+    register int* file = (int*)malloc(size);
 
     for(i = 0; i < size; i=i+1) {
         *(file + i) = getint();
@@ -30,7 +30,7 @@ void exec_command(char* parameters) {
 }
 
 void shell(char* line) {
-    char* parameters = parseline(line);
+    register char* parameters = parseline(line);
 
     if (line[0] == (char)3 /* ^C */ || strcmp(line, "quit")) {
         putc((char)4); // ^D
@@ -58,7 +58,7 @@ void shell(char* line) {
         }
     }
     else if(strcmp(line, "kill")) {
-        int pid = atoi(parameters);
+        register int pid = atoi(parameters);
 
         if(pid == -1) {
             write("Usage: kill pid\n");
@@ -72,9 +72,9 @@ void shell(char* line) {
     }
     else if(strcmp(line, "ps")) {
         char[3] buff;
-        int i;
+        register int i;
         int nb;
-        struct process_info_t[] info = processes_info(&nb);
+        register struct process_info_t[] info = processes_info(&nb);
 
         write("Process table:\n");
         for(i = 0; i < nb; i = i+1) {

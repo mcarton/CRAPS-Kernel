@@ -4,9 +4,9 @@ export int task_dummy() {
 }
 
 export int task_counter() {
-    int *ssegs = (int*) 0xA0000000;
-    int counter = 0;
-    int i;
+    register int *ssegs = (int*) 0xA0000000;
+    register int counter = 0;
+    register int i;
     *(ssegs + 1) = 0b1111;
     while (true) {
         *ssegs = counter;
@@ -16,8 +16,8 @@ export int task_counter() {
 }
 
 export int task_leds() {
-    int *leds = (int*) 0xB0000000;
-    int *switches = (int*) 0x90000000;
+    register int *leds = (int*) 0xB0000000;
+    register int *switches = (int*) 0x90000000;
     while (true) {
         *leds = *switches;
     }
@@ -27,7 +27,7 @@ export int task_leds() {
 
 export int task_shell() {
     while (true) {
-        char* line = getline();
+        register char* line = getline();
         if((bool)*line) {
             shell(line);
         }

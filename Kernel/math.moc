@@ -1,5 +1,5 @@
 void div_mod(int a, int b, int *quotient, int *mod) {
-    int q = 0;
+    register int q = 0;
 
     while (a >= 0) {
         q = q+1;

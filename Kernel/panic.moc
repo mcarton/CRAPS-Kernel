@@ -12,13 +12,13 @@ void _panic(int error_code) {
     *((int*)0xC0000000) = 0; // P
     *((int*)0xC0000001) = 0; // N
 
-    int *ssegs = (int*) 0xA0000000;
-    int *leds = (int*) 0xB0000000;
+    register int *ssegs = (int*) 0xA0000000;
+    register int *leds = (int*) 0xB0000000;
     *(ssegs + 1) = 0b1111;
     *ssegs = error_code;
 
-    int i;
-    int j = 0;
+    register int i;
+    register int j = 0;
     while(true) {
         j = j >> 1;
 

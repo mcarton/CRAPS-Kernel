@@ -84,7 +84,7 @@ pwm_handler_do_it:
 ")
 
 export void* next_stack(void* current_stack) {
-    struct process_t[] processes = process_table.processes;
+    register struct process_t[] processes = process_table.processes;
 
     // save current stack
     if(processes[process_table.current_process].stack != NULL) {
@@ -92,7 +92,7 @@ export void* next_stack(void* current_stack) {
     }
 
     // get the next process (round-robin)
-    int i = process_table.current_process + 1;
+    register int i = process_table.current_process + 1;
     if (i == PROCESS_COUNT) {
         i = 0;
     }
@@ -156,7 +156,7 @@ void _kill_process(int pid) {
         _panic(6);
     }
 
-    struct process_t[] processes = process_table.processes;
+    register struct process_t[] processes = process_table.processes;
     processes[pid].stack = NULL;
     processes[pid].command = NULL;
 
@@ -166,8 +166,8 @@ void _kill_process(int pid) {
 }
 
 void _start_process(void* start_addr, char* command) {
-    struct process_t[] processes = process_table.processes;
-    int i = 0;
+    register struct process_t[] processes = process_table.processes;
+    register int i = 0;
     while(processes[i].stack != NULL) {
         i = i + 1;
     }
@@ -177,10 +177,10 @@ void _start_process(void* start_addr, char* command) {
     }
 
     // we change the current process just for malloc to have it.
-    int cp = process_table.current_process;
+    register int cp = process_table.current_process;
     process_table.current_process = i;
 
-    void* stack = _malloc(256) + 255;
+    register void* stack = _malloc(256) + 255;
 
     process_table.current_process = cp;
 
@@ -194,7 +194,7 @@ void _start_process(void* start_addr, char* command) {
     stack = stack - 1;
     *((int*) stack) = (int)start_addr;
 
-    int j;
+    register int j;
     for(j=0; j < NB_SAVED_REGISTERS; j=j+1) {
         stack = stack - 1;
         *((int*) stack) = 0;
@@ -204,11 +204,11 @@ void _start_process(void* start_addr, char* command) {
 }
 
 struct process_info_t[] _processes_info(int* size) {
-    struct process_t[] processes = process_table.processes;
-    int i;
+    register struct process_t[] processes = process_table.processes;
+    register int i;
 
     // count processes
-    int nb = 0;
+    register int nb = 0;
     for(i = 0; i < PROCESS_COUNT; i = i+1) {
         if(processes[i].stack != NULL) {
             nb = nb + 1;
@@ -216,9 +216,9 @@ struct process_info_t[] _processes_info(int* size) {
     }
     *size = nb;
 
-    struct process_info_t[] info = (struct process_info_t[]) _malloc(nb * sizeof(struct process_info_t));
+    register struct process_info_t[] info = (struct process_info_t[]) _malloc(nb * sizeof(struct process_info_t));
 
-    int current = 0;
+    register int current = 0;
     for(i = 0; i < PROCESS_COUNT; i = i+1) {
         if(processes[i].stack != NULL) {
             info[current].pid = i;
