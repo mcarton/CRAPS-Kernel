@@ -1,6 +1,7 @@
 \documentclass[openany, a4paper]{book}
 
 \usepackage{afterpage}
+\usepackage{etoolbox}
 \usepackage{fontspec}
 \usepackage{geometry}
 \usepackage{graphicx}
@@ -393,7 +394,11 @@
 
   \chapter{Conclusion}
 
-  \addcontentsline{toc}{chapter}{Bibliography}
+  % reset the chapter counter and use lettered-chapter from now
+  \setcounter{chapter}{0}
+  \renewcommand{\thechapter}{\Alph{chapter}}
+
+  \patchcmd{\thebibliography}{\chapter*}{\chapter}{}{}
   \begin{thebibliography}{9}
     \bibitem{buisson}
       Jean-Christophe Buisson,
@@ -414,8 +419,7 @@
       \mbox{\url{http://llvm.org/docs/WritingAnLLVMBackend.html}}
   \end{thebibliography}
 
-  \addcontentsline{toc}{chapter}{Annexes}
-  \chapter*{Annexes}
+  \chapter{Annexes}
     \begin{figure}
       \centering
       \includegraphics[height=0.9\textheight]{build/memory_layout.pdf}
