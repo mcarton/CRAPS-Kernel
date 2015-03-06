@@ -3,6 +3,7 @@
 \usepackage{afterpage}
 \usepackage{fontspec}
 \usepackage{geometry}
+\usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{lscape}
 \usepackage{siunitx}
@@ -366,6 +367,8 @@
       address of the process so all the references are relative to this base
       address.
 
+      The memory layout of the kernel is presented in figure~\ref{fig:memory}.
+
     \section{Final result}
       Our final result is a micro "operating system" running on the board.
 
@@ -413,6 +416,12 @@
 
   \addcontentsline{toc}{chapter}{Annexes}
   \chapter*{Annexes}
+    \begin{figure}
+      \centering
+      \includegraphics[height=0.9\textheight]{build/memory_layout.pdf}
+      \caption{Memory layout of the kernel}\label{fig:memory}
+    \end{figure}
+
     \newgeometry{top=1cm,bottom=1cm}
     \thispagestyle{empty}
     \begin{figure}
