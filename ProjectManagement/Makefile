@@ -11,13 +11,13 @@ export TEXC = latexmk -output-directory=build -pdflatex="lualatex %O %S" -pdf -d
 
 .PHONY: FORCE
 
-build/memory_layout.pdf: fig/memory_layout.svg
+build/%_fromsvg.pdf: fig/%.svg
 	inkscape $< --export-area-drawing --export-pdf=$@
 
 build/ProjectCharter.pdf: ProjectCharter.tex titlepage.tex build/Gantt.pdf
 	$(TEXC) -latexoption=-shell-escape $<
 
-build/FinalReport.pdf: FinalReport.tex build/Gantt.pdf build/memory_layout.pdf
+build/FinalReport.pdf: FinalReport.tex build/Gantt.pdf build/memory_layout_fromsvg.pdf
 	$(TEXC) -latexoption=-shell-escape $<
 
 build/%.pdf: %.tex FORCE
