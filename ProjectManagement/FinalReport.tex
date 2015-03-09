@@ -91,7 +91,7 @@
       \emph{CRAPS} is a simple processor conceived by Jean-Christophe Buisson
       for the first year Compiler Architecture course. It is inspired from the
       \emph{SPARC} architecture. It is written in \emph{SHDL}, a simple hardware
-      description language also developed by Mr. Buisson.
+      description language also developed by Mr.\ Buisson.
 
       The processor is loaded on a Spartan-3E \emph{FPGA} (see
       figure~\ref{fig:nexys}).
@@ -228,17 +228,20 @@
         It was a bit difficult at first to identify the risks, but these three
         were very pertinent.
 
-        The first risk was put in evidence by Mr Buisson, who told us that some
-        specific misuse of the card could lead to permanent damage. So we tried
-        to obtain more board, and had 6 boards (none was damaged).
+        The first risk was put in evidence by Mr.\ Buisson, who told us that
+        some specific misuse of the card could lead to permanent damage. We
+        managed not be damage any board.
 
-        The second risk was a big concern during a big part of the project, as it
-        was difficult to integrate the RAM. We worked on reducing the size of our code,
-        but at the end of the project, it was even possible to map the RAM chip on a portion
-        of the "virtual" memory (but it was considerably slower).
+        The second risk was a big concern during a big part of the project, as
+        it was difficult to integrate the RAM. We worked on reducing the size of
+        the generated code, but at the end of the project, it was even possible
+        to map the external RAM chip (but it was considerably slower).
 
-        The third risk was not solved, however if we communicate slowly from the computer, everything
-        works fine, and we don't think the impact of that problem is very important.
+        The third risk was not solved, however if we communicate slowly enough
+        from the computer, everything works fine. We don't think the impact of
+        that problem is very important as the main goal of the communication
+        (make a small shell on the board) is implemented and works properly at
+        that speed.
 
   \chapter{Specification phase}
     We planned a meeting with the client the first day of the project. He
