@@ -358,7 +358,7 @@
       To do that, we also have a data structure containing the list of the
       processes. First, it was simply a list resized when we added or deleted
       processes. However, we ended up changing it to a list of a fixed size,
-      containing either a pointer to processes stacks, or a null values.
+      containing either a pointer to processes stacks, or a null value.
       This allowed the processes to have a fixed ID that will not change during
       their life. With that knowledge, the process management was made
       easier, and it was also possible to annotate memory zones with the
@@ -424,9 +424,8 @@
       The biggest problem was to have fully position-independent code (when
       we compile code, it references variables that are at absolute addresses
       in memory, and the code can be loaded at any address). To solve that
-      problem we defined a register, \verb+%r24+, that contains the base
-      address of the process so all the references are relative to this base
-      address.
+      problem we defined a register, \verb+%r24+, that contains the address of
+      static data so all the references are relative to this base address.
 
       The memory layout of the kernel is presented in figure~\ref{fig:memory}.
 
@@ -438,7 +437,7 @@
       send command to the board.
 
       Among these command, it is possible to list the active process, and start
-      built-in tasks (a counter, a task to control the LEDs on the board...).
+      built-in tasks (a counter, a task to control the LEDs on the board \dots).
       We can also load code that was compiled on the computer using dynamic
       loading. We can also kill running processes.
 
