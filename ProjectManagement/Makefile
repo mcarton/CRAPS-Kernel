@@ -17,11 +17,14 @@ build/%_fromsvg.pdf: fig/%.svg
 build/ProjectCharter.pdf: ProjectCharter.tex titlepage.tex build/Gantt.pdf
 	$(TEXC) -latexoption=-shell-escape $<
 
-build/FinalReport.pdf: FinalReport.tex build/Gantt.pdf build/memory_layout_fromsvg.pdf build/micromachine_old_fromsvg.pdf build/micromachine_updated_fromsvg.pdf
+build/FinalReport.pdf: FinalReport.tex build/Gantt.pdf build/memory_layout_fromsvg.pdf build/micromachine_old_fromsvg.pdf build/micromachine_updated_fromsvg.pdf Actions/ActionManagement.pdf
 	$(TEXC) -latexoption=-shell-escape $<
 
 build/%.pdf: %.tex FORCE
 	$(TEXC) -latexoption=-shell-escape $<
+
+Actions/ActionManagement.pdf: 
+	libreoffice --headless --convert-to pdf --outdir Actions Actions/ActionManagement.ods 
 
 clean: FORCE
 	$(TEXC) -C
