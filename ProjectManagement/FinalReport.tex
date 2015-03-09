@@ -409,7 +409,21 @@
       TODO: link the definition of the subset
 
       \subsection{Optimizations}
-        All the optimizations made by the compiler.
+      We worked on some optimizations for the compiler. Our main goal was to
+      minimize the size of the generated assembly.
+
+      The compiler is now able to remove unused functions. It is also able to
+      simplify arithmetics expressions and compute addresses at compile-time.
+      It uses as much as possible registers with a fixed value (such as
+      \verb+%r0+ and \verb+%r20+), and uses optimized instructions like
+      \verb+sethi+ or\verb+setq+.
+
+      We also added the \verb+register+ keyword that allows a variable to
+      be stored in a register. Variables stored in registers are much faster
+      than the ones in memory.
+
+      After a benchmark, we concluded that the optimizations made reduces the
+      size of the generated assembly by approximately $25\%$.
 
     \section{Dynamic loading}
       One of the last task we had to make was to make it possible to
