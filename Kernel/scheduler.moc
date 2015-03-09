@@ -55,7 +55,6 @@ pwm_handler_do_it:
     push %r28
     call f_next_stack
     pop %r28
-    add %sp, 1, %sp
     mov %r1, %sp
 
     pop %r28 // @ret
