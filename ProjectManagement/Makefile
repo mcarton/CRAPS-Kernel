@@ -23,7 +23,7 @@ build/FinalReport.pdf: FinalReport.tex build/Gantt.pdf build/memory_layout_froms
 build/%.pdf: %.tex FORCE
 	$(TEXC) -latexoption=-shell-escape $<
 
-Actions/ActionManagement.pdf: 
+Actions/ActionManagement.pdf: Actions/ActionManagement.ods
 	libreoffice --headless --convert-to pdf --outdir Actions Actions/ActionManagement.ods 
 
 clean: FORCE
