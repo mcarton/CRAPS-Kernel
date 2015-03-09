@@ -157,6 +157,9 @@
 
     We were initially 5 but one of us had to leave the team for medical reasons
     at the beginning of the project.
+    The fact that we know each other and have already worked together on several
+    occasions made the management easier, and we did not need a very strict
+    repartition of the tasks.
 
     \section{Project supervision}
       We were affected to Xavier Mechin, quality control manager at Airbus
@@ -187,6 +190,17 @@
       as our project was short, we did not follow all Airbus practices but this
       showed us how do companies such as Airbus manage their projects.
 
+      \section{Planification and repartion of tasks}
+      TODO:devellop.
+
+        Martin did it.
+        Once the work on the Specifications was advanced enough(cf
+        \ref{sec:spec}), we could give a rough time estimate for each task, and
+        take into account f2s constraints to make a planning (see
+        \ref{fig:gantt}). Each one decides what he wants to work on. When
+        someone encountered difficulties (which happened in particular for the
+        RS-232 and the flash), he could ask for help, and another member of the
+        team would come to work on his task.
       \section{Risks management}
         In order for the project to be as smooth as possible, we made a list
         the events that could threaten the project, and defined actions to
@@ -231,7 +245,7 @@
 
         The first risk was put in evidence by Mr.\ Buisson, who told us that
         some specific misuse of the card could lead to permanent damage. We
-        managed not be damage any board.
+        managed not to damage any board.
 
         The second risk was a big concern during a big part of the project, as
         it was difficult to integrate the RAM. We worked on reducing the size of
@@ -249,7 +263,8 @@
     \ref{ActionFile}). On this file, we listed the actions we had to do. Each
     action has a description, the event that caused it and the date of cloture.
     We mainly used it to distribute the redaction of minutes among us. We also
-    kept track of some other actions related to the technical aspects.
+    kept track of some other actions related to the technical aspects and
+    exceptionnal events.
 
   \chapter{Specification phase}
     We planned a meeting with the client the first day of the project. He
@@ -258,7 +273,7 @@
     ENSEEIHT. Thus, as long as he can show students how an operating system
     works the project will be a success.
 
-    \section{Redaction of the technical specifications}
+    \section{Redaction of the technical specifications}\label{sec:spec}
       Once we had determined the client's needs, we had to specify exactly what
       we had to do. This phase was difficult as the client was imprecise about
       what we had to do. We decided to do split the project in three distinct
@@ -313,6 +328,26 @@
         machine is quite limited.
 
   \chapter{Implementation phase}
+    \section{Hardware}
+        TODO: intro on what was modified
+        \subsection{Block Ram}
+        TODO: expand each point
+        -- first version did not use it.
+        -- it was because not synchronous
+        -- use synchronous module -> 48K 
+        -- caused timing issues -> need to wait 1 cycle to read 
+        \subsection{flash}
+        TODO: expand each point
+         -- try to use digilent module
+         -- don't work
+         -- pb: we need to erase a block before writing it
+         -- -> abandoned, can not be used as we intended.
+        \subsection{External RAM}
+         As the flash and the RAM share an interface and handle in a similar
+         way, the work done for the former could be adapted to use the external
+         ram module. A bit more work was required to interface it nicely with
+         the processor, and be able to only manipulate 32 bit words(which means
+         we can directly use it to store programs if needed). 
     \section{Interrupts}
       We first had to develop an interrupt system to have the possibility of
       executing code when receiving some events. When an interrupt is triggered,
@@ -445,7 +480,7 @@
         commands.
 
   \chapter{Validation phase}
-
+    TODO
     \section{Tests}
 
     \section{Limitations}
