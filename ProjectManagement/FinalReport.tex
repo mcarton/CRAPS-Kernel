@@ -6,7 +6,6 @@
 \usepackage{geometry}
 \usepackage{graphicx}
 \usepackage{hyperref}
-\usepackage{lscape}
 \usepackage{siunitx}
 \usepackage{titling}
 
@@ -493,17 +492,10 @@
       \caption{Updated version of the CRAPS micromachine}
     \end{figure}
 
-    \newgeometry{top=1cm,bottom=1cm}
-    \thispagestyle{empty}
     \begin{figure}
       \centering
-      \includegraphics[
-        angle=90,
-        width=\linewidth,
-        height=\textheight
-      ]{Gantt.pdf}
-      \label{fig:gantt}
+      \includegraphics[height=\textheight, width=\textwidth, keepaspectratio]
+                      {Gantt.pdf}
+      \caption{Last version of the Gantt diagram}\label{fig:gantt}
     \end{figure}
-    \clearpage
-    \restoregeometry
 \end{document}
