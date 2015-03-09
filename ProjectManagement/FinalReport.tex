@@ -58,11 +58,11 @@
     \section{Context}
       This project, suggested by Daniel Hagimont, is based on the CRAPS
       processor developed by Jean-Christophe Buisson and used in the first-year
-      computer architecture courses at ENSEEIHT. The goal is to develop an
+      Computer Architecture courses at ENSEEIHT. The goal is to develop an
       operating system that would run on top of that processor.
 
       Daniel Hagimont aims at doing an operating system course for ENSEEIHT
-      students. The course would be based on the computer architecture course as
+      students. The course would be based on the Computer Architecture course as
       Daniel Hagimont wants to add a more continuity in ENSEEIHT courses. At the
       beginning of the project it was only possible to do a little of assembly
       directly on the processor to see it working, but nothing more.
@@ -71,13 +71,6 @@
       system. Students should be able to really make the link between the
       processor and operating system they just built and the computer and
       underlying operating systems they use everyday.
-
-      \begin{figure}[h]
-        \centering
-        \includegraphics[width=0.8\textwidth]{./fig/Nexys2.jpg}
-        \caption{A Nexys2 board}
-        \label{fig:nexys}
-      \end{figure}
 
     \section{Acronyms}
       \begin{description}
@@ -95,24 +88,31 @@
       \end{description}
 
     \section{Pre-existing code and tools}
-      \emph{CRAPS} is a simple processor conceived by Jean-Christophe Buisson for the
-      first year architecture course. It is inspired from the \emph{SPARC}
-      architecture. It is written in \emph{SHDL}, a simple hardware description
-      language also developed by Mr. Buisson.
+      \emph{CRAPS} is a simple processor conceived by Jean-Christophe Buisson
+      for the first year Compiler Architecture course. It is inspired from the
+      \emph{SPARC} architecture. It is written in \emph{SHDL}, a simple hardware
+      description language also developed by Mr. Buisson.
 
       The processor is loaded on a Spartan-3E \emph{FPGA} (see
       figure~\ref{fig:nexys}).
 
-      In the beginning of the project, we were given :
+      \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.8\textwidth]{./fig/Nexys2.jpg}
+        \caption{A Nexys2 board}
+        \label{fig:nexys}
+      \end{figure}
+
+      In the beginning of the project, we were given:
       \begin{itemize}
-        \item all the \emph{SHDL} source code for the CRAPS processor
-        \item the source code for the \emph{SHDL} compiler. It takes \emph{SHDL}
+        \item the \emph{SHDL} source code for the CRAPS processor;
+        \item the source code for the \emph{SHDL} compiler: it takes \emph{SHDL}
           code, produces \emph{VHDL} code and uses an external tool to
           synthesise the design and create the final file that can be loaded on
-          the \emph{FPGA}.
+          the \emph{FPGA};
         \item the source code for the monitor that interacts with the processor
-          on the board. The monitor also contains the compiler to generate
-          \emph{CRAPS} bytecode from the \emph{CRAPS} assembly code.
+          on the board and contains the assembler to generate \emph{CRAPS}
+          bytecode from the \emph{CRAPS} assembly code.
       \end{itemize}
 
     \section{Work required}
@@ -145,7 +145,6 @@
 
       We did all the work on our own personal computers.
 
-
   \chapter{Project management}
     The team is composed of four members:
     \begin{itemize}
@@ -177,8 +176,9 @@
         \item Week 5 (February 18th): planning of the testing phase;
         \item Week 6 (February 25th): review of the test plan, planning of the
           final report and presentation;
-        \item Week 7 (March 4th): review of the draft of final report.
-        \item Week 8 (Martin 10th): TODO
+        \item Week 7 (March 4th): review of the draft of final report;
+        \item Week 8 (March 10th): review of the final report and draft of
+          slides for the final presentation.
       \end{itemize}
 
       During these meetings, Xavier explained us what documents we should
@@ -240,10 +240,10 @@
       steps:
       \begin{itemize}
         \item in a first time, develop the tools to write the  most basic
-            functionalities
-        \item add a possibility to communicate with the OS with through the
-            serial port
-        \item finally, be able to load and run program dynamically
+            functionalities;
+        \item then add a possibility to communicate with the OS with through the
+          serial port;
+        \item finally, be able to load and run program dynamically.
       \end{itemize}
       Once these steps were decided, we refined them into several tasks that
       could be done by the different members of the group.
@@ -253,7 +253,7 @@
       We choose to work as much as possible on GNU/Linux as this is our
       daily-use operating system and the operating system installed on most
       ENSEEIHT computers.
-      However, the tools we needed were designed to work exclusively on
+      However, some tools we needed were designed to work exclusively on
       Microsoft Windows. To get around this problem, we decided to use the
       Windows-specific tools in a virtual machine or adapt tools to GNU/Linux
       when possible. We ended up adapting the monitor, and using it as a basis,
@@ -278,14 +278,47 @@
         a lot of features we would not have used but would have had to
         support.
 
+        \paragraph{}
+        Finally, this was a good choice: The compiler we have made is really
+        complete and even able to make some optimizations.
+
+        We have extended it we made to accept a language closer to \emph{C} and
+        have added a lot of missing features. We also take some time to improve
+        the generated code to use as few memory as possible as the target
+        machine is quite limited.
+
   \chapter{Implementation phase}
     \section{Interrupts}
       We first had to develop an interrupt system to have the possibility of
-      executing code when receiving data from the exterior.
+      executing code when receiving some events. When an interrupt is triggered,
+      the current task pauses to let the interrupt handler execute. This needs
+      to be completely transparent for the task.
 
-      \subsection{Software interrupts}
+      \subsection{PWM interrupt}
+        This is the first interrupt we have integrated. The PWM interrupt is
+        triggered at regular interval and gives us the possibility to write the
+        scheduler (see section\ref{sec:scheduler}).
 
-    \section{Scheduler}
+      \subsection{Buttons interrupt}
+        We have created a specific interrupt for each of the three available
+        buttons on the board. This is not of any useful use anymore but it was
+        very handy during the development of the interrupt handler as it allows
+        humans to directly interact with the board.
+
+      \subsection{RS-232 interrupt}
+        We had to add a specific interrupt for the serial port communication.
+        An interrupt is triggered whenever a byte is received. The corresponding
+        handler caches this byte in a buffer. It has to be fast as the byte
+        is removed from the \emph{VHDL} module when we receive the next byte.
+
+        Another interrupt handler should be triggered when the serial port is
+        ready to send a byte but it does not work. When we try to use the
+        corresponding bit in the VHDL module, the processor freezes. We did not
+        resolve this problem as we have no idea of what causes it.
+
+      \subsection{Software interrupt}
+
+    \section{Scheduler}\label{sec:scheduler}
       The scheduler is the component that makes it possible to execute more than
       one task at a time: It will switch between all running task in a very fast
       way, giving the illusion that all processes runs at the same time.
@@ -293,7 +326,8 @@
       To make it work, we had to create a specific interrupt that will be
       triggered regularly by a clock. This interrupt saves the execution
       context (all the registers and flags of the processor) and restores the
-      one of the next process to execute.
+      one of the next process to execute. The process must be completely
+      transparent, as a task should not be distributed by a context switch.
 
       To do that, we also have a data structure containing the list of the
       processes. First, it was simply a list resized when we added or deleted
@@ -317,10 +351,10 @@
       between each byte.
 
       \subsection{OS implantation}
-        When a byte is received, an interrupt is sent to the OS. The handler
+        When a byte is received, an interrupt is triggered. The handler
         reads the byte from the UART and puts it in a circular buffer.
-        Processes that want can then read this buffer.Processes can also write
-        directly to the UART.
+        Processes that want to receive data read from this buffer. Processes can
+        also write directly to the UART to send a byte.
 
         It would be nice to make the communication through system calls. It
         would allow us to implement communication canals, which would allow
