@@ -14,8 +14,7 @@
         time slot format=isodate, /pgfgantt/time slot format/base century=20
         bar label font=\normalsize\color{black!50},
         bar/.append style={darkgreen},
-        bar incomplete/.append style={orange!75},
-        today=15-02-27
+        bar incomplete/.append style={orange!75}
       ]{15-01-19}{15-03-13}
       \gantttitlecalendar{month=name, week, day}                              \\
 
@@ -54,11 +53,10 @@
           \ganttmilestone[inline]{V3}{15-03-07}                               \\
 
       \ganttgroup[name=final]{Evaluation}{15-03-09}{15-03-13}                 \\
-          \ganttbar[progress=0]{Make report}{15-03-09}{15-03-12}              \\
-          \ganttbar[progress=0]{Make presentation}{15-03-09}{15-03-12}        \\
+          \ganttbar[progress=100]{Documentation}{15-03-02}{15-03-10}          \\
+          \ganttbar[progress=100]{Make report}{15-03-09}{15-03-12}            \\
+          \ganttbar[progress=100]{Make presentation}{15-03-09}{15-03-12}      \\
           \ganttmilestone{Defense}{15-03-13}
-
-      %\ganttlink{flash}{FS}
     \end{ganttchart}
   \end{tikzpicture}
 \end{document}
