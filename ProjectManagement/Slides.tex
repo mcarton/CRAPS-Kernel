@@ -12,6 +12,9 @@
 \usepackage{hyperref}
 \usepackage{pdflscape}
 
+\usepackage{tikz}
+\usetikzlibrary{shapes}
+
 \title{CRAPS Kernel}
 \subtitle{Final presentation}
 \author{
@@ -156,11 +159,39 @@
     \end{frame}
 
     \begin{frame}{Scheduler}
-      Needed to make "context switch": change the current process.
+      Needed to make ``context switch'': change the current process.
 
-      \begin{center}\includegraphics[scale=0.2]{fig/rr.png}\end{center}
+      \begin{columns}
+        \begin{column}{0.4\textwidth}
+          \begin{figure}
+            \centering
+            \begin{tikzpicture}[auto, ->, node distance=1.25cm]
+              \node[auto] (CPU) [draw, style={font=\tiny}] {CPU};
 
-      Have to save the current state of the processor, restore the state for the other process, and continue.
+              \node[auto] (A)   [draw, ellipse, above of=CPU, fill=gray,
+              label={[align=center, style={font=\tiny}]executes on\\processor}] {};
+              \node[auto] (B)   [draw, ellipse, right of=CPU] {};
+              \node[auto] (C)   [draw, ellipse, below of=CPU] {};
+              \node[auto] (D)   [draw, ellipse, left  of=CPU] {};
+
+              \path (CPU) edge (A);
+
+              \path (A) edge [bend left] (B);
+              \path (B) edge [bend left] (C);
+              \path (C) edge [bend left] (D);
+              \path (D) edge [bend left] (A);
+            \end{tikzpicture}
+          \end{figure}
+        \end{column}
+        \begin{column}{0.6\textwidth}
+          \begin{itemize}
+            \item Save the current state of the process
+            \item Restore the state for the other process
+          \end{itemize}
+
+        \end{column}
+      \end{columns}
+
     \end{frame}
 
     \begin{frame}{Scheduler}
