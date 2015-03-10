@@ -328,27 +328,48 @@
         machine is quite limited.
 
   \chapter{Implementation phase}
-    \section{Hardware}
-        TODO: intro on what was modified
+    \section{Hardware extension}
+        In order to write an OS, we needed to extend the micromachine.
+        It lacked several key elements:
+        \begin{itemize}
+            \item the possibility to handle several interrupts
+            \item enough RAM to load a program the size of the kernel.
+            \item serial port communication
+        \end{itemize}
+        \subsection{interrupts}
+            To handle interrupts, we added a module. It registers when its
+            inputs are activated and returns the interrupt of higher level.
+            Another input is activated when the higher interrupt has been
+            treated.
         \subsection{Block Ram}
-        TODO: expand each point
-        -- first version did not use it.
-        -- it was because not synchronous
-        -- use synchronous module -> 48K 
-        -- caused timing issues -> need to wait 1 cycle to read 
-        \subsection{flash}
-        TODO: expand each point
-         -- try to use digilent module
-         -- don't work
-         -- pb: we need to erase a block before writing it
-         -- -> abandoned, can not be used as we intended.
+            The first version of CRAPS had only 512 words of memory. This
+            memory was asynchronous, which prevented the synthesizer from
+            mapping it in the dedicated block RAM of the FPGA. Using a
+            synchronous implementation, we were able to access the block RAM,
+            and integrate up to 48K bytes of memory in the processor. This 
+            however caused timing issues. The block ram can not be read directly
+            and a little amount of time is needed for the value to be put in a
+            reading buffer. We chose an easy way to deal with this problem, 
+            adding a waiting cycle in the sequencer. 
+        \subsection{Flash memory}
+            We thought that it would be interesting to use the persistent memory
+            that is available on the board to create a little file system, and 
+            store user programs. We spent a lot time figuring out how to
+            communicate with it, based both on the memory chip specifications
+            and the digilent implementation of a module that accesses the flash
+            memory. This still did not work. We finally realised that the issue 
+            was that we had to erase a block before writing it. This meant that
+            we could not use the memory as we intended to, and we abandoned this
+            idea.
+
         \subsection{External RAM}
-         As the flash and the RAM share an interface and handle in a similar
-         way, the work done for the former could be adapted to use the external
-         ram module. A bit more work was required to interface it nicely with
-         the processor, and be able to only manipulate 32 bit words(which means
-         we can directly use it to store programs if needed). 
-    \section{Interrupts}
+            As the flash and the RAM share an interface and handle in a similar
+            way, the work done for the former could be adapted to use the
+            external ram module. A bit more work was required to interface it
+            nicely with the processor, and be able to only manipulate 32 bit
+            words(which means we can directly use it to store programs if
+            needed). 
+    \section{Description of the interrupts}
       We first had to develop an interrupt system to have the possibility of
       executing code when receiving some events. When an interrupt is triggered,
       the current task pauses to let the interrupt handler execute. This needs
@@ -377,6 +398,7 @@
         resolve this problem as we have no idea of what causes it.
 
       \subsection{Software interrupt}
+      TODO
 
     \section{Scheduler}\label{sec:scheduler}
       The scheduler is the component that makes it possible to execute more than
