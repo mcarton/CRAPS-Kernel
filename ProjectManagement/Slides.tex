@@ -177,9 +177,21 @@
     \end{frame}
 
     \begin{frame}{Serial Port}
+      To communicate with the computer we used a serial port.
+
+      \pause
+      We had to modify the processor:
       \begin{itemize}
-        \item New interrupt.
-        \item Limitations.
+        \item Add a new built-in module in SHDL
+        \item Add a new interrupt in the processor
+        \item Map the module to memory
+      \end{itemize}
+
+      \pause
+      We had some problems:
+      \begin{itemize}
+        \item the module can cause the synthesis to fail (too complex?)
+        \item the communication is slow, we can lose data
       \end{itemize}
     \end{frame}
 
