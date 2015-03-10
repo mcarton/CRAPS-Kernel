@@ -150,9 +150,23 @@
     \end{frame}
 
     \begin{frame}{Scheduler}
+      Needed to make "context switch": change the current process.
+
+      \begin{center}\includegraphics[scale=0.2]{fig/rr.png}\end{center}
+
+      Have to save the current state of the processor, restore the state for the other process, and continue.
+    \end{frame}
+
+    \begin{frame}{Scheduler}
       \begin{itemize}
-        \item New interrupt based on the PWM...
-        \item that will trigger a context switch.
+        \item New interrupt based on the PWM, that will trigger a context switch.
+        \item Context switch:
+        \begin{enumerate}
+           \item Save the registers on the current stack
+           \item Change the current stack to the one of the next process
+           \item Restore the registers
+           \item Return from interrupt (will jump to the address of the instruction stored on the stack of the new process)
+        \end{enumerate}
       \end{itemize}
     \end{frame}
 
@@ -164,11 +178,23 @@
     \end{frame}
 
     \begin{frame}{Memory Management}
+        
+        We need to be able to dynamically allocate memory.
+        
+        In modern computers: virtual memory (segmentation and pagination).
+        Too complicated.
+
+        We just need three functions: malloc, free, realloc.
+        
+        How to free all the memory of a process ?
+    \end{frame}
+    
+    \begin{frame}{Memory Management}
       \begin{itemize}
-        \item dynamic allocation
-        \item malloc, free, realloc
-        \item very simple implementation
-        \item we keep the PID in the block headers
+        \item Stored in blocks, with a header indicating the size and the PID of the owner.
+        \item All block have a size that is a power of two.
+        \item We never split/merge/delete blocks, we just reuse them if freed.
+        \item We can free all the blocks of a process.
       \end{itemize}
     \end{frame}
 
