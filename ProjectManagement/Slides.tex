@@ -3,17 +3,9 @@
 % {{{ beamer stuffs
 \setbeamertemplate{footline}[frame number]
 \beamertemplatenavigationsymbolsempty%
-
-\AtBeginSection[]{%
-  \begin{frame}<beamer>{Plan}
-    \tableofcontents[currentsection]
-  \end{frame}
-}
-\AtBeginSubsection[]{%
-  \begin{frame}<beamer>{Plan}
-    \tableofcontents[currentsubsection]
-  \end{frame}
-}
+\logo{\includegraphics[height=4mm]{fig/LogoEnseeiht.png}}
+\usetheme{Montpellier}
+\usecolortheme{dolphin}
 % }}}
 
 \usepackage{fontspec}
@@ -32,8 +24,12 @@
 \date{March 13, 2015}
 
 \begin{document}
-  \begin{frame}
+  \begin{frame}[plain]
     \titlepage%
+  \end{frame}
+
+  \begin{frame}[plain]
+    \tableofcontents
   \end{frame}
 
   \section{The project}
@@ -52,7 +48,7 @@
       \end{itemize}
     \end{frame}
 
-    \begin{frame}
+    \begin{frame}[plain]
       \begin{figure}
         \centering
         \includegraphics[width=\textwidth, keepaspectratio]{fig/Nexys2.jpg}
@@ -106,7 +102,7 @@
       \begin{frame}{Calendar}
       \end{frame}
 
-      \begin{frame}
+      \begin{frame}[plain]
         \begin{figure}
           \includegraphics[height=\textheight, width=\textwidth, keepaspectratio]
                           {build/Gantt.pdf}
@@ -115,7 +111,7 @@
 
   \section{Processor Changes}
     \begin{landscape}
-        \begin{frame}
+        \begin{frame}[plain]
             \includegraphics[scale=0.22]
                             {build/micromachine_updated_fromsvg.pdf}
 
@@ -162,7 +158,7 @@
       \end{itemize}
     \end{frame}
 
-    \begin{frame}
+    \begin{frame}[plain]
       \begin{figure}
         \begin{minipage}[c]{0.5\textwidth}
           \caption{Memory layout}
