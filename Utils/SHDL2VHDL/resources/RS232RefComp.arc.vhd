@@ -282,7 +282,6 @@ begin
                     CE <= '1';
                     strNext <= strIdle;
             end case;
-
         end process;
 
     -- TBE State Machine
@@ -301,7 +300,6 @@ begin
     -- flag
     process (stbeCur, CLK, WR, DBIN, load)
         begin
-
             case stbeCur is
                 when stbeIdle =>
                     TBE <= '1';
@@ -333,7 +331,7 @@ begin
                         stbeNext <= stbeWaitWrite;
                     end if;
                 end case;
-            end process;
+        end process;
 
     -- This process loads and shifts out the transfer shift register
     process (load, shift, tClk, tfSReg)
@@ -344,7 +342,6 @@ begin
                     tfSReg (10 downto 0) <= ('1' & par & tfReg(7 downto 0) &'0');
                 end if;
                 if shift = '1' then
-
                     tfSReg (10 downto 0) <= ('1' & tfSReg(10 downto 1));
                 end if;
             end if;
