@@ -531,10 +531,48 @@
         commands.
 
   \chapter{Validation phase}
-    TODO
     \section{Tests}
+      The tests were not easy to do. We tried to automate them as much as
+      possible, unfortunately, it was not always possible.
+
+      The tests for the three main tasks are independent, but as the kernel
+      obviously use the compiler and the processor, the tests for these two
+      tasks were really important.
+
+      \subsection{Processor}
+        The processor already had some tests. We took care of their validity as
+        we modified it.
+
+        We also made more tests for each feature we have added.
+
+      \subsection{Compiler}
+        The compiler has two kinds of tests.
+
+        The first tests are fully automated and tests if the compiler succeeds
+        to compile valid program and fails to compile invalid programs. We have
+        plenty of such tests and we tried to be as exhaustive as possible. They
+        do not test the compiler correctness.
+
+        The other kind of tests test if the compiler generates valid code. These
+        tests are not automated as we need to upload the code on the board after
+        the compilation. Most of these tests are expected to produce a specific
+        output on the 7-segment display when then succeed.
+
+      \section{Kernel}
+        TODO
+
+        Of course, for both the processor and compiler, the ability to run the
+        kernel shows is the ultimate test.
 
     \section{Limitations}
+      The project has some limitations:
+      \begin{itemize}
+        \item The communication is quite slow, but sufficient for a shell.
+        \item We were not able to use the flash memory. As such, the board
+          has no persistent memory.
+      \end{itemize}
+
+      TODO
 
   \chapter{Conclusion}
     This was a passionating project and we think it was a success. The client
