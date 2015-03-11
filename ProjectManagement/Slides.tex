@@ -97,7 +97,6 @@
                           {Actions/ActionManagement.pdf}
       \end{frame}
 
-      
       \begin{frame}{Specifications}
         \begin{itemize}
           \item First week of the project
@@ -226,7 +225,8 @@ TODO
            \item Save the registers on the current stack
            \item Change the current stack to the one of the next process
            \item Restore the registers
-           \item Return from interrupt (will jump to the address of the instruction stored on the stack of the new process)
+           \item Return from interrupt (will jump to the address of the
+             instruction stored on the stack of the new process)
         \end{enumerate}
       \end{itemize}
     \end{frame}
@@ -253,15 +253,17 @@ TODO
     \begin{frame}{Memory Management}
       \begin{itemize}
         \item We need to be able to dynamically allocate memory.
-        \item In modern computers: virtual memory (segmentation and pagination). Too complicated.
+        \item In modern computers: virtual memory (segmentation and pagination).
+          Too complicated.
         \item We just need three functions: malloc, free, realloc.
         \item How to free all the memory of a process ?
       \end{itemize}
     \end{frame}
-    
+
     \begin{frame}{Memory Management}
       \begin{itemize}
-        \item Stored in blocks, with a header indicating the size and the PID of the owner.
+        \item Stored in blocks, with a header indicating the size and the PID of
+          the owner.
         \item All blocks have a size that is a power of two.
         \item We never split/merge/delete blocks, we just reuse them if freed.
         \item We can free all the blocks for a given process.
