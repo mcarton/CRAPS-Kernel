@@ -466,26 +466,36 @@
       the implementation simple, and in general the block are reused a lot.
 
     \section{Compiler}
-      We needed to support a language very close to C that could be compiled to
-      \emph{CRAPS} assembly.
-      TODO: link the definition of the subset
+      We needed to support a language very close to \textit{C} that could be
+      compiled to \emph{CRAPS} assembly.
+      A document that summarize what language constructs are available and the
+      differences with real \textit{C }has been written as part of the
+      documentation.
 
       \subsection{Optimizations}
-      We worked on some optimizations for the compiler. Our main goal was to
-      minimize the size of the generated assembly.
+        We worked on some optimizations for the compiler. Our main goal was to
+        minimize the size of the generated assembly.
 
-      The compiler is now able to remove unused functions. It is also able to
-      simplify arithmetics expressions and compute addresses at compile-time.
-      It uses as much as possible registers with a fixed value (such as
-      \verb+%r0+ and \verb+%r20+), and uses optimized instructions like
-      \verb+sethi+ or\verb+setq+.
+        The compiler is now able to remove unused functions. It is also able to
+        simplify arithmetics expressions and compute addresses at compile-time.
+        It uses as much as possible registers with a fixed value (such as
+        \verb+%r0+ and \verb+%r20+), and uses optimized instructions like
+        \verb+sethi+ or\verb+setq+.
 
-      We also added the \verb+register+ keyword that allows a variable to
-      be stored in a register. Variables stored in registers are much faster
-      than the ones in memory.
+        We also added the \verb+register+ keyword that allows a variable to
+        be stored in a register. Variables stored in registers are much faster
+        than the ones in memory.
 
-      After a benchmark, we concluded that the optimizations made reduces the
-      size of the generated assembly by approximately $25\%$.
+        After a benchmark, we concluded that the optimizations made reduces the
+        size of the generated assembly by approximately $25\%$.
+
+      \subsection{Position Independent Code}
+        The compiler has to generate Position Independent Code as we need to be
+        able to dynamically load code. This required to make some modifications
+        to the compiler.
+
+        It also required to set a new convention for a register to hold the
+        value of the global data section of the current code.
 
     \section{Dynamic loading}
       One of the last task we had to make was to make it possible to
