@@ -81,6 +81,16 @@
         \end{itemize}
       \end{frame}
 
+      \begin{frame}{Team management}
+        Quite free, working on what we like, when we like.
+
+        \pause
+        \begin{figure}
+          \centering
+          \includegraphics[width=0.9\textwidth]{fig/punchcard.png}
+        \end{figure}
+      \end{frame}
+
     \subsection{Project organization}
       \begin{frame}{Risks management}
         We have identified three real risks and mitigated them:
@@ -109,6 +119,24 @@
           \end{itemize}
       \end{frame}
 
+      \begin{frame}{Task repartition and planning}
+          We used an incremental process, adding features one after another:%
+          \begin{enumerate}
+            \item Write a simple scheduler
+            \item Add communications using serial port
+            \item Handle dynamic programs
+          \end{enumerate}
+
+          We wrote a planning taking finish to start constraints into account.
+      \end{frame}
+
+      \begin{frame}[plain]
+        \begin{figure}
+          \includegraphics[height=\textheight, width=\textwidth, keepaspectratio]
+                          {build/Gantt.pdf}
+        \end{figure}
+      \end{frame}
+
       \begin{frame}{Test Means}
         Not fully automated because of the constraints of the project:
         \begin{itemize}
@@ -124,32 +152,6 @@
         Creation of a command line tool to load code more easily.
       \end{frame}
 
-      \begin{frame}{Task repartition and planning}
-          We used an incremental process, adding features one after another.
-          \begin{enumerate}
-            \item Write a simple scheduler
-            \item Add communications using serial port
-            \item handle dynamic programs
-          \end{enumerate}
-          We wrote a planning taking finish to start constraints into account
-      \end{frame}
-
-      \begin{frame}[plain]
-        \begin{figure}
-          \includegraphics[height=\textheight, width=\textwidth, keepaspectratio]
-                          {build/Gantt.pdf}
-        \end{figure}
-      \end{frame}
-
-      \begin{frame}{Team management}
-        Quite free, working on what we like.
-
-        \begin{figure}
-          \centering
-          \includegraphics[width=0.9\textwidth]{fig/punchcard.png}
-        \end{figure}
-      \end{frame}
-
       \begin{frame}{Deliverables}
         \begin{itemize}
           \item Documentation and manual for students and teachers
@@ -160,7 +162,7 @@
               \item \dots
             \end{itemize}
           \item Kernel, compiler, new processor
-          \item Reports, abstract
+          \item Reports, abstracts
         \end{itemize}
       \end{frame}
 
@@ -312,7 +314,7 @@
     \end{frame}
 
     \subsection{Dynamic loading}
-      \begin{frame}
+      \begin{frame}{Dynamic loading}
         \begin{itemize}
           \item Not very hard to do\dots
           \item \dots but we had to make the code position-independent.
@@ -338,9 +340,11 @@
       \end{itemize}
     \end{frame}
 
-  \section{Use/Improvements}
-    \begin{frame}{Pedagogic use}
-        Use in classes? Pedagogic interest.
+  \section{Conclusion}
+    \begin{frame}{Improvements}
+    \end{frame}
+
+    \begin{frame}{Conclusion}
     \end{frame}
 
   \section{Questions}
