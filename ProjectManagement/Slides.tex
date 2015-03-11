@@ -179,6 +179,11 @@
     \begin{landscape}
         \begin{frame}[plain]
             \includegraphics[scale=0.22]
+                            {build/micromachine_old_fromsvg.pdf}
+
+        \end{frame}
+        \begin{frame}[plain]
+            \includegraphics[scale=0.22]
                             {build/micromachine_updated_fromsvg.pdf}
 
         \end{frame}
@@ -187,16 +192,26 @@
     \begin{frame}{Adding Memory}
         \begin{itemize}
           \item Extend the RAM module inside the FPGA
-          \item Use the flash memory?
-          \item Access the external RAM chip
+          \item Try to use the flash memory
+          \item Access the external 16Mb RAM chip
       \end{itemize}
     \end{frame}
 
     \begin{frame}{Interrupts}
       \begin{itemize}
-        \item Processor modifications.
-        \item Priority support.
-        \item Interrupt table.
+        \item Add an interrupts module, that keeps the state of each interrupt
+        \item Use a priority encoder
+        \item At the beginning of each instruction, the sequencer checks if
+          there is a unhandled interrupt with an higher priority that the
+          current execution level
+        \item Interrupt table at position 1
+      \end{itemize}
+    \end{frame}
+
+    \begin{frame}{Other Modifications}
+      \begin{itemize}
+        \item Add more registers
+        \item Add a test-and-set instruction
       \end{itemize}
     \end{frame}
 
