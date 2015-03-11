@@ -70,9 +70,9 @@
         \end{itemize}
     \end{frame}
 
-  \section{Project management}
+  \section{Project Management}
     \subsection{Team}
-      \begin{frame}{Team organization}
+      \begin{frame}{Team Organization}
         \begin{itemize}
           \item Korantin Auguste as \textit{developer}
           \item Maxime Arthaud as \textit{tester}
@@ -81,7 +81,7 @@
         \end{itemize}
       \end{frame}
 
-      \begin{frame}{Team management}
+      \begin{frame}{Team Management}
         Quite free, working on what we like, when we like.
 
         \pause
@@ -91,8 +91,8 @@
         \end{figure}
       \end{frame}
 
-    \subsection{Project organization}
-      \begin{frame}{Risks management}
+    \subsection{Project Organization}
+      \begin{frame}{Risks Management}
         We have identified three real risks and mitigated them:
         \begin{itemize}
           \item Damaged FPGA
@@ -101,7 +101,7 @@
         \end{itemize}
       \end{frame}
 
-      \begin{frame}{Actions management}
+      \begin{frame}{Actions Management}
         We used a spreadsheet to manage the actions:
           \includegraphics[width=0.9\textwidth,keepaspectratio]
                           {Actions/ActionManagement.pdf}
@@ -119,7 +119,7 @@
           \end{itemize}
       \end{frame}
 
-      \begin{frame}{Task repartition and planning}
+      \begin{frame}{Task Repartition and Planning}
           We used an incremental process, adding features one after another:%
           \begin{enumerate}
             \item Write a simple scheduler
@@ -168,7 +168,7 @@
 
   \section{Implementation}
     \subsection{Processor Changes}
-    \begin{frame}{Extending the processor}
+    \begin{frame}{Extending the Processor}
         Pre-existing version of CRAPS not totally adapted to our needs:
         \begin{itemize}
           \item Not enough memory
@@ -184,11 +184,11 @@
         \end{frame}
     \end{landscape}
 
-    \begin{frame}{Adding memory}
+    \begin{frame}{Adding Memory}
         \begin{itemize}
           \item Extend the RAM module inside the FPGA
-          \item Use the flash memory ?
-          \item Access the External RAM chip
+          \item Use the flash memory?
+          \item Access the external RAM chip
       \end{itemize}
     \end{frame}
 
@@ -220,7 +220,6 @@
     \end{frame}
 
     \subsection{Compiler}
-
     \begin{frame}{Compiler}
       \begin{itemize}
         \item Based on the compiler project from the second-year classes.
@@ -229,7 +228,6 @@
       \end{itemize}
     \end{frame}
 
-    
     \subsection{Kernel}
     \begin{frame}{Scheduler}
       Needed to make ``context switch'': change the current process.
@@ -313,7 +311,7 @@
       \end{figure}
     \end{frame}
 
-    \subsection{Dynamic loading}
+    \subsection{Dynamic Loading}
       \begin{frame}{Dynamic loading}
         \begin{itemize}
           \item Not very hard to do\dots
@@ -321,12 +319,12 @@
         \end{itemize}
       \end{frame}
 
-  \section{Final result}
+  \section{Final Result}
     \begin{frame}{Various processes}
       \begin{itemize}
         \item The shell (most important)
         \item Counter
-        \item Leds
+        \item LEDs
         \item \dots and dynamic loading!
       \end{itemize}
     \end{frame}
