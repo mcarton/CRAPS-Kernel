@@ -110,17 +110,25 @@
           \end{itemize}
       \end{frame}
 
-      \begin{frame}{Test Means} %TODO complete 
+      \begin{frame}{Test Means} 
+
         Not very automated because of the constraints of the project:
         \begin{itemize}
-          \item hardware : need to load test code via the computer
-          \item 
-          \item 
+          \item hardware : need to load test code via the monitor
+          \item Compiler : lots of special cases: difficult to be exhaustive 
+          \item kernel : need to use the monitor as well
         \end{itemize}
+        Creation of a command line tool to load code more easily. 
       \end{frame}
 
-      \begin{frame}{Task repartition}
-          TODO:complete
+      \begin{frame}{Task repartition and planning}
+          We used an incremental process, adding features one after another.
+          \begin{enumerate}
+            \item Write a simple scheduler
+            \item Add communications using serial port
+            \item handle dynamic programs
+          \end{enumerate}
+          We wrote a planning taking finish to start constraints into account
       \end{frame}
 
       \begin{frame}[plain]
@@ -153,9 +161,15 @@
         \end{itemize}
       \end{frame}
 
-  \section{Processor Changes}
+  \section{Implementation}
+    \subsection{Processor Changes}
     \begin{frame}
-TODO
+        Pre-existing version of CRAPS not totally adapted to our needs:
+        \begin{itemize}
+          \item Not enough memory
+          \item No proper interrupts
+          \item No external communications
+        \end{itemize}
     \end{frame}
     \begin{landscape}
         \begin{frame}[plain]
@@ -165,13 +179,8 @@ TODO
         \end{frame}
     \end{landscape}
 
-  \section{Implementation}
-    \begin{frame}{Compiler}
-      \begin{itemize}
-        \item Based on the compiler project from the second-year classes.
-        \item Language: a (quite large!) subset of C.
-        \item Various optimizations.
-      \end{itemize}
+    \begin{frame}{Adding memory}
+        TODO
     \end{frame}
 
     \begin{frame}{Interrupts}
@@ -182,6 +191,37 @@ TODO
       \end{itemize}
     \end{frame}
 
+    \begin{frame}{Serial Port}
+      To communicate with the computer we used a serial port.
+
+      \pause
+      We had to modify the processor:
+      \begin{itemize}
+        \item Add a new built-in module in SHDL
+        \item Add a new interrupt in the processor
+        \item Map the module to memory
+      \end{itemize}
+
+      \pause
+      We had some problems:
+      \begin{itemize}
+        \item the module can cause the synthesis to fail (too complex?)
+        \item the communication is slow, we can lose data
+      \end{itemize}
+    \end{frame}
+
+    \subsection{Compiler}
+
+    \begin{frame}{Compiler}
+      \begin{itemize}
+        \item Based on the compiler project from the second-year classes.
+        \item Language: a (quite large!) subset of C.
+        \item Various optimizations.
+      \end{itemize}
+    \end{frame}
+
+    
+    \subsection{Kernel}
     \begin{frame}{Scheduler}
       Needed to make ``context switch'': change the current process.
 
@@ -231,24 +271,6 @@ TODO
       \end{itemize}
     \end{frame}
 
-    \begin{frame}{Serial Port}
-      To communicate with the computer we used a serial port.
-
-      \pause
-      We had to modify the processor:
-      \begin{itemize}
-        \item Add a new built-in module in SHDL
-        \item Add a new interrupt in the processor
-        \item Map the module to memory
-      \end{itemize}
-
-      \pause
-      We had some problems:
-      \begin{itemize}
-        \item the module can cause the synthesis to fail (too complex?)
-        \item the communication is slow, we can lose data
-      \end{itemize}
-    \end{frame}
 
     \begin{frame}{Memory Management}
       \begin{itemize}
