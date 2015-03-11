@@ -210,8 +210,18 @@
 
     \begin{frame}{Other Modifications}
       \begin{itemize}
-        \item Add more registers
+        \item Add more registers:
+          \begin{itemize}
+              \item New special purpose register for PIC and new purpose for the
+                PSR
+              \item Up to 19 general purpose registers can be used be the
+                compiler, all 32 registers are now mapped
+          \end{itemize}
+        \pause
         \item Add a test-and-set instruction
+          \begin{itemize}
+              \item Working but finally not used
+          \end{itemize}
       \end{itemize}
     \end{frame}
 
