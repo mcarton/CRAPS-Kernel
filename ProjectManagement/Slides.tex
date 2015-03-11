@@ -109,12 +109,16 @@
           \end{itemize}
       \end{frame}
 
-      \begin{frame}{Test Means} %TODO complete 
-        Not very automated because of the constraints of the project:
+      \begin{frame}{Test Means}
+        Not fully automated because of the constraints of the project:
         \begin{itemize}
-          \item hardware : need to load test code via the computer
-          \item 
-          \item 
+          \item hardware: need to manually load test code and test it via the
+            monitor
+          \item compiler: some automated tests test the compiler itself, but the
+            generated code has to be tested manually and it is impossible to be
+            exhaustive
+          \item kernel: need to use the monitor as well, outputs use 7-segment
+            display, switches, etc.
         \end{itemize}
       \end{frame}
 
