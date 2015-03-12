@@ -540,10 +540,20 @@
       tasks were really important.
 
       \subsection{Processor}
-        The processor already had some tests. We took care of their validity as
-        we modified it.
-
-        We also made more tests for each feature we have added.
+        
+        The individual components of the initial version of the processor had
+        already been tested, so we did not test them more thoroughly. Some test
+        programs had also been written, and we made sure that our processor
+        still passed them after we modified the sequencer.
+        The test for the hardware modules written in VHDL could not be
+        automated, as they require a special environment which was too long to
+        set up properly, given the short time we had at our disposal. 
+        
+        Once the new modules had been integrated in the processor, we wrote
+        test programs to validate that they were working properly. These have
+        to be done manually, as they require to check values in register or to
+        look at the seven segments display. This test were written directly in
+        assembly code, to dissociate eventual errors of the compiler.
 
       \subsection{Compiler}
         The compiler has two kinds of tests.
@@ -553,20 +563,26 @@
         plenty of such tests and we tried to be as exhaustive as possible. They
         do not test the compiler correctness.
 
-        The other kind of tests test if the compiler generates valid code. These
-        tests are not automated as we need to upload the code on the board after
-        the compilation. Most of these tests are expected to produce a specific
+        The other kind test if the compiler generates valid code. These tests
+        are not automated as we need to upload the code on the board after the
+        compilation. Most of these tests are expected to produce a specific
         output on the 7-segment display when then succeed.
 
-      \section{Kernel}
-        We have made less tests for the kernel itself but it is the component we
-        humans interact with and the kernel does not show unexpected behaviours.
+      \subsection{Kernel}
+        We have made less tests for the kernel itself, as the only way we had
+        to test it was to make sure that the programs we wrote were executed
+        properly.
 
         We tested independently the main components such as the scheduler and
         the memory allocation functions and validated them.
 
+        What serve as a good test is the use case we designed for our client. We
+        were able to realise a series of actions (such as loading program
+        dynamically and launch them) without the kernel showing unexpected
+        behaviour.
+
         And of course, for both the processor and compiler, the ability to run
-        the kernel shows is the ultimate test.
+        the kernel is the ultimate test.
 
     \section{Limitations}
       The project has some limitations:
