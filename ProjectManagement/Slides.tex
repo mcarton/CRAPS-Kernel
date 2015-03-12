@@ -201,9 +201,8 @@
       \begin{itemize}
         \item Add an interrupts module, that keeps the state of each interrupt
         \item Use a priority encoder
-        \item At the beginning of each instruction, the sequencer checks if
-          there is a unhandled interrupt with an higher priority that the
-          current execution level
+        \item The sequencer checks if there is a unhandled interrupt with an
+          higher priority that the current execution level
         \item Interrupt table at position 1
       \end{itemize}
     \end{frame}
@@ -250,6 +249,25 @@
         \item Based on the compiler project from the second-year classes.
         \item Language: a (quite large!) subset of C.
         \item Various optimizations.
+      \end{itemize}
+    \end{frame}
+
+    \begin{frame}{Compiler, in deep}
+      \begin{itemize}
+        \item Use EGG (Extended Generator Generator), a tool to build an
+          attribute grammar
+        \item EGG is responsible for the lexical and syntactic analysis
+        \item Java for the code generation
+      \end{itemize}
+    \end{frame}
+
+    \begin{frame}{Compiler optimizations}
+      \begin{itemize}
+        \item Remove unused functions
+        \item Simplify arithmetic expressions
+        \item Compute addresses at compile-time
+        \item Use optimized instructions
+        \item Simplify while(true) loops, if without else block …
       \end{itemize}
     \end{frame}
 
