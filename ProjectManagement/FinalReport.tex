@@ -403,8 +403,15 @@
         resolve this problem as we have no idea of what causes it.
 
       \subsection{Software interrupt}
-      TODO
-
+        The higher level interrupt is not triggered by the hardware, but is
+        used to implement system calls. A program can access system functions
+        such as memory management by putting their argument on the stack and
+        calling a special assembly instruction. This instruction creates an
+        interrupt, which is handled by the operating system. It will check the
+        first value on the stack, which indicates what system function was
+        called, and then launches the corresponding function. The fact that this
+        is the higher level interrupt makes it not interruptible, which allows
+        us not to worry about concurrency.
     \section{Scheduler}\label{sec:scheduler}
       The scheduler is the component that makes it possible to execute more than
       one task at a time: It will switch between all running task in a very fast
@@ -590,9 +597,9 @@
         \item We were not able to use the flash memory. As such, the board
           has no persistent memory.
       \end{itemize}
-
-      TODO
-
+        The project is however a success, even if we wish we had had time to
+        incorporate even more features. It would indeed have been nice to have a
+        file system, or even VGA communication support.
   \chapter{Conclusion}
     This was a passionating project and we think it was a success. The client
     seems to be very happy with our work, we really hope he will be able to use
@@ -600,7 +607,7 @@
     we were to do this project.
 
     The project was a good occasion to learn how to manage a project, which we
-    never really needed for our other projects as there were too short.
+    never really needed for our previous projects as there were too short.
 
   % reset the chapter counter and use lettered-chapter from now on
   \setcounter{chapter}{0}
