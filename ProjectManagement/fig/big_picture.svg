@@ -51,21 +51,6 @@
          id="path9586" />
     </marker>
     <marker
-       inkscape:stockid="TriangleOutL"
-       orient="auto"
-       refY="0.0"
-       refX="0.0"
-       id="marker9514"
-       style="overflow:visible"
-       inkscape:isstock="true"
-       inkscape:collect="always">
-      <path
-         id="path9516"
-         d="M 5.77,0.0 L -2.88,5.0 L -2.88,-5.0 L 5.77,0.0 z "
-         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
-         transform="scale(0.8)" />
-    </marker>
-    <marker
        inkscape:isstock="true"
        style="overflow:visible"
        id="marker9438"
@@ -178,6 +163,22 @@
        x2="-143.00703"
        y2="608.70758"
        gradientUnits="userSpaceOnUse" />
+    <marker
+       inkscape:isstock="true"
+       style="overflow:visible"
+       id="marker9438-5"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="TriangleOutL"
+       inkscape:collect="always">
+      <path
+         inkscape:connector-curvature="0"
+         transform="scale(0.8,0.8)"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1"
+         d="m 5.77,0 -8.65,5 0,-10 8.65,5 z"
+         id="path9440-1" />
+    </marker>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -188,16 +189,16 @@
      inkscape:pageshadow="2"
      inkscape:zoom="0.70710678"
      inkscape:cx="729.61021"
-     inkscape:cy="1103.7346"
+     inkscape:cy="1160.3031"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:grid-points="true"
      gridtolerance="10000"
-     inkscape:window-width="1920"
-     inkscape:window-height="1016"
-     inkscape:window-x="-4"
-     inkscape:window-y="0"
+     inkscape:window-width="1364"
+     inkscape:window-height="747"
+     inkscape:window-x="0"
+     inkscape:window-y="19"
      showguides="false"
      inkscape:showpageshadow="true"
      showborder="true"
@@ -233,7 +234,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -3816,21 +3817,13 @@
            height="23.05345"
            x="316.68161"
            y="246.825" /></flowRegion><flowPara
-         id="flowPara6022"></flowPara></flowRoot>    <rect
+         id="flowPara6022" /></flowRoot>    <rect
        style="opacity:1;fill:#f4e3d7;fill-opacity:1;stroke:#000000;stroke-width:0.78120309;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect4845-4-6"
        width="341.34042"
        height="215.71236"
        x="863.97992"
        y="731.64813" />
-    <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker9514)"
-       d="m 1138.8203,582.2583 -60.4945,149.38983"
-       id="path9428"
-       inkscape:connector-type="polyline"
-       inkscape:connector-curvature="0"
-       inkscape:connection-start="#path9364-7"
-       inkscape:connection-end="#rect4845-4-6" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:30px;line-height:125%;font-family:Sans;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -6393,5 +6386,11 @@
          x="762.86823"
          y="1057.8846"
          id="tspan10225" /></text>
+    <path
+       style="display:inline;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker9438-5)"
+       d="m 1118.1203,630.00804 -80.8825,107.51188"
+       id="path9426-7"
+       inkscape:connector-type="polyline"
+       inkscape:connector-curvature="0" />
   </g>
 </svg>
