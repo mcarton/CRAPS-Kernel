@@ -190,11 +190,38 @@
     \end{landscape}
 
     \begin{frame}{Adding Memory}
+        Time consuming because of our lack of knowledge
         \begin{itemize}
           \item Extend the RAM module inside the FPGA
           \item Try to use the flash memory
           \item Access the external 16Mb RAM chip
       \end{itemize}
+    \end{frame}
+
+    \begin{frame}{Block RAM}
+        Extend the RAM module inside the FPGA
+          \begin{itemize}
+            \item Up to 63 Kb available in dedicated Block RAM
+            \item Requires Synchronised access
+            \item Caused timing issues due to reading delay
+           \end{itemize}
+    \end{frame}
+
+    \begin{frame}{Flash Memory}
+        Try to use the flash memory
+        \begin{itemize}
+          \item Caution !
+          \item Quite complex communication protocol
+        \end{itemize}
+        \pause
+        Finally, does not suit our needs because of inherent limitations
+    \end{frame}
+
+    \begin{frame}{External RAM}
+        \begin{itemize}
+          \item Easier to communicate with
+          \item Word size discrepancy with our processor
+        \end{itemize}
     \end{frame}
 
     \begin{frame}{Interrupts}
