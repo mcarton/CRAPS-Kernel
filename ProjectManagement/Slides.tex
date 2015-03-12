@@ -74,10 +74,10 @@
     \subsection{Team}
       \begin{frame}{Team Organization}
         \begin{itemize}
-          \item Korantin Auguste as \textit{developer}
-          \item Maxime Arthaud as \textit{tester}
-          \item Martin Carton as \textit{project leader}
-          \item Étienne Lebrun as \textit{quality manager}
+          \item Korantin Auguste: responsible of development
+          \item Maxime Arthaud: responsible of tests
+          \item Martin Carton: \textit{project leader}
+          \item Étienne Lebrun: \textit{quality manager}
         \end{itemize}
       \end{frame}
 
@@ -167,16 +167,104 @@
       \end{frame}
 
   \section{Implementation}
-    \subsection{Processor Changes}
-    \begin{frame}{Extending the Processor}
-        Pre-existing version of CRAPS not totally adapted to our needs:
+    \subsection{Kernel}
+      \begin{frame}{Kernel introduction}
+      \end{frame}
+
+      \begin{frame}{Shell}
+      \end{frame}
+
+      \begin{frame}{Scheduler}
+        Needed to make ``context switch'': change the current process.
+
+        \begin{columns}
+          \begin{column}{0.4\textwidth}
+            \begin{figure}
+              \centering
+              \begin{tikzpicture}[auto, ->, node distance=1.25cm]
+                \node[auto] (CPU) [draw, style={font=\tiny}] {CPU};
+
+                \node[auto] (A)   [draw, ellipse, above of=CPU, fill=gray,
+                label={[align=center, style={font=\tiny}]executes on\\processor}] {};
+                \node[auto] (B)   [draw, ellipse, right of=CPU] {};
+                \node[auto] (C)   [draw, ellipse, below of=CPU] {};
+                \node[auto] (D)   [draw, ellipse, left  of=CPU] {};
+
+                \path (CPU) edge (A);
+
+                \path (A) edge [bend left] (B);
+                \path (B) edge [bend left] (C);
+                \path (C) edge [bend left] (D);
+                \path (D) edge [bend left] (A);
+              \end{tikzpicture}
+            \end{figure}
+          \end{column}
+          \begin{column}{0.6\textwidth}
+            \begin{itemize}
+              \item Save the current state of the process
+              \item Restore the state for the other process
+            \end{itemize}
+          \end{column}
+        \end{columns}
+      \end{frame}
+
+      \begin{frame}{Scheduler}
         \begin{itemize}
-          \item Not enough memory
-          \item No proper interrupts
-          \item No external communications
+          \item New interrupt based on the PWM, that will trigger a context switch.
+          \item Context switch:
+          \begin{enumerate}
+             \item Save the registers on the current stack
+             \item Change the current stack to the one of the next process
+             \item Restore the registers
+             \item Return from interrupt (will jump to the address of the
+               instruction stored on the stack of the new process)
+          \end{enumerate}
         \end{itemize}
-    \end{frame}
-    \begin{landscape}
+      \end{frame}
+
+      \begin{frame}{Dynamic loading}
+        \begin{itemize}
+          \item Not very hard to do\dots
+          \item \dots but we had to make the code position-independent.
+        \end{itemize}
+      \end{frame}
+
+      \begin{frame}{Memory Management}
+        \begin{itemize}
+          \item We need to be able to dynamically allocate memory
+          \item In modern computers: virtual memory (segmentation and pagination)
+            \begin{itemize}
+              \item Too complicated
+            \end{itemize}
+          \item We just need three functions: \texttt{malloc}, \texttt{free},
+            \texttt{realloc}
+          \item How to free all the memory of a process?
+        \end{itemize}
+      \end{frame}
+
+      \begin{frame}{Memory Management}
+        \begin{itemize}
+          \item Stored in blocks, with a header indicating the size and the PID of
+            the owner.
+          \item All blocks have a size that is a power of two.
+          \item We never split/merge/delete blocks, we just reuse them if freed.
+          \item We can free all the blocks for a given process.
+        \end{itemize}
+      \end{frame}
+
+      \begin{frame}[plain]
+        \begin{figure}
+          \begin{minipage}[c]{0.5\textwidth}
+            \caption{Memory layout}
+          \end{minipage}\hfill
+          \begin{minipage}[c]{0.5\textwidth}
+            \includegraphics[height=\textheight]{build/memory_layout_fromsvg.pdf}
+          \end{minipage}
+        \end{figure}
+      \end{frame}
+
+    \subsection{Processor Changes}
+      \begin{landscape}
         \begin{frame}[plain]
             \includegraphics[scale=0.22]
                             {build/micromachine_old_fromsvg.pdf}
@@ -187,206 +275,145 @@
                             {build/micromachine_updated_fromsvg.pdf}
 
         \end{frame}
-    \end{landscape}
+      \end{landscape}
 
-    \begin{frame}{Adding Memory}
-        Time consuming because of our lack of knowledge
-        \begin{itemize}
-          \item Extend the RAM module inside the FPGA
-          \item Try to use the flash memory
-          \item Access the external 16Mb RAM chip
-      \end{itemize}
-    \end{frame}
+      \begin{frame}{Sequencer}
+      \end{frame}
 
-    \begin{frame}{Block RAM}
+      \begin{frame}
+        % Sequencer before
+      \end{frame}
+
+      \begin{frame}
+        % Sequencer after
+      \end{frame}
+
+      \begin{frame}{Extending the Processor}
+          Pre-existing version of CRAPS not totally adapted to our needs:
+          \begin{itemize}
+            \item Not enough memory
+            \item No external communications
+            \item No proper interrupts
+          \end{itemize}
+      \end{frame}
+
+      \begin{frame}{Adding Memory}
+          Time consuming because of our lack of knowledge
+          \begin{itemize}
+            \item Extend the RAM module inside the FPGA
+            \item Try to use the flash memory
+            \item Access the external 16Mb RAM chip
+        \end{itemize}
+      \end{frame}
+
+      \begin{frame}{Block RAM}
         Extend the RAM module inside the FPGA
           \begin{itemize}
-            \item Up to 63 Kb available in dedicated Block RAM
+            \item Up to 63 kB available in dedicated Block RAM
             \item Requires Synchronised access
             \item Caused timing issues due to reading delay
            \end{itemize}
-    \end{frame}
+      \end{frame}
 
-    \begin{frame}{Flash Memory}
+      \begin{frame}{Flash Memory}
         Try to use the flash memory
         \begin{itemize}
-          \item Caution !
+          \item Caution!
           \item Quite complex communication protocol
         \end{itemize}
         \pause
         Finally, does not suit our needs because of inherent limitations
-    \end{frame}
+      \end{frame}
 
-    \begin{frame}{External RAM}
+      \begin{frame}{External RAM}
         \begin{itemize}
           \item Easier to communicate with
           \item Word size discrepancy with our processor
         \end{itemize}
-    \end{frame}
+      \end{frame}
 
-    \begin{frame}{Interrupts}
-      \begin{itemize}
-        \item Add an interrupts module, that keeps the state of each interrupt
-        \item Use a priority encoder
-        \item The sequencer checks if there is an unhandled interrupt with a
-          higher priority than the current execution level
-        \item Interrupt table at position 1
-      \end{itemize}
-    \end{frame}
+      \begin{frame}{Serial Port}
+        To communicate with the computer we used a serial port.
 
-    \begin{frame}{Other Modifications}
-      \begin{itemize}
-        \item Add more registers:
-          \begin{itemize}
-              \item New special purpose register for PIC and new purpose for the
-                PSR
-              \item Up to 19 general purpose registers can be used be the
-                compiler, all 32 registers are now mapped
-          \end{itemize}
         \pause
-        \item Add a test-and-set instruction
-          \begin{itemize}
-              \item Working but finally not used
-          \end{itemize}
-      \end{itemize}
-    \end{frame}
+        We had to modify the processor:
+        \begin{itemize}
+          \item Add a new built-in module in SHDL
+          \item Add a new interrupt in the processor
+          \item Map the module to memory
+        \end{itemize}
 
-    \begin{frame}{Serial Port}
-      To communicate with the computer we used a serial port.
+        \pause
+        We had some problems:
+        \begin{itemize}
+          \item the module can cause the synthesis to fail (too complex?)
+          \item the communication is slow, we can lose data
+        \end{itemize}
+      \end{frame}
 
-      \pause
-      We had to modify the processor:
-      \begin{itemize}
-        \item Add a new built-in module in SHDL
-        \item Add a new interrupt in the processor
-        \item Map the module to memory
-      \end{itemize}
+      \begin{frame}{Interrupts}
+        \begin{itemize}
+          \item Add an interrupts module, that keeps the state of each interrupt
+          \item Use a priority encoder
+          \item The sequencer checks if there is an unhandled interrupt with a
+            higher priority than the current execution level
+          \item Interrupt table at position 1
+        \end{itemize}
+      \end{frame}
 
-      \pause
-      We had some problems:
-      \begin{itemize}
-        \item the module can cause the synthesis to fail (too complex?)
-        \item the communication is slow, we can lose data
-      \end{itemize}
-    \end{frame}
+      \begin{frame}{Other Modifications}
+        \begin{itemize}
+          \item Add more registers:
+            \begin{itemize}
+                \item New special purpose register for PIC and new purpose for
+                  the PSR
+                \item Up to 19 general purpose registers can be used be the
+                  compiler, all 32 registers are now mapped
+            \end{itemize}
+          \pause
+          \item Add a test-and-set instruction
+            \begin{itemize}
+                \item Working but finally not used
+            \end{itemize}
+        \end{itemize}
+      \end{frame}
 
     \subsection{Compiler}
-    \begin{frame}{Compiler}
-      \begin{itemize}
-        \item Based on the compiler project from the second-year classes.
-        \item Language: a (quite large!) subset of C.
-        \item Various optimizations.
-      \end{itemize}
-    \end{frame}
+      \begin{frame}
+        % medium picture
+      \end{frame}
 
-    \begin{frame}{Compiler, in deep}
-      \begin{itemize}
-        \item Uses EGG (Extended Generator Generator), a tool to build an
-          attribute grammar
-        \item EGG is responsible for the lexical and syntactic analysis
-        \item Java for the code generation
-      \end{itemize}
-    \end{frame}
-
-    \begin{frame}{Compiler optimizations}
-      \begin{itemize}
-        \item Remove unused functions
-        \item Simplify arithmetic expressions
-        \item Compute addresses at compile-time
-        \item Use optimized instructions
-        \item Simplify while(true) loops, if without else block …
-      \end{itemize}
-    \end{frame}
-
-    \subsection{Kernel}
-    \begin{frame}{Scheduler}
-      Needed to make ``context switch'': change the current process.
-
-      \begin{columns}
-        \begin{column}{0.4\textwidth}
-          \begin{figure}
-            \centering
-            \begin{tikzpicture}[auto, ->, node distance=1.25cm]
-              \node[auto] (CPU) [draw, style={font=\tiny}] {CPU};
-
-              \node[auto] (A)   [draw, ellipse, above of=CPU, fill=gray,
-              label={[align=center, style={font=\tiny}]executes on\\processor}] {};
-              \node[auto] (B)   [draw, ellipse, right of=CPU] {};
-              \node[auto] (C)   [draw, ellipse, below of=CPU] {};
-              \node[auto] (D)   [draw, ellipse, left  of=CPU] {};
-
-              \path (CPU) edge (A);
-
-              \path (A) edge [bend left] (B);
-              \path (B) edge [bend left] (C);
-              \path (C) edge [bend left] (D);
-              \path (D) edge [bend left] (A);
-            \end{tikzpicture}
-          \end{figure}
-        \end{column}
-        \begin{column}{0.6\textwidth}
-          \begin{itemize}
-            \item Save the current state of the process
-            \item Restore the state for the other process
-          \end{itemize}
-
-        \end{column}
-      \end{columns}
-
-    \end{frame}
-
-    \begin{frame}{Scheduler}
-      \begin{itemize}
-        \item New interrupt based on the PWM, that will trigger a context switch.
-        \item Context switch:
-        \begin{enumerate}
-           \item Save the registers on the current stack
-           \item Change the current stack to the one of the next process
-           \item Restore the registers
-           \item Return from interrupt (will jump to the address of the
-             instruction stored on the stack of the new process)
-        \end{enumerate}
-      \end{itemize}
-    \end{frame}
-
-
-    \begin{frame}{Memory Management}
-      \begin{itemize}
-        \item We need to be able to dynamically allocate memory.
-        \item In modern computers: virtual memory (segmentation and pagination).
-          Too complicated.
-        \item We just need three functions: malloc, free, realloc.
-        \item How to free all the memory of a process ?
-      \end{itemize}
-    \end{frame}
-
-    \begin{frame}{Memory Management}
-      \begin{itemize}
-        \item Stored in blocks, with a header indicating the size and the PID of
-          the owner.
-        \item All blocks have a size that is a power of two.
-        \item We never split/merge/delete blocks, we just reuse them if freed.
-        \item We can free all the blocks for a given process.
-      \end{itemize}
-    \end{frame}
-
-    \begin{frame}[plain]
-      \begin{figure}
-        \begin{minipage}[c]{0.5\textwidth}
-          \caption{Memory layout}
-        \end{minipage}\hfill
-        \begin{minipage}[c]{0.5\textwidth}
-          \includegraphics[height=\textheight]{build/memory_layout_fromsvg.pdf}
-        \end{minipage}
-      \end{figure}
-    \end{frame}
-
-    \subsection{Dynamic Loading}
-      \begin{frame}{Dynamic loading}
+      \begin{frame}{Compiler}
         \begin{itemize}
-          \item Not very hard to do\dots
-          \item \dots but we had to make the code position-independent.
+          \item Based on the compiler project from the second-year classes
+          \item Language: a (quite large!) subset of C
+          \item Various optimizations
         \end{itemize}
+      \end{frame}
+
+      \begin{frame}{Compiler, in deep}
+        \begin{itemize}
+          \item Uses EGG (Extended Generator Generator), a tool to build an
+            attribute grammar
+          \item EGG is responsible for the lexical and syntactic analysis
+          \item Java for the code generation
+        \end{itemize}
+      \end{frame}
+
+      \begin{frame}{Dynamic Loading}
+      \end{frame}
+
+      \begin{frame}{Compiler Optimizations}
+        \begin{itemize}
+          \item Remove unused functions
+          \item Simplify arithmetic expressions
+          \item Compute addresses at compile-time
+          \item Use optimized instructions
+          \item Simplify while(true) loops, if without else block …
+        \end{itemize}
+      \end{frame}
+
+      \begin{frame}{A More Complete Language}
       \end{frame}
 
   \section{Final Result}
