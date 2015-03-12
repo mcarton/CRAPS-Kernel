@@ -163,6 +163,7 @@
             \end{itemize}
           \item Kernel, compiler, new processor
           \item Reports, abstracts
+          \item Software Development Plan, Specifications, Test Plan
         \end{itemize}
       \end{frame}
 
@@ -182,6 +183,13 @@
       \end{frame}
 
       \begin{frame}{Shell}
+          Need to interact with the OS.
+          
+          We want to:
+          \begin{itemize}
+            \item launch/stop programs
+            \item know the state of the processes
+          \end{itemize}
       \end{frame}
 
       \begin{frame}{Scheduler}
@@ -235,6 +243,16 @@
       \end{frame}
 
     \subsection{Processor Changes}
+
+          \begin{frame}{Extending the Processor}
+          Pre-existing version of CRAPS not totally adapted to our needs:
+          \begin{itemize}
+            \item Not enough memory
+            \item No external communications
+            \item No proper interrupts
+          \end{itemize}
+      \end{frame}
+
       \begin{landscape}
         \begin{frame}[plain]
             \includegraphics[scale=0.22]
@@ -249,32 +267,26 @@
       \end{landscape}
 
       \begin{frame}{Sequencer}
+          \includegraphics[scale=0.3]
+                            {build/sequencer_old_fromsvg.pdf}
       \end{frame}
 
-      \begin{frame}
-        % Sequencer before
+      \begin{frame}[plain]{After updates}
+            \includegraphics[scale=0.21]
+                           {build/sequencer_updated_fromsvg.pdf}
       \end{frame}
 
-      \begin{frame}
-        % Sequencer after
-      \end{frame}
 
-      \begin{frame}{Extending the Processor}
-          Pre-existing version of CRAPS not totally adapted to our needs:
-          \begin{itemize}
-            \item Not enough memory
-            \item No external communications
-            \item No proper interrupts
-          \end{itemize}
-      \end{frame}
 
       \begin{frame}{Adding Memory}
-          Time consuming because of our lack of knowledge
+          Three possibilities:
           \begin{itemize}
             \item Extend the RAM module inside the FPGA
             \item Try to use the flash memory
             \item Access the external 16Mb RAM chip
         \end{itemize}
+
+          Time consuming because of our lack of knowledge
       \end{frame}
 
       \begin{frame}{Block RAM}
@@ -283,6 +295,9 @@
             \item Up to 63 kB available in dedicated Block RAM
             \item Requires Synchronised access
             \item Caused timing issues due to reading delay
+                \begin{itemize}
+                  \item Add a step in the sequencer to wait for the read value
+                \end{itemize}
            \end{itemize}
       \end{frame}
 
