@@ -228,8 +228,8 @@
       \begin{itemize}
         \item Add an interrupts module, that keeps the state of each interrupt
         \item Use a priority encoder
-        \item The sequencer checks if there is a unhandled interrupt with an
-          higher priority that the current execution level
+        \item The sequencer checks if there is an unhandled interrupt with a
+          higher priority than the current execution level
         \item Interrupt table at position 1
       \end{itemize}
     \end{frame}
@@ -281,7 +281,7 @@
 
     \begin{frame}{Compiler, in deep}
       \begin{itemize}
-        \item Use EGG (Extended Generator Generator), a tool to build an
+        \item Uses EGG (Extended Generator Generator), a tool to build an
           attribute grammar
         \item EGG is responsible for the lexical and syntactic analysis
         \item Java for the code generation
