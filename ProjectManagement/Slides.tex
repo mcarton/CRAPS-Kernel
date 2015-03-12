@@ -260,17 +260,25 @@
         \end{frame}
       \end{landscape}
 
-      \begin{frame}{Sequencer}
-          \includegraphics[scale=0.3]
-                            {build/sequencer_old_fromsvg.pdf}
+      \begin{frame}{Original Sequencer}
+          \begin{figure}
+            \centering
+            \makebox[\textwidth][c]{
+              \includegraphics[scale=0.3]
+                                {build/sequencer_old_fromsvg.pdf}
+            }
+          \end{figure}
       \end{frame}
 
-      \begin{frame}[plain]{After updates}
+      \begin{frame}{After updates}
+        \begin{figure}
+          \centering
+          \makebox[\textwidth][c]{
             \includegraphics[scale=0.21]
                            {build/sequencer_updated_fromsvg.pdf}
+          }
+        \end{figure}
       \end{frame}
-
-
 
       \begin{frame}{Adding Memory}
           Three possibilities:
@@ -397,11 +405,15 @@
         \item The CRAPS processor is already on the board
         \pause
         \item Loading the kernel using the monitor
-          \begin{figure}
-            \centering
-            \includegraphics[width=10.5cm]{build/demo_load_fromsvg.pdf}
-          \end{figure}
-        \pause
+      \end{itemize}
+      \begin{figure}
+        \centering
+        \makebox[\textwidth][c]{
+          \includegraphics[width=10.5cm]{build/demo_load_fromsvg.pdf}
+        }
+      \end{figure}
+      \pause
+      \begin{itemize}
         \item Using the serial port with the shell task
         \pause
         \item Load a dynamic task
