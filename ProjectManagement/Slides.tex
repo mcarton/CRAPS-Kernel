@@ -391,7 +391,19 @@
 
     \subsection{Compiler}
       \begin{frame}{Why we need a compiler}
-        % TODO martin: medium picture
+        \begin{figure}
+          \centering
+          \begin{tikzpicture}[auto, ->, node distance=5cm]
+            \node[auto] (K) [align=center] {Kernel\\(written in C)};
+            \node[auto] (C) [right of=K, align=center]
+                            {Processor\\(executes assembly)};
+
+            \path (K) edge (C);
+            \path (K) edge [bend right]
+                      node [align=center, below] {Compiler\\(C → assembly)}
+                  (C);
+          \end{tikzpicture}
+        \end{figure}
 
         \begin{itemize}
           \item We can't possibly write all the operating system in CRAPS
