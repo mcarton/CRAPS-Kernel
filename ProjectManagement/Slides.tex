@@ -293,43 +293,29 @@
           Three possibilities:
           \begin{itemize}
             \item Extend the RAM module inside the FPGA
+                \begin{itemize}
+                  \item 512 instructions $\implies$ more than 12.000
+                \end{itemize}
+            \pause
             \item Try to use the flash memory
+            \pause
             \item Access the external 16Mb RAM chip
         \end{itemize}
 
       \end{frame}
 
-      \begin{frame}{Block RAM}
-        Extend the RAM module inside the FPGA
-          \begin{itemize}
-            \item Up to 63 kB available in dedicated Block RAM
-            \item Requires Synchronised access
-            \item Caused timing issues due to reading delay
-                \begin{itemize}
-                  \item Add a step in the sequencer to wait for the read value
-                \end{itemize}
-           \end{itemize}
-      \end{frame}
-
-      \begin{frame}{Flash Memory}
-        Try to use the flash memory
+      \begin{frame}{External Memory}
         \begin{itemize}
           \item Caution!
           \item Quite complex communication protocol
         \end{itemize}
         \pause
-        More complex than anticipated → Reorganisation of the planning
-        \pause
+        Flash more complex than anticipated → Reorganisation of the planning
+        
         Finally, does not suit our needs because of inherent limitations
-      \end{frame}
-
-      \begin{frame}{External RAM}
-        \begin{itemize}
-          \item Easier to communicate with
-          \item Take advantage of the work done for the flash memory
-        \end{itemize}
         \pause
-        Slower but no more memory issue
+
+        We were able to integrate the external RAM, solving our memory issue
       \end{frame}
 
       \begin{frame}{Serial Port}
